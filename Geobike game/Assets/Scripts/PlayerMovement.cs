@@ -17,8 +17,6 @@ public class PlayerMovement : MonoBehaviour
         InvokeRepeating("CalculateSpeed", 0, 5);
 	}
 
-    //public float speed = 1.5f;
-
     void Update()
     {
         if (player1)
