@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Input : MonoBehaviour
+public class BikeInput : MonoBehaviour
 {
 
-    public Input()
+    public BikeInput()
     {
 
     }
