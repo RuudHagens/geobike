@@ -8,9 +8,13 @@ public class PlayerMovement : MonoBehaviour
     public Collider2D collider;
     private bool up;
     public bool player1;
-	// Use this for initialization
-	void Start () {
+
+    private float pressesp1;
+    private float pressesp2;
+    // Use this for initialization
+    void Start () {
 	    up = true;
+        InvokeRepeating("CalculateSpeed", 0, 5);
 	}
 
     //public float speed = 1.5f;
@@ -44,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
                 if (Input.GetKey(KeyCode.Space))
                 {
                     speed = speed + 0.15f;
+                    pressesp1++;
                 }
             }
             else
@@ -71,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
                 if (Input.GetKey(KeyCode.Space))
                 {
                     speed = speed - 0.15f;
+                    pressesp1++;
                 }
             }
         }
@@ -101,6 +107,7 @@ public class PlayerMovement : MonoBehaviour
                 if (Input.GetKey(KeyCode.W))
                 {
                     speed = speed + 0.15f;
+                    pressesp2++;
                 }
             }
             else
@@ -128,6 +135,7 @@ public class PlayerMovement : MonoBehaviour
                 if (Input.GetKey(KeyCode.W))
                 {
                     speed = speed - 0.15f;
+                    pressesp2++;
                 }
             }
         }
@@ -146,5 +154,27 @@ public class PlayerMovement : MonoBehaviour
                 up = true;
             }
         } 
+    }
+
+    public void CalculateSpeed()
+    {
+
+        if (player1)
+        {
+            float rpm1 = pressesp1 * 12;
+            float mh1 = 1.5f * rpm1 * 0.10472f;
+            float kmh1 = mh1 * 3.6f;
+            Debug.Log("speed p1 spekkoen: " + kmh1);
+            pressesp1 = 0;
+        }
+        
+        if (!player1)
+        {
+            float rpm2 = pressesp2 * 12;
+            float mh2 = 1.5f * rpm2 * 0.10472f;
+            float kmh2 = mh2 * 3.6f;
+            Debug.Log("speed p2 scharnier: " + kmh2);
+            pressesp2 = 0;
+        }
     }
 }
