@@ -1,20 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 0f;
     public Collider2D collider;
     private Rigidbody2D rb;
-
-    private float presscounter;
-    public Text lblSpeed;
-
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody2D>();
-        InvokeRepeating("CalculateSpeed", 0, 5);
 	}
 
     //public float speed = 1.5f;
@@ -44,7 +38,6 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             speed = speed + 0.15f;
-            presscounter++;
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
@@ -64,16 +57,5 @@ public class PlayerMovement : MonoBehaviour
         Quaternion quat = transform.rotation;
         quat.z = 180;
         transform.rotation = quat;
-    }
-
-    public void CalculateSpeed()
-    {
-        float rpm = presscounter * 12;
-        Debug.Log(rpm);
-        float mh = 1.5f * rpm * 0.10472f;
-        float kmh = mh * 3.6f;
-
-        lblSpeed.text = "Snelheid: " + kmh;
-        presscounter = 0;
     }
 }
