@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class PlayerMovement : MonoBehaviour
 
     private float pressesp1;
     private float pressesp2;
+
+    public Text speedp1;
+    public Text speedp2;
     // Use this for initialization
     void Start () {
 	    up = true;
@@ -162,6 +166,7 @@ public class PlayerMovement : MonoBehaviour
             float rpm1 = pressesp1 * 12;
             float mh1 = 1.5f * rpm1 * 0.10472f;
             float kmh1 = mh1 * 3.6f;
+            speedp1.text = Mathf.Round(kmh1 * 10) / 10 + "KM/h";
             Debug.Log("speed p1 spekkoen: " + kmh1);
             pressesp1 = 0;
         }
@@ -171,6 +176,7 @@ public class PlayerMovement : MonoBehaviour
             float rpm2 = pressesp2 * 12;
             float mh2 = 1.5f * rpm2 * 0.10472f;
             float kmh2 = mh2 * 3.6f;
+            speedp2.text = Mathf.Round(kmh2 * 10) / 10 + "KM/h";
             Debug.Log("speed p2 scharnier: " + kmh2);
             pressesp2 = 0;
         }
