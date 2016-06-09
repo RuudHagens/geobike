@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     // Use this for initialization
     void Start () {
 	    up = true;
-        InvokeRepeating("CalculateSpeed", 0, 5);
+        InvokeRepeating("CalculateSpeed", 0, 2);
 	}
 
     void Update()
@@ -39,15 +39,15 @@ public class PlayerMovement : MonoBehaviour
 
                 transform.position += Vector3.up*speed*Time.deltaTime;
 
-                if (Input.GetKey(KeyCode.LeftArrow))
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
                     transform.position += Vector3.left*speed*Time.deltaTime;
                 }
-                if (Input.GetKey(KeyCode.RightArrow))
+                if (Input.GetKeyDown(KeyCode.RightArrow))
                 {
                     transform.position += Vector3.right*speed*Time.deltaTime;
                 }
-                if (Input.GetKey(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
                     speed = speed + 0.15f;
                     pressesp1++;
@@ -67,15 +67,15 @@ public class PlayerMovement : MonoBehaviour
 
                 transform.position += Vector3.up*speed*Time.deltaTime;
 
-                if (Input.GetKey(KeyCode.RightArrow))
+                if (Input.GetKeyDown(KeyCode.RightArrow))
                 {
                     transform.position += Vector3.left*speed*Time.deltaTime;
                 }
-                if (Input.GetKey(KeyCode.LeftArrow))
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
                     transform.position += Vector3.right*speed*Time.deltaTime;
                 }
-                if (Input.GetKey(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space))
                 {
                     speed = speed - 0.15f;
                     pressesp1++;
@@ -98,15 +98,15 @@ public class PlayerMovement : MonoBehaviour
 
                 transform.position += Vector3.up * speed * Time.deltaTime;
 
-                if (Input.GetKey(KeyCode.A))
+                if (Input.GetKeyDown(KeyCode.A))
                 {
                     transform.position += Vector3.left * speed * Time.deltaTime;
                 }
-                if (Input.GetKey(KeyCode.D))
+                if (Input.GetKeyDown(KeyCode.D))
                 {
                     transform.position += Vector3.right * speed * Time.deltaTime;
                 }
-                if (Input.GetKey(KeyCode.W))
+                if (Input.GetKeyDown(KeyCode.W))
                 {
                     speed = speed + 0.15f;
                     pressesp2++;
@@ -126,15 +126,15 @@ public class PlayerMovement : MonoBehaviour
 
                 transform.position += Vector3.up * speed * Time.deltaTime;
 
-                if (Input.GetKey(KeyCode.D))
+                if (Input.GetKeyDown(KeyCode.D))
                 {
                     transform.position += Vector3.left * speed * Time.deltaTime;
                 }
-                if (Input.GetKey(KeyCode.A))
+                if (Input.GetKeyDown(KeyCode.A))
                 {
                     transform.position += Vector3.right * speed * Time.deltaTime;
                 }
-                if (Input.GetKey(KeyCode.W))
+                if (Input.GetKeyDown(KeyCode.W))
                 {
                     speed = speed - 0.15f;
                     pressesp2++;
@@ -163,9 +163,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (player1)
         {
-            float rpm1 = pressesp1 * 12;
-            float mh1 = 1.5f * rpm1 * 0.10472f;
-            float kmh1 = mh1 * 3.6f;
+            float rpm1 = pressesp1 * 30;
+            float ms1 = 0.45f * rpm1 * 0.10472f;
+            float kmh1 = ms1 * 3.6f;
             speedp1.text = Mathf.Round(kmh1 * 10) / 10 + "KM/h";
             Debug.Log("speed p1 spekkoen: " + kmh1);
             pressesp1 = 0;
@@ -173,12 +173,16 @@ public class PlayerMovement : MonoBehaviour
         
         if (!player1)
         {
-            float rpm2 = pressesp2 * 12;
-            float mh2 = 1.5f * rpm2 * 0.10472f;
-            float kmh2 = mh2 * 3.6f;
+            float rpm2 = pressesp2 * 30;
+            float ms2 = 0.45f * rpm2 * 0.10472f;
+            float kmh2 = ms2 * 3.6f;
             speedp2.text = Mathf.Round(kmh2 * 10) / 10 + "KM/h";
             Debug.Log("speed p2 scharnier: " + kmh2);
             pressesp2 = 0;
         }
     }
 }
+
+//rpm 90
+//omtrek m = 2 * pi * radius
+//tijd in km/h = rpm * omtrek / 60 * 3.6
