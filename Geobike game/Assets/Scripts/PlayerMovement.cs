@@ -37,15 +37,15 @@ public class PlayerMovement : MonoBehaviour
                     speed = 0f;
                 }
 
-                transform.position += Vector3.up*speed*Time.deltaTime;
+                transform.position += Vector3.up*speed*Time.deltaTime * 10;
 
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
-                    transform.position += Vector3.left*speed*Time.deltaTime;
+                    transform.position += Vector3.left*speed*Time.deltaTime * 10;
                 }
                 if (Input.GetKeyDown(KeyCode.RightArrow))
                 {
-                    transform.position += Vector3.right*speed*Time.deltaTime;
+                    transform.position += Vector3.right*speed*Time.deltaTime * 10;
                 }
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -65,15 +65,15 @@ public class PlayerMovement : MonoBehaviour
                     speed = 0f;
                 }
 
-                transform.position += Vector3.up*speed*Time.deltaTime;
+                transform.position += Vector3.up*speed*Time.deltaTime * 10;
 
                 if (Input.GetKeyDown(KeyCode.RightArrow))
                 {
-                    transform.position += Vector3.left*speed*Time.deltaTime;
+                    transform.position += Vector3.left*speed*Time.deltaTime * 10;
                 }
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
-                    transform.position += Vector3.right*speed*Time.deltaTime;
+                    transform.position += Vector3.right*speed*Time.deltaTime * 10;
                 }
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -96,15 +96,15 @@ public class PlayerMovement : MonoBehaviour
                     speed = 0f;
                 }
 
-                transform.position += Vector3.up * speed * Time.deltaTime;
+                transform.position += Vector3.up * speed * Time.deltaTime * 10;
 
                 if (Input.GetKeyDown(KeyCode.A))
                 {
-                    transform.position += Vector3.left * speed * Time.deltaTime;
+                    transform.position += Vector3.left * speed * Time.deltaTime * 10;
                 }
                 if (Input.GetKeyDown(KeyCode.D))
                 {
-                    transform.position += Vector3.right * speed * Time.deltaTime;
+                    transform.position += Vector3.right * speed * Time.deltaTime * 10;
                 }
                 if (Input.GetKeyDown(KeyCode.W))
                 {
@@ -124,15 +124,15 @@ public class PlayerMovement : MonoBehaviour
                     speed = 0f;
                 }
 
-                transform.position += Vector3.up * speed * Time.deltaTime;
+                transform.position += Vector3.up * speed * Time.deltaTime*10;
 
                 if (Input.GetKeyDown(KeyCode.D))
                 {
-                    transform.position += Vector3.left * speed * Time.deltaTime;
+                    transform.position += Vector3.left * speed * Time.deltaTime * 10;
                 }
                 if (Input.GetKeyDown(KeyCode.A))
                 {
-                    transform.position += Vector3.right * speed * Time.deltaTime;
+                    transform.position += Vector3.right * speed * Time.deltaTime * 10;
                 }
                 if (Input.GetKeyDown(KeyCode.W))
                 {
