@@ -113,6 +113,14 @@ public class Dijkstra {
             {
                 ArrayList path = new ArrayList();
 
+                foreach (string location in this.Previous)
+                {
+                    path.Insert(0, location);
+                }
+
+                path.Add(target);
+
+                /*
                 while (!string.IsNullOrEmpty((string)this.Previous[this.Previous.IndexOf(u)]))
                 {
                     path.Insert(0, u);
@@ -120,7 +128,7 @@ public class Dijkstra {
                 }
 
                 path.Insert(0, source);
-                return path;
+                return path;*/
             }
 
             // All remaining vertices are inaccessible from source
@@ -158,11 +166,14 @@ public class Dijkstra {
 
                     if(indexOfNeighbour == -1)
                     {
-                        this.Previous.Add(neighbour.Name);
+                        if (!Previous.Contains(u))
+                        {
+                            this.Previous.Add(u);
+                        }                   
                     }
                     else
                     {
-                        this.Previous[indexOfNeighbour] = neighbour.Name;
+                        this.Previous[indexOfNeighbour] = u;
                     }
                 }
             }

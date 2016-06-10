@@ -106,7 +106,9 @@ public class PreSceneScript : MonoBehaviour
         graphAslist.Add(new GraphNode("alk", new ArrayList(vertexForList)));
         vertexForList.Clear();
 
+
         vertexForList.Add(new Vertex("alk", 35.7f));
+        vertexForList.Add(new Vertex("ams", 19.9f));
         graphAslist.Add(new GraphNode("haa", new ArrayList(vertexForList)));
         vertexForList.Clear();
 
@@ -126,13 +128,13 @@ public class PreSceneScript : MonoBehaviour
 
         dijkstra.SetGraph(graphAslist);
 
-        /*ArrayList path = dijkstra.GetPath("alk", "sne");
+        ArrayList path = dijkstra.GetPath("haa", "ams");
 
         Debug.Log(path.Count);
         for (int i = 0; i < path.Count; i++)
         {
             Debug.Log(path[i]);
-        }*/
+        }
     }
 
     private void drawFastestRoute()
@@ -141,7 +143,7 @@ public class PreSceneScript : MonoBehaviour
         {
             string startNodeId = startNode.GetComponent<LocationInfo>().id;
             string endNodeId = endNode.GetComponent<LocationInfo>().id;
-            ArrayList fastestRoute = new ArrayList();
+            /*ArrayList fastestRoute = new ArrayList();
             fastestRoute.Add("gro");
             fastestRoute.Add("ass");
             fastestRoute.Add("hoo");
@@ -151,8 +153,8 @@ public class PreSceneScript : MonoBehaviour
             fastestRoute.Add("nij");
             fastestRoute.Add("ven");
             fastestRoute.Add("roe");
-            fastestRoute.Add("maa");
-            //ArrayList fastestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
+            fastestRoute.Add("maa");*/
+            ArrayList fastestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
 
             Debug.Log(fastestRoute);
 
