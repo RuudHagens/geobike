@@ -92,12 +92,22 @@ public class Dijkstra {
 
         this.Queue = new MinHeap();
         this.Queue.Add(source, 0);
-        this.Previous[this.Previous.IndexOf(source)] = null;
+        if(this.Previous.IndexOf(source) != -1)
+        {
+            this.Previous[this.Previous.IndexOf(source)] = null;
+        }
 
         // Loop through all nodes
         string u = null;
-        while (u == this.Queue.Shift())
+        do
         {
+            u = this.Queue.Shift();
+
+            if(u == null)
+            {
+                break;
+            }
+
             // Reached target
             if (string.Equals(u, target))
             {
@@ -120,20 +130,44 @@ public class Dijkstra {
             }
 
             float uDistance = this.Queue.GetDistance(u);
-            ArrayList neighbours = (ArrayList)this.Graph[this.Graph.IndexOf(u)];
-            for (int n = 0; n < neighbours.Count; n++)
+
+            int indexFoundNode = -1;
+            for (int i = 0; i < Graph.Count; i++)
             {
-                string neighbour = (string)neighbours[n];
-                float nDistance = this.Queue.GetDistance(neighbour);
-                float aDistance = uDistance + (float)neighbours[n];
+                if (string.Equals(((GraphNode)Graph[i]).Name, u))
+                {
+                    indexFoundNode = i;
+                }
+            }
+            if (indexFoundNode == -1)
+            {
+                break;
+            }
+
+            ArrayList neighbours = (ArrayList)((GraphNode)(this.Graph[indexFoundNode])).Vertices;
+            foreach (Vertex neighbour in neighbours)
+            {
+                float nDistance = this.Queue.GetDistance(neighbour.Name);
+                float aDistance = uDistance + neighbour.Cost;
 
                 if (aDistance < nDistance)
                 {
-                    this.Queue.Update(neighbour, aDistance);
-                    this.Previous[n] = u;
+                    this.Queue.Update(neighbour.Name, aDistance);
+
+                    int indexOfNeighbour = Previous.IndexOf(neighbour.Name);
+
+                    if(indexOfNeighbour == -1)
+                    {
+                        this.Previous.Add(neighbour.Name);
+                    }
+                    else
+                    {
+                        this.Previous[indexOfNeighbour] = neighbour.Name;
+                    }
                 }
             }
         }
+        while (u != null);
 
         return new ArrayList();
     }
@@ -293,13 +327,51 @@ public class MinHeap
     // SHOULD BE OK
     public void Add(string node, float distance)
     {
+        Node newNode = new Node(node, distance);
+
+        int indexFoundNode = -1;
+        for (int i = 0; i < Nodes.Count; i++)
+        {
+            if (((Node)Nodes[i]).NodeName == node)
+            {
+                indexFoundNode = i;
+            }
+        }
+
         // Add the node
-        this.Nodes[this.Nodes.IndexOf(node)] = new Node(node, distance);
+        if (indexFoundNode == -1)
+        {
+            this.Nodes.Add(newNode);
+        }
+        else
+        {
+            this.Nodes[indexFoundNode] = newNode;
+        }
 
         // Is it the minimum?
-        if (this.Min != null || distance < ((Node)this.Nodes[this.Nodes.IndexOf(this.Min)]).Distance)
+        if (this.Min == null)
         {
             this.Min = node;
+        }
+        else
+        {
+            indexFoundNode = -1;
+            for (int i = 0; i < Nodes.Count; i++)
+            {
+                if (((Node)Nodes[i]).NodeName == node)
+                {
+                    indexFoundNode = i;
+                }
+            }
+
+            // Add the node
+            if (indexFoundNode != -1)
+            {
+                if (distance < ((Node)this.Nodes[indexFoundNode]).Distance)
+                {
+                    this.Min = node;
+                }
+            }           
         }
 
         // Other stuff
@@ -316,45 +388,81 @@ public class MinHeap
     // SHOULD BE OK
     public void Remove(string node)
     {
-        if (((Node)this.Nodes[this.Nodes.IndexOf(node)]) != null)
+        int indexFoundNode = -1;
+        for (int i = 0; i < Nodes.Count; i++)
+        {
+            if (((Node)Nodes[i]).NodeName == node)
+            {
+                indexFoundNode = i;
+            }
+        }
+
+        // Move children to be children of the parent
+        if (indexFoundNode == -1)
         {
             return;
         }
 
-        // Move children to be children of the parent
-        int numChildren = ((Node)this.Nodes[this.Nodes.IndexOf(node)]).Children.Count;
+        int numChildren = ((Node)this.Nodes[indexFoundNode]).Children.Count;
         if (numChildren > 0)
         {
             for (int i = 0; i < numChildren; i++)
             {
-                string child = (string)((Node)this.Nodes[this.Nodes.IndexOf(node)]).Children[i];
-                ((Node)this.Nodes[this.Nodes.IndexOf(child)]).Parent = ((Node)this.Nodes[this.Nodes.IndexOf(node)]).Parent;
+                string child = (string)((Node)this.Nodes[indexFoundNode]).Children[i];
+
+                int indexFoundChild = -1;
+                for (int j = 0; j < Nodes.Count; j++)
+                {
+                    if (((Node)Nodes[j]).NodeName == node)
+                    {
+                        indexFoundChild = j;
+                    }
+                }
+                if (indexFoundChild == -1)
+                {
+                    break;
+                }
+
+                ((Node)this.Nodes[indexFoundChild]).Parent = ((Node)this.Nodes[indexFoundNode]).Parent;
 
                 // No parent, then add to Roots
-                if (((Node)this.Nodes[this.Nodes.IndexOf(child)]).Parent == null)
+                if (((Node)this.Nodes[indexFoundChild]).Parent == null)
                 {
                     this.Roots.Add(child);
                 }
             }
         }
 
-        string parent = ((Node)this.Nodes[this.Nodes.IndexOf(node)]).Parent;
+        string parent = ((Node)this.Nodes[indexFoundNode]).Parent;
 
         // Root, so remove from Roots
         if (string.IsNullOrEmpty(parent))
         {
-            int pos = this.Roots.IndexOf(node);
-
-            if (pos > -1)
+            int indexFoundRoot = this.Roots.IndexOf(node);
+            if(indexFoundRoot != -1)
             {
-                this.Roots.Remove(pos);
+                this.Roots.RemoveAt(indexFoundRoot);
             }
-        } else {
+        }
+        else {
             // Go up the parents and decrease their depth
             while (parent != null)
             {
-                ((Node)this.Nodes[this.Nodes.IndexOf(parent)]).Depth -= 1;
-                parent = ((Node)this.Nodes[this.Nodes.IndexOf(parent)]).Parent;
+                int indexFoundParent = -1;
+                for (int i = 0; i < Nodes.Count; i++)
+                {
+                    if (((Node)Nodes[i]).NodeName == node)
+                    {
+                        indexFoundParent = i;
+                    }
+                }
+                if (indexFoundParent == -1)
+                {
+                    break;
+                }
+
+                ((Node)this.Nodes[indexFoundParent]).Depth -= 1;
+                parent = ((Node)this.Nodes[indexFoundParent]).Parent;
             }
         }
     }
@@ -362,9 +470,21 @@ public class MinHeap
     // SHOULD BE OK
     public float GetDistance(string node)
     {
-        if (((Node)this.Nodes[this.Nodes.IndexOf(node)]) != null)
+        int indexFoundNode = -1;
+        for (int i = 0; i < Nodes.Count; i++)
         {
-            return ((Node)this.Nodes[this.Nodes.IndexOf(node)]).Distance;
+            if (((Node)Nodes[i]).NodeName == node)
+            {
+                indexFoundNode = i;
+            }
+        }
+
+        if (indexFoundNode != -1)
+        {
+            if (((Node)this.Nodes[indexFoundNode]) != null)
+            {
+                return ((Node)this.Nodes[indexFoundNode]).Distance;
+            }
         }
 
         return float.PositiveInfinity;

@@ -44,8 +44,10 @@ public class PreSceneScript : MonoBehaviour
 
             if (hitCollider)
             {
+                Debug.Log("hit!");
                 if (hitCollider.CompareTag("Node"))
                 {
+                    Debug.Log("hit!");
                     if (startNode == null)
                     {
                         startNode = getNode(hitCollider);
@@ -123,6 +125,14 @@ public class PreSceneScript : MonoBehaviour
         dijkstra = new Dijkstra();
 
         dijkstra.SetGraph(graphAslist);
+
+        /*ArrayList path = dijkstra.GetPath("alk", "sne");
+
+        Debug.Log(path.Count);
+        for (int i = 0; i < path.Count; i++)
+        {
+            Debug.Log(path[i]);
+        }*/
     }
 
     private void drawFastestRoute()
@@ -131,7 +141,18 @@ public class PreSceneScript : MonoBehaviour
         {
             string startNodeId = startNode.GetComponent<LocationInfo>().id;
             string endNodeId = endNode.GetComponent<LocationInfo>().id;
-            ArrayList fastestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
+            ArrayList fastestRoute = new ArrayList();
+            fastestRoute.Add("gro");
+            fastestRoute.Add("ass");
+            fastestRoute.Add("hoo");
+            fastestRoute.Add("zwo");
+            fastestRoute.Add("ape");
+            fastestRoute.Add("arn");
+            fastestRoute.Add("nij");
+            fastestRoute.Add("ven");
+            fastestRoute.Add("roe");
+            fastestRoute.Add("maa");
+            //ArrayList fastestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
 
             Debug.Log(fastestRoute);
 
