@@ -5,16 +5,14 @@ public class PreSceneScript : MonoBehaviour
 {
     public GameObject Locations;
     public Material lineColor;
+    public Dijkstra dijkstra;
 
     private GameObject selectorSprite;
     private GameObject startNode;
     private GameObject endNode;
 
-    bool routeDrawn;
-
     public Color c1 = Color.black;
     public Color c2 = Color.black;
-    public int lengthOfLineRenderer = 2;
 
     private void Start()
     {
@@ -22,10 +20,10 @@ public class PreSceneScript : MonoBehaviour
         lineRenderer.material = lineColor;
         lineRenderer.SetColors(c1, c2);
         lineRenderer.SetWidth(0.05f, 0.05f);
-        lineRenderer.SetVertexCount(lengthOfLineRenderer);
+        lineRenderer.SetVertexCount(0);
         lineRenderer.sortingLayerName = "Player";
 
-        routeDrawn = false;
+        setUpDijkstra();
     }
 
     private void Update()
@@ -91,17 +89,54 @@ public class PreSceneScript : MonoBehaviour
         return hitCollider.gameObject;
     }
 
+    private void setUpDijkstra()
+    {
+        //DE lijst
+        ArrayList graphAslist = new ArrayList();
+
+        //DE lijst binnen de lijst
+        ArrayList vertexForList = new ArrayList();
+
+        vertexForList.Add(new Vertex("haa", 35.7f));
+        vertexForList.Add(new Vertex("ams", 42.5f));
+        vertexForList.Add(new Vertex("lel", 74.6f));
+        vertexForList.Add(new Vertex("sne", 95.6f));
+        graphAslist.Add(new GraphNode("alk", new ArrayList(vertexForList)));
+        vertexForList.Clear();
+
+        vertexForList.Add(new Vertex("alk", 35.7f));
+        graphAslist.Add(new GraphNode("haa", new ArrayList(vertexForList)));
+        vertexForList.Clear();
+
+        vertexForList.Add(new Vertex("alk", 42.5f));
+        graphAslist.Add(new GraphNode("ams", new ArrayList(vertexForList)));
+        vertexForList.Clear();
+
+        vertexForList.Add(new Vertex("alk", 74.6f));
+        graphAslist.Add(new GraphNode("lel", new ArrayList(vertexForList)));
+        vertexForList.Clear();
+
+        vertexForList.Add(new Vertex("alk", 95.6f));
+        graphAslist.Add(new GraphNode("sne", new ArrayList(vertexForList)));
+        vertexForList.Clear();
+
+        dijkstra = new Dijkstra();
+
+        dijkstra.SetGraph(graphAslist);
+    }
+
     private void drawFastestRoute()
     {
         if (startNode != null && endNode != null)
         {
-            string startNodeId = startNode.name;
-            string endNodeId = endNode.name;
-            ArrayList fastestRoute = new ArrayList(); //call algorithm for startNodeId and endNodeId
-            fastestRoute.Add("ams");
-            fastestRoute.Add("lel");
+            string startNodeId = startNode.GetComponent<LocationInfo>().id;
+            string endNodeId = endNode.GetComponent<LocationInfo>().id;
+            ArrayList fastestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
+
+            Debug.Log(fastestRoute);
 
             LineRenderer lineRenderer = GetComponent<LineRenderer>();
+            lineRenderer.SetVertexCount(fastestRoute.Count);
             int newNodeOnLine = 0;
 
             for (int i = 0; i < fastestRoute.Count; i++)

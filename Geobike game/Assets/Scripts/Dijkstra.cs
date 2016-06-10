@@ -28,9 +28,11 @@ public class Dijkstra {
         this.Previous = new ArrayList();
     }
 
-    // SHOULD BE OK
+    // SHOULD MAYBE BE OK
     public void SetGraph(ArrayList graph)
     {
+        this.Graph = graph;
+        /*
         if (graph.Count < 1)
         {
             throw new System.Exception("Graph cannot be empty!");
@@ -38,17 +40,22 @@ public class Dijkstra {
 
         for (int i = 0; i < graph.Count; i++)
         {
-            GraphNode node = (GraphNode)graph[i];
+            GraphNode graphNode = (GraphNode)graph[i];
 
-            if (string.IsNullOrEmpty(node.Name) ||
-                node.Vertices.Count == 0)
+            if (string.IsNullOrEmpty(graphNode.Name))
             {
-                throw new System.Exception("Node must have a name and an array of vertices.");
+                throw new System.Exception("Node must have a name");
             }
 
-            string nodeName = node.Name;
-            ArrayList vertices = node.Vertices;
-            this.Graph[this.Graph.IndexOf(nodeName)] = new ArrayList();
+            if (graphNode.Vertices.Count == 0)
+            {
+                throw new System.Exception("Node must have an array of vertices.");
+            }
+
+            string nodeName = graphNode.Name;
+            ArrayList vertices = graphNode.Vertices;
+
+            this.Graph.Add(new GraphNode(nodeName, vertices));
 
             for (int v = 0; v < vertices.Count; v++)
             {
@@ -60,9 +67,11 @@ public class Dijkstra {
 
                 string vertexName = vertex.Name;
                 float vertexCost = vertex.Cost;
-                ((Vertex)((GraphNode)this.Graph[this.Graph.IndexOf(nodeName)]).Vertices[((GraphNode)this.Graph[this.Graph.IndexOf(nodeName)]).Vertices.IndexOf(vertexName)]).Cost = vertexCost;
+
+                ((Vertex)((GraphNode)this.Graph[i]).Vertices[v]) .Add(new Vertex(vertexName, vertexCost));
+
             }
-        }
+        }*/
     }
 
     // SHOULD BE OK
