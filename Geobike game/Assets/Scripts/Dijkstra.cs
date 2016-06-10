@@ -92,9 +92,14 @@ public class Dijkstra {
 
         this.Queue = new MinHeap();
         this.Queue.Add(source, 0);
-        if(this.Previous.IndexOf(source) != -1)
+        if (this.Previous.IndexOf(source) != -1)
         {
             this.Previous[this.Previous.IndexOf(source)] = null;
+            Debug.Log(this.Previous[this.Previous.IndexOf(source)]);
+        }
+        else
+        {
+            Previous.Add(null);
         }
 
         // Loop through all nodes
@@ -119,6 +124,8 @@ public class Dijkstra {
                 }
 
                 path.Add(target);
+
+                return path;
 
                 /*
                 while (!string.IsNullOrEmpty((string)this.Previous[this.Previous.IndexOf(u)]))
@@ -155,11 +162,15 @@ public class Dijkstra {
             ArrayList neighbours = (ArrayList)((GraphNode)(this.Graph[indexFoundNode])).Vertices;
             foreach (Vertex neighbour in neighbours)
             {
+
                 float nDistance = this.Queue.GetDistance(neighbour.Name);
                 float aDistance = uDistance + neighbour.Cost;
 
+                Debug.Log(nDistance + " " + aDistance);
+
                 if (aDistance < nDistance)
                 {
+                    Debug.Log("true");
                     this.Queue.Update(neighbour.Name, aDistance);
 
                     int indexOfNeighbour = Previous.IndexOf(neighbour.Name);
@@ -175,6 +186,13 @@ public class Dijkstra {
                     {
                         this.Previous[indexOfNeighbour] = u;
                     }
+
+                    string print = "";
+                    foreach (string p in Previous)
+                    {
+                        print += p + ", ";
+                    }
+                    Debug.Log(print);
                 }
             }
         }

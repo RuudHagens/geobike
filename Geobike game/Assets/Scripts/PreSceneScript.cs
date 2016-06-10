@@ -363,36 +363,18 @@ public class PreSceneScript : MonoBehaviour
         dijkstra = new Dijkstra();
 
         dijkstra.SetGraph(graphAslist);
-
-        ArrayList path = dijkstra.GetPath("haa", "ams");
-
-        Debug.Log(path.Count);
-        for (int i = 0; i < path.Count; i++)
-        {
-            Debug.Log(path[i]);
-        }
     }
+
+    private bool once = false;
 
     private void drawFastestRoute()
     {
-        if (startNode != null && endNode != null)
+        if (startNode != null && endNode != null && !once)
         {
+            once = true;
             string startNodeId = startNode.GetComponent<LocationInfo>().id;
             string endNodeId = endNode.GetComponent<LocationInfo>().id;
-            /*ArrayList fastestRoute = new ArrayList();
-            fastestRoute.Add("gro");
-            fastestRoute.Add("ass");
-            fastestRoute.Add("hoo");
-            fastestRoute.Add("zwo");
-            fastestRoute.Add("ape");
-            fastestRoute.Add("arn");
-            fastestRoute.Add("nij");
-            fastestRoute.Add("ven");
-            fastestRoute.Add("roe");
-            fastestRoute.Add("maa");*/
             ArrayList fastestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
-
-            Debug.Log(fastestRoute);
 
             LineRenderer lineRenderer = GetComponent<LineRenderer>();
             lineRenderer.SetVertexCount(fastestRoute.Count);
@@ -404,15 +386,11 @@ public class PreSceneScript : MonoBehaviour
                 {
                     if(location.gameObject.GetComponent<LocationInfo>().id == (string)fastestRoute[i])
                     {
-                        Debug.Log(location.gameObject.GetComponent<LocationInfo>().id);
-                        Debug.Log(location.position);
                         lineRenderer.SetPosition(i, location.position);
                         newNodeOnLine++;
                     }
                 }
             }
-
-            Debug.Log("done");
         }
     }
 }
