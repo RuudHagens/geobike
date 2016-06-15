@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public Collider2D collider;
     private bool up;
     public bool player1;
+    public GameObject selectedNodePlayer1;
 
     private float pressesp1;
     private float pressesp2;
@@ -19,14 +20,17 @@ public class PlayerMovement : MonoBehaviour
     void Start () {
 	    up = true;
         InvokeRepeating("CalculateSpeed", 0, 2);
-	}
+        selectedNodePlayer1 = GameObject.Find("Location-Almelo 1");
+        transform.position = selectedNodePlayer1.transform.position;
+        selectedNodePlayer1 = GameObject.Find("Location-Rotterdam 1");
+    }
 
     void Update()
     {
         if (player1)
         {
-            if (up)
-            {
+            //if (up)
+            //{
                 if (speed > 0f)
                 {
                     speed = speed - 0.05f;
@@ -37,7 +41,14 @@ public class PlayerMovement : MonoBehaviour
                     speed = 0f;
                 }
 
-                transform.position += Vector3.up*speed*Time.deltaTime * 10;
+            //Quaternion rotation = Quaternion.LookRotation
+            //    (selectedNodePlayer1.transform.position - transform.position, transform.TransformDirection(Vector3.up));
+            //transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+            //rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+            //Debug.Log(selectedNodePlayer1.name);
+
+            transform.position += (selectedNodePlayer1.transform.position - transform.position)*speed*Time.deltaTime * 10;
+            //transform.LookAt(selectedNodePlayer1.transform);
 
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
@@ -50,37 +61,37 @@ public class PlayerMovement : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     speed = speed + 0.15f;
-                    pressesp1++;
+                    pressesp1++;               
                 }
-            }
-            else
-            {
-                if (speed < 0f)
-                {
-                    speed = speed + 0.05f;
-                }
+            //}
+            //else
+            //{
+            //    if (speed < 0f)
+            //    {
+            //        speed = speed + 0.05f;
+            //    }
 
-                if (speed > 0f)
-                {
-                    speed = 0f;
-                }
+            //    if (speed > 0f)
+            //    {
+            //        speed = 0f;
+            //    }
 
-                transform.position += Vector3.up*speed*Time.deltaTime * 10;
+            //    transform.position += Vector3.up*speed*Time.deltaTime * 10;
 
-                if (Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    transform.position += Vector3.left*speed*Time.deltaTime * 10;
-                }
-                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                {
-                    transform.position += Vector3.right*speed*Time.deltaTime * 10;
-                }
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    speed = speed - 0.15f;
-                    pressesp1++;
-                }
-            }
+            //    if (Input.GetKeyDown(KeyCode.RightArrow))
+            //    {
+            //        transform.position += Vector3.left*speed*Time.deltaTime * 10;
+            //    }
+            //    if (Input.GetKeyDown(KeyCode.LeftArrow))
+            //    {
+            //        transform.position += Vector3.right*speed*Time.deltaTime * 10;
+            //    }
+            //    if (Input.GetKeyDown(KeyCode.Space))
+            //    {
+            //        speed = speed - 0.15f;
+            //        pressesp1++;
+            //    }
+            //}
         }
         else
         {
