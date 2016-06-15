@@ -170,8 +170,7 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("speed p1 spekkoen: " + kmh1);
             pressesp1 = 0;
         }
-        
-        if (!player1)
+        else
         {
             float rpm2 = pressesp2 * 30;
             float ms2 = 0.45f * rpm2 * 0.10472f;
