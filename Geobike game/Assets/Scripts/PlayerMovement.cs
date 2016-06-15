@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
             //rotation = new Quaternion(0, 0, rotation.z, rotation.w);
             //Debug.Log(selectedNodePlayer1.name);
 
-            transform.position += (selectedNodePlayer1.transform.position - transform.position)*speed*Time.deltaTime * 10;
+            transform.position += (selectedNodePlayer1.transform.position - transform.position).normalized*speed*Time.deltaTime*10;
             //transform.LookAt(selectedNodePlayer1.transform);
 
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
