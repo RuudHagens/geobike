@@ -3,25 +3,46 @@ using System.Collections;
 
 public class PreSceneScript : MonoBehaviour
 {
-    public GameObject Locations;
+    public GameObject LocationsLeft;
+    public GameObject LocationsRight;
     public Material lineColor;
     public Dijkstra dijkstra;
 
     private GameObject selectorSprite;
-    private GameObject startNode;
-    private GameObject endNode;
+
+    private GameObject startNodeLeft;
+    private GameObject endNodeLeft;
+
+    private GameObject startNodeRight;
+    private GameObject endNodeRight;
 
     public Color c1 = Color.black;
     public Color c2 = Color.black;
 
+    private LineRenderer lineRendererLeft;
+    private LineRenderer lineRendererRight;
+
+    private bool onceLeft = false;
+    private bool onceRight = false;
+
     private void Start()
     {
-        LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.material = lineColor;
-        lineRenderer.SetColors(c1, c2);
-        lineRenderer.SetWidth(0.05f, 0.05f);
-        lineRenderer.SetVertexCount(0);
-        lineRenderer.sortingLayerName = "Player";
+        onceLeft = false;
+        onceRight = false;
+
+        lineRendererLeft = LocationsLeft.GetComponent<LineRenderer>();
+        //lineRendererLeft.material = lineColor;
+        lineRendererLeft.SetColors(c1, c2);
+        lineRendererLeft.SetWidth(0.05f, 0.05f);
+        //lineRendererLeft.SetVertexCount(0);
+        lineRendererLeft.sortingLayerName = "Player";
+
+        lineRendererRight = LocationsRight.GetComponent<LineRenderer>();
+        //lineRendererRight.material = lineColor;
+        lineRendererRight.SetColors(c1, c2);
+        lineRendererRight.SetWidth(0.05f, 0.05f);
+        //lineRendererRight.SetVertexCount(0);
+        lineRendererRight.sortingLayerName = "Player";
 
         setUpDijkstra();
     }
@@ -30,7 +51,18 @@ public class PreSceneScript : MonoBehaviour
     {
         setupBeginAndEnd();
 
-        drawFastestRoute();
+        if (startNodeLeft != null && endNodeLeft != null && !onceLeft)
+        {
+            onceLeft = true;
+            drawFastestRoute(startNodeLeft, endNodeLeft, lineRendererLeft, LocationsLeft);
+        }
+
+        if (startNodeRight != null && endNodeRight != null && !onceRight)
+        {
+            onceRight = true;
+            drawFastestRoute(startNodeRight, endNodeRight, lineRendererRight, LocationsRight);
+        }
+        
     }
 
     private void setupBeginAndEnd()
@@ -48,21 +80,14 @@ public class PreSceneScript : MonoBehaviour
                 if (hitCollider.CompareTag("Node"))
                 {
                     Debug.Log("hit!");
-                    if (startNode == null)
+
+                    if(hitCollider.GetComponent<LocationInfo>().map == 1)
                     {
-                        startNode = getNode(hitCollider);
+                        StoreNode(hitCollider, ref startNodeLeft, ref endNodeLeft);
                     }
-                    else if (endNode == null)
+                    else if(hitCollider.GetComponent<LocationInfo>().map == 2)
                     {
-                        endNode = getNode(hitCollider);
-                        if (startNode == endNode)
-                        {
-                            endNode = null;
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log("Je hebt al een start- en eindpunt geselecteerd.");
+                        StoreNode(hitCollider, ref startNodeRight, ref endNodeRight);
                     }
                 }
                 else
@@ -71,6 +96,26 @@ public class PreSceneScript : MonoBehaviour
                           hitCollider.transform.position.y);
                 }
             }
+        }
+    }
+
+    private void StoreNode(Collider2D hit, ref GameObject startNode, ref GameObject endNode)
+    {
+        if (startNode == null)
+        {
+            startNode = getNode(hit);
+        }
+        else if (endNode == null)
+        {
+            endNode = getNode(hit);
+            if (startNode == endNode)
+            {
+                endNode = null;
+            }
+        }
+        else
+        {
+            Debug.Log("Je hebt al een start- en eindpunt geselecteerd.");
         }
     }
 
@@ -365,30 +410,23 @@ public class PreSceneScript : MonoBehaviour
         dijkstra.SetGraph(graphAslist);
     }
 
-    private bool once = false;
-
-    private void drawFastestRoute()
+    private void drawFastestRoute(GameObject startNode, GameObject endNode, LineRenderer lineRenderer, GameObject locations)
     {
-        if (startNode != null && endNode != null && !once)
+        string startNodeId = startNode.GetComponent<LocationInfo>().id;
+        string endNodeId = endNode.GetComponent<LocationInfo>().id;
+        ArrayList fastestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
+
+        lineRenderer.SetVertexCount(fastestRoute.Count);
+        int newNodeOnLine = 0;
+
+        for (int i = 0; i < fastestRoute.Count; i++)
         {
-            once = true;
-            string startNodeId = startNode.GetComponent<LocationInfo>().id;
-            string endNodeId = endNode.GetComponent<LocationInfo>().id;
-            ArrayList fastestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
-
-            LineRenderer lineRenderer = GetComponent<LineRenderer>();
-            lineRenderer.SetVertexCount(fastestRoute.Count);
-            int newNodeOnLine = 0;
-
-            for (int i = 0; i < fastestRoute.Count; i++)
+            foreach (Transform location in locations.GetComponentInChildren<Transform>())
             {
-                foreach (Transform location in Locations.GetComponentInChildren<Transform>())
+                if(location.gameObject.GetComponent<LocationInfo>().id == (string)fastestRoute[i])
                 {
-                    if(location.gameObject.GetComponent<LocationInfo>().id == (string)fastestRoute[i])
-                    {
-                        lineRenderer.SetPosition(i, location.position);
-                        newNodeOnLine++;
-                    }
+                    lineRenderer.SetPosition(i, location.position);
+                    newNodeOnLine++;
                 }
             }
         }
