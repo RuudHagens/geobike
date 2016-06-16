@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Dijkstra {
 
     // A graph list, containing a list of Node objects.
+    //public List<GraphNode> Graph;
     public ArrayList Graph;
 
     // A queue as a minheap.
@@ -20,6 +21,7 @@ public class Dijkstra {
     {
         // A list of graph nodes
         this.Graph = new ArrayList();
+        //this.Graph = new List<GraphNode>();
         this.Queue = null;
 
         // A list of Node objects
@@ -29,6 +31,7 @@ public class Dijkstra {
         this.Previous = new Dictionary<string, string>();
     }
 
+    //public void SetGraph(List<GraphNode> graph)
     public void SetGraph(ArrayList graph)
     {
         this.Graph = graph;
@@ -135,9 +138,44 @@ public class Dijkstra {
             string next = (string)path[i + 1];
 
             totalLength += ((Vertex)((GraphNode)this.Graph[this.Graph.IndexOf(start)]).Vertices[((GraphNode)this.Graph[this.Graph.IndexOf(start)]).Vertices.IndexOf(next)]).Cost;
+            //totalLength += ((Vertex)((GraphNode)this.Graph[this.Graph.IndexOf(this.Graph.Find(j => j.Name == start))]).Vertices[((GraphNode)this.Graph[this.Graph.IndexOf(this.Graph.Find(j => j.Name == start))]).Vertices.IndexOf(next)]).Cost;
         }
 
         return totalLength;
+    }
+
+    /// <summary>
+    /// Method to get a list of nodes around a given node. Returns
+    /// null when the nodename has not been found in the graph.
+    /// </summary>
+    /// <param name="nodeName">The nodename as a string.</param>
+    /// <returns>Returns a list of nodenames.</returns>
+    public List<string> GetNodesAroundNode(string nodeName)
+    {
+        // Get the index of the nodename in this.Graph
+        int indexOfNode = this.Graph.IndexOf(nodeName);
+        //int indexOfNode = this.Graph.IndexOf(this.Graph.Find(i => i.Name == nodeName));
+
+        // Check if the index >= 0 (which is true when the nodename has been found)
+        if (indexOfNode >= 0)
+        {
+            // Create an empty list to contain the names of neighbour nodes
+            List<string> returnedList = new List<string>();
+
+            // Loop through all vertices
+            //foreach (Vertex v in this.Graph[indexOfNode].Vertices)
+            foreach (Vertex v in (ArrayList)this.Graph[indexOfNode])
+            {
+                // Add the name of the vertex to returnedList
+                returnedList.Add(v.Name);
+            }
+
+            // Return the list of neighbour nodes
+            return returnedList;
+        }
+
+        // Return null when nothing has been found
+        return null;
     }
 }
 
