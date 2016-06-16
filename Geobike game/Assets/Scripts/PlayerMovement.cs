@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     private bool up;
     public bool player1;
     public GameObject selectedNodePlayer1;
+    public bool travel;
+    private GameObject nodeSelector;
 
     private float pressesp1;
     private float pressesp2;
@@ -23,7 +25,8 @@ public class PlayerMovement : MonoBehaviour
         InvokeRepeating("CalculateSpeed", 0, 2);
         selectedNodePlayer1 = GameObject.Find("Location-Almelo 1");
         transform.position = selectedNodePlayer1.transform.position;
-        selectedNodePlayer1 = GameObject.Find("Location-Rotterdam 1");
+        selectedNodePlayer1 = GameObject.Find("Location-Enschede 1");
+        travel = true;
     }
 
     void Update()
@@ -167,7 +170,56 @@ public class PlayerMovement : MonoBehaviour
             {
                 up = true;
             }
-        } 
+        }
+
+        if (other.gameObject.CompareTag("Node")/* && transform.position == other.transform.position*/)
+        {
+            travel = true;
+            GameObject[] selectors = GameObject.FindGameObjectsWithTag("NodeSelector");
+            foreach (GameObject selector in selectors)
+            {
+                Debug.Log("Selector gaat dood");
+                Destroy(selector);
+            }
+        }
+    }
+
+    //private GameObject foundNode;
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Node")/* && transform.position == other.transform.position*/)
+        {
+            //foundNode = other.gameObject;
+            Debug.Log("yooo" + other.name);
+            travel = false;
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (travel)
+        {
+            Vector3 otherArea = other.transform.position;
+            otherArea.x += 0.005f;
+            otherArea.y += 0.005f;
+            if ((transform.position.x >= other.transform.position.x &&
+                 transform.position.y >= other.transform.position.y) ||
+                (transform.position.x <= otherArea.x && transform.position.y <= otherArea.y))
+            {
+                transform.position = other.transform.position;
+
+                if (nodeSelector == null)
+                {
+                    nodeSelector =
+                        Instantiate(Resources.Load("NodeSelector"), new Vector3(0, 0, 0), Quaternion.identity) as
+                            GameObject;
+                    if (nodeSelector != null) nodeSelector.name = "Node Selector";
+                }
+
+                travel = true;
+            }
+        }
     }
 
     public void CalculateSpeed()
