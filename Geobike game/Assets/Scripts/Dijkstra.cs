@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Dijkstra {
 
     // A graph list, containing a list of Node objects.
+    //public List<GraphNode> Graph;
     public ArrayList Graph;
 
     // A queue as a minheap.
@@ -13,68 +15,28 @@ public class Dijkstra {
     public ArrayList Distance;
 
     // A previous list, containing a list of strings.
-    public ArrayList Previous;
+    Dictionary<string, string> Previous;
 
     public Dijkstra()
     {
         // A list of graph nodes
         this.Graph = new ArrayList();
+        //this.Graph = new List<GraphNode>();
         this.Queue = null;
 
         // A list of Node objects
         this.Distance = new ArrayList();
 
         // A list of strings
-        this.Previous = new ArrayList();
+        this.Previous = new Dictionary<string, string>();
     }
 
-    // SHOULD MAYBE BE OK
+    //public void SetGraph(List<GraphNode> graph)
     public void SetGraph(ArrayList graph)
     {
         this.Graph = graph;
-        /*
-        if (graph.Count < 1)
-        {
-            throw new System.Exception("Graph cannot be empty!");
-        }
-
-        for (int i = 0; i < graph.Count; i++)
-        {
-            GraphNode graphNode = (GraphNode)graph[i];
-
-            if (string.IsNullOrEmpty(graphNode.Name))
-            {
-                throw new System.Exception("Node must have a name");
-            }
-
-            if (graphNode.Vertices.Count == 0)
-            {
-                throw new System.Exception("Node must have an array of vertices.");
-            }
-
-            string nodeName = graphNode.Name;
-            ArrayList vertices = graphNode.Vertices;
-
-            this.Graph.Add(new GraphNode(nodeName, vertices));
-
-            for (int v = 0; v < vertices.Count; v++)
-            {
-                Vertex vertex = (Vertex)vertices[v];
-                if (string.IsNullOrEmpty(vertex.Name) || vertex.Cost <= 0)
-                {
-                    throw new System.Exception("Vertex must have a name and cost.");
-                }
-
-                string vertexName = vertex.Name;
-                float vertexCost = vertex.Cost;
-
-                ((Vertex)((GraphNode)this.Graph[i]).Vertices[v]) .Add(new Vertex(vertexName, vertexCost));
-
-            }
-        }*/
     }
 
-    // SHOULD BE OK
     public ArrayList GetPath(string source, string target)
     {
         if (string.IsNullOrEmpty(source))
@@ -92,15 +54,7 @@ public class Dijkstra {
 
         this.Queue = new MinHeap();
         this.Queue.Add(source, 0);
-        if (this.Previous.IndexOf(source) != -1)
-        {
-            this.Previous[this.Previous.IndexOf(source)] = null;
-            Debug.Log(this.Previous[this.Previous.IndexOf(source)]);
-        }
-        else
-        {
-            Previous.Add(null);
-        }
+        this.Previous[source] = null;
 
         // Loop through all nodes
         string u = null;
@@ -118,24 +72,15 @@ public class Dijkstra {
             {
                 ArrayList path = new ArrayList();
 
-                foreach (string location in this.Previous)
-                {
-                    path.Insert(0, location);
-                }
-
-                path.Add(target);
-
-                return path;
-
-                /*
-                while (!string.IsNullOrEmpty((string)this.Previous[this.Previous.IndexOf(u)]))
+                //return path;
+                while(this.Previous[u] != null)
                 {
                     path.Insert(0, u);
-                    u = (string)this.Previous[this.Previous.IndexOf(u)];
+                    u = this.Previous[u];
                 }
 
                 path.Insert(0, source);
-                return path;*/
+                return path;
             }
 
             // All remaining vertices are inaccessible from source
@@ -162,37 +107,14 @@ public class Dijkstra {
             ArrayList neighbours = (ArrayList)((GraphNode)(this.Graph[indexFoundNode])).Vertices;
             foreach (Vertex neighbour in neighbours)
             {
-
                 float nDistance = this.Queue.GetDistance(neighbour.Name);
                 float aDistance = uDistance + neighbour.Cost;
 
-                Debug.Log(nDistance + " " + aDistance);
-
-                if (aDistance < nDistance)
+                if(aDistance < nDistance)
                 {
-                    Debug.Log("true");
                     this.Queue.Update(neighbour.Name, aDistance);
 
-                    int indexOfNeighbour = Previous.IndexOf(neighbour.Name);
-
-                    if(indexOfNeighbour == -1)
-                    {
-                        if (!Previous.Contains(u))
-                        {
-                            this.Previous.Add(u);
-                        }                   
-                    }
-                    else
-                    {
-                        this.Previous[indexOfNeighbour] = u;
-                    }
-
-                    string print = "";
-                    foreach (string p in Previous)
-                    {
-                        print += p + ", ";
-                    }
-                    Debug.Log(print);
+                    this.Previous[neighbour.Name] = u;
                 }
             }
         }
@@ -201,7 +123,6 @@ public class Dijkstra {
         return new ArrayList();
     }
 
-    // SHOULD BE OK
     public float GetPathLength(ArrayList path)
     {
         if (path.Count <= 1)
@@ -217,9 +138,44 @@ public class Dijkstra {
             string next = (string)path[i + 1];
 
             totalLength += ((Vertex)((GraphNode)this.Graph[this.Graph.IndexOf(start)]).Vertices[((GraphNode)this.Graph[this.Graph.IndexOf(start)]).Vertices.IndexOf(next)]).Cost;
+            //totalLength += ((Vertex)((GraphNode)this.Graph[this.Graph.IndexOf(this.Graph.Find(j => j.Name == start))]).Vertices[((GraphNode)this.Graph[this.Graph.IndexOf(this.Graph.Find(j => j.Name == start))]).Vertices.IndexOf(next)]).Cost;
         }
 
         return totalLength;
+    }
+
+    /// <summary>
+    /// Method to get a list of nodes around a given node. Returns
+    /// null when the nodename has not been found in the graph.
+    /// </summary>
+    /// <param name="nodeName">The nodename as a string.</param>
+    /// <returns>Returns a list of nodenames.</returns>
+    public List<string> GetNodesAroundNode(string nodeName)
+    {
+        // Get the index of the nodename in this.Graph
+        int indexOfNode = this.Graph.IndexOf(nodeName);
+        //int indexOfNode = this.Graph.IndexOf(this.Graph.Find(i => i.Name == nodeName));
+
+        // Check if the index >= 0 (which is true when the nodename has been found)
+        if (indexOfNode >= 0)
+        {
+            // Create an empty list to contain the names of neighbour nodes
+            List<string> returnedList = new List<string>();
+
+            // Loop through all vertices
+            //foreach (Vertex v in this.Graph[indexOfNode].Vertices)
+            foreach (Vertex v in (ArrayList)this.Graph[indexOfNode])
+            {
+                // Add the name of the vertex to returnedList
+                returnedList.Add(v.Name);
+            }
+
+            // Return the list of neighbour nodes
+            return returnedList;
+        }
+
+        // Return null when nothing has been found
+        return null;
     }
 }
 
@@ -241,7 +197,6 @@ public class MinHeap
         this.Nodes = new ArrayList();
     }
 
-    // SHOULD BE OK
     public string Shift()
     {
         string minNode = this.Min;
@@ -281,7 +236,6 @@ public class MinHeap
         return minNode;
     }
 
-    // SHOULD BE OK
     public void Consolidate()
     {
         // Consolidate
@@ -353,7 +307,6 @@ public class MinHeap
         }
     }
 
-    // SHOULD BE OK
     public void Add(string node, float distance)
     {
         Node newNode = new Node(node, distance);
@@ -407,14 +360,12 @@ public class MinHeap
         this.Roots.Add(node);
     }
 
-    // SHOULD BE OK
     public void Update(string node, float distance)
     {
         this.Remove(node);
         this.Add(node, distance);
     }
 
-    // SHOULD BE OK
     public void Remove(string node)
     {
         int indexFoundNode = -1;

@@ -5,6 +5,7 @@ public class LocationInfo : MonoBehaviour {
 
     public string fullName;
     public string id;
+    public int map;
     
 	// Use this for initialization
 	void Start () {
