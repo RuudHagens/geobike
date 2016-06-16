@@ -73,7 +73,7 @@ public class Dijkstra {
         // Throw an exception when the source is the same as the target.
         if (string.Equals(source, target))
         {
-            throw new System.Exception("Source and target cannot be equal!");
+            return new ArrayList();
         }
 
         // Create a new MinHeap.

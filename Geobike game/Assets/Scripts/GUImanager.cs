@@ -1,23 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GUImanager : MonoBehaviour
 {
+    public static GUImanager instance;
 
-    public GUImanager()
-    {
-
-    }
+    public Text assignmentText;
 
 	// Use this for initialization
 	void Start ()
     {
-	    
-	}
+        instance = this;
+        assignmentText.text = "";
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
-	    
+          
 	}
+
+    public void setAssignmentText(string firstLocation, string secondLocation)
+    {
+        assignmentText.text = "Ga van " + firstLocation + " naar " + secondLocation + ".";
+    }
 }

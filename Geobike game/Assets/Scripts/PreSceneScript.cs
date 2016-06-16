@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PreSceneScript : MonoBehaviour
 {
@@ -25,26 +26,50 @@ public class PreSceneScript : MonoBehaviour
     private bool onceLeft = false;
     private bool onceRight = false;
 
+    private LocationInfo firstLocation;
+    private LocationInfo secondLocation;
+
     private void Start()
     {
         onceLeft = false;
         onceRight = false;
 
         lineRendererLeft = LocationsLeft.GetComponent<LineRenderer>();
-        //lineRendererLeft.material = lineColor;
         lineRendererLeft.SetColors(c1, c2);
         lineRendererLeft.SetWidth(0.05f, 0.05f);
-        //lineRendererLeft.SetVertexCount(0);
         lineRendererLeft.sortingLayerName = "Player";
 
         lineRendererRight = LocationsRight.GetComponent<LineRenderer>();
-        //lineRendererRight.material = lineColor;
         lineRendererRight.SetColors(c1, c2);
         lineRendererRight.SetWidth(0.05f, 0.05f);
-        //lineRendererRight.SetVertexCount(0);
         lineRendererRight.sortingLayerName = "Player";
 
         setUpDijkstra();
+
+        int numberOfLocations = LocationsLeft.transform.childCount;
+        List<LocationInfo> locationNames = new List<LocationInfo>();
+        foreach (Transform location in LocationsLeft.GetComponentInChildren<Transform>())
+        {
+            locationNames.Add(location.gameObject.GetComponent<LocationInfo>());
+        }
+        firstLocation = locationNames[Random.Range(0, numberOfLocations)];
+        secondLocation = null;
+
+        ArrayList path = null;
+
+        while (secondLocation == null)
+        {
+            secondLocation = locationNames[Random.Range(0, numberOfLocations)];
+
+            path = dijkstra.GetPath(firstLocation.id, secondLocation.id);
+
+            if (path.Count < 4)
+            {
+                secondLocation = null;
+            }
+        }
+
+        GUImanager.instance.setAssignmentText(firstLocation.fullName, secondLocation.fullName);
     }
 
     private void Update()
@@ -62,7 +87,7 @@ public class PreSceneScript : MonoBehaviour
             onceRight = true;
             drawFastestRoute(startNodeRight, endNodeRight, lineRendererRight, LocationsRight);
         }
-        
+
     }
 
     private void setupBeginAndEnd()
@@ -76,16 +101,15 @@ public class PreSceneScript : MonoBehaviour
 
             if (hitCollider)
             {
-                Debug.Log("hit!");
                 if (hitCollider.CompareTag("Node"))
                 {
                     Debug.Log("hit!");
 
-                    if(hitCollider.GetComponent<LocationInfo>().map == 1)
+                    if (hitCollider.GetComponent<LocationInfo>().map == 1)
                     {
                         StoreNode(hitCollider, ref startNodeLeft, ref endNodeLeft);
                     }
-                    else if(hitCollider.GetComponent<LocationInfo>().map == 2)
+                    else if (hitCollider.GetComponent<LocationInfo>().map == 2)
                     {
                         StoreNode(hitCollider, ref startNodeRight, ref endNodeRight);
                     }
@@ -103,14 +127,18 @@ public class PreSceneScript : MonoBehaviour
     {
         if (startNode == null)
         {
-            startNode = getNode(hit);
+            if(hit.gameObject.GetComponent<LocationInfo>().fullName == firstLocation.fullName)
+            {
+                drawSelection(hit);
+                startNode = hit.gameObject;
+            }
         }
         else if (endNode == null)
         {
-            endNode = getNode(hit);
-            if (startNode == endNode)
+            if (hit.gameObject.GetComponent<LocationInfo>().fullName == secondLocation.fullName)
             {
-                endNode = null;
+                drawSelection(hit);
+                endNode = hit.gameObject;
             }
         }
         else
@@ -119,7 +147,7 @@ public class PreSceneScript : MonoBehaviour
         }
     }
 
-    private GameObject getNode(Collider2D hitCollider)
+    private void drawSelection(Collider2D hitCollider)
     {
         selectorSprite = Instantiate(Resources.Load("Selector"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
         if (selectorSprite != null)
@@ -132,8 +160,6 @@ public class PreSceneScript : MonoBehaviour
             Debug.Log("Node gevonden! Hit " + hitCollider.transform.name + " x" + hitCollider.transform.position.x + " y " +
                   hitCollider.transform.position.y + " GameObject:" + hitCollider);
         }
-
-        return hitCollider.gameObject;
     }
 
     private void setUpDijkstra()
@@ -423,7 +449,7 @@ public class PreSceneScript : MonoBehaviour
         {
             foreach (Transform location in locations.GetComponentInChildren<Transform>())
             {
-                if(location.gameObject.GetComponent<LocationInfo>().id == (string)fastestRoute[i])
+                if (location.gameObject.GetComponent<LocationInfo>().id == (string)fastestRoute[i])
                 {
                     lineRenderer.SetPosition(i, location.position);
                     newNodeOnLine++;
