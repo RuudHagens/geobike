@@ -9,22 +9,29 @@ public class Dijkstra {
     /// <summary>
     /// A graph list, containing a list of Node objects.
     /// </summary>
-    public ArrayList Graph;
+    private List<GraphNode> Graph
+    {
+        get;
+        set;
+    }
 
     /// <summary>
     /// A queue as a minheap.
     /// </summary>
-    public MinHeap Queue;
-
-    /// <summary>
-    /// A distance list, containing a list of floats.
-    /// </summary>
-    public ArrayList Distance;
+    private MinHeap Queue
+    {
+        get;
+        set;
+    }
 
     /// <summary>
     /// A previous list, containing a list of strings.
     /// </summary>
-    Dictionary<string, string> Previous;
+    private Dictionary<string, string> Previous
+    {
+        get;
+        set;
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Dijkstra"/> class.
@@ -32,7 +39,7 @@ public class Dijkstra {
     public Dijkstra()
     {
         // A list of graph nodes.
-        this.Graph = new ArrayList();
+        this.Graph = new List<GraphNode>();
 
         // Set Queue to null.
         this.Queue = null;
@@ -45,7 +52,7 @@ public class Dijkstra {
     /// Method to set the graph of the class to the given graph.
     /// </summary>
     /// <param name="graph">The graph to set.</param>
-    public void SetGraph(ArrayList graph)
+    public void SetGraph(List<GraphNode> graph)
     {
         this.Graph = graph;
     }
@@ -132,7 +139,7 @@ public class Dijkstra {
             int indexFoundNode = -1;
             for (int i = 0; i < Graph.Count; i++)
             {
-                if (string.Equals(((GraphNode)Graph[i]).Name, u))
+                if (string.Equals(Graph[i].Name, u))
                 {
                     indexFoundNode = i;
                 }
@@ -143,7 +150,7 @@ public class Dijkstra {
             }
 
             // Get a list of neighbours.
-            ArrayList neighbours = (ArrayList)((GraphNode)(this.Graph[indexFoundNode])).Vertices;
+            ArrayList neighbours = (ArrayList)this.Graph[indexFoundNode].Vertices;
             foreach (Vertex neighbour in neighbours)
             {
                 float nDistance = this.Queue.GetDistance(neighbour.Name);
@@ -186,7 +193,11 @@ public class Dijkstra {
             string next = (string)path[i + 1];
 
             // Increase the total length with the length between the two nodes.
-            totalLength += ((Vertex)((GraphNode)this.Graph[this.Graph.IndexOf(start)]).Vertices[((GraphNode)this.Graph[this.Graph.IndexOf(start)]).Vertices.IndexOf(next)]).Cost;
+            //totalLength += ((Vertex)((GraphNode)this.Graph[this.Graph.IndexOf(start)]).Vertices[((GraphNode)this.Graph[this.Graph.IndexOf(start)]).Vertices.IndexOf(next)]).Cost;
+            //totalLength += /*2 start*/((Vertex)  /*1 start*/((GraphNode)this.Graph[this.Graph.IndexOf(start)])/*1 end*/ .Vertices[((GraphNode)this.Graph[this.Graph.IndexOf(start)]).Vertices.IndexOf(next)])/*2 end*/.Cost;
+
+            GraphNode gnode = this.Graph.Find(g => g.Name == start);
+            totalLength += ((Vertex)gnode.Vertices[gnode.Vertices.IndexOf(next)]).Cost;
         }
 
         // Return the total length of the path.
@@ -204,7 +215,8 @@ public class Dijkstra {
         GraphNode graphNode = null;
 
         // Get the index of the nodename in this.Graph.
-        int indexOfNode = this.Graph.IndexOf(nodeName);
+        //int indexOfNode = this.Graph.IndexOf(nodeName);
+        int indexOfNode = this.Graph.IndexOf(this.Graph.Find(n => n.Name == nodeName));
 
         // Get the index of the nodename in this.Graph
         foreach (GraphNode node in Graph)
@@ -225,7 +237,8 @@ public class Dijkstra {
             List<string> returnedList = new List<string>();
 
             // Loop through all vertices.
-            foreach (Vertex v in (ArrayList)this.Graph[indexOfNode])
+            //foreach (Vertex v in (ArrayList)this.Graph[indexOfNode])
+            foreach (Vertex v in this.Graph[indexOfNode].Vertices)
             {
                 // Add the name of the vertex to returnedList/
                 returnedList.Add(v.Name);
@@ -255,18 +268,33 @@ public class MinHeap
     /// <summary>
     /// The min node name.
     /// </summary>
-    public string Min;
+    private string Min
+    {
+        get;
+        set;
+    }
 
     /// <summary>
     /// A list of roots, stored as strings.
     /// </summary>
-    public ArrayList Roots;
+    private ArrayList Roots
+    {
+        get;
+        set;
+    }
 
     /// <summary>
     /// A list of nodes, stored as Node objects.
     /// </summary>
-    public ArrayList Nodes;
+    private ArrayList Nodes
+    {
+        get;
+        set;
+    }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MinHeap"/> class.
+    /// </summary>
     public MinHeap()
     {
         this.Min = null;
@@ -275,9 +303,9 @@ public class MinHeap
     }
 
     /// <summary>
-    /// Method to shift the nodes of the heap.
+    /// Method to shift a node off the heap.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Returns the string of the shifted node.</returns>
     public string Shift()
     {
         string minNode = this.Min;
@@ -320,7 +348,7 @@ public class MinHeap
     /// <summary>
     /// A method to consolidate the heap.
     /// </summary>
-    public void Consolidate()
+    private void Consolidate()
     {
         // Consolidate
         ArrayList depths = new ArrayList(7);
@@ -464,7 +492,7 @@ public class MinHeap
     /// Method to remove a node from the heap.
     /// </summary>
     /// <param name="node">The node to be removed from the heap.</param>
-    public void Remove(string node)
+    private void Remove(string node)
     {
         int indexFoundNode = -1;
         for (int i = 0; i < Nodes.Count; i++)
@@ -580,14 +608,22 @@ public class MinHeap
 public class GraphNode
 {
     /// <summary>
-    /// The name of the node.
+    /// Gets the name of the node.
     /// </summary>
-    public string Name;
+    public string Name
+    {
+        get;
+        private set;
+    }
 
     /// <summary>
-    /// The list of vertices of the node.
+    /// Gets the list of vertices of the node.
     /// </summary>
-    public ArrayList Vertices;
+    public ArrayList Vertices
+    {
+        get;
+        private set;
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GraphNode"/> class.
@@ -607,14 +643,22 @@ public class GraphNode
 public class Vertex
 {
     /// <summary>
-    /// The name of the vertex.
+    /// Gets the name of the vertex.
     /// </summary>
-    public string Name;
+    public string Name
+    {
+        get;
+        private set;
+    }
 
     /// <summary>
-    /// The cost (length) of the vertex.
+    /// Gets the cost (length) of the vertex.
     /// </summary>
-    public float Cost;
+    public float Cost
+    {
+        get;
+        private set;
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Vertex"/> class.
@@ -634,29 +678,49 @@ public class Vertex
 public class Node
 {
     /// <summary>
-    /// The node name.
+    /// Gets or sets the depth as an int.
     /// </summary>
-    public string NodeName;
+    public int Depth
+    {
+        get;
+        set;
+    }
 
     /// <summary>
-    /// The distance as a float.
+    /// Gets or sets the parent node name.
     /// </summary>
-    public float Distance;
+    public string Parent
+    {
+        get;
+        set;
+    }
 
     /// <summary>
-    /// The depth as an int.
+    /// Gets the node name.
     /// </summary>
-    public int Depth;
+    public string NodeName
+    {
+        get;
+        private set;
+    }
 
     /// <summary>
-    /// The parent node name.
+    /// Gets the distance as a float.
     /// </summary>
-    public string Parent;
+    public float Distance
+    {
+        get;
+        private set;
+    }
 
     /// <summary>
-    /// The children node names.
+    /// Gets the children node names.
     /// </summary>
-    public ArrayList Children;
+    public ArrayList Children
+    {
+        get;
+        private set;
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Node"/> instance.

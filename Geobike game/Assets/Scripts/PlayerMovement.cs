@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -45,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
     private void setUpDijkstra()
     {
         //DE lijst
-        ArrayList graphAslist = new ArrayList();
+        List<GraphNode> graphAslist = new List<GraphNode>();
 
         //DE lijst binnen de lijst
         ArrayList vertexForList = new ArrayList();
