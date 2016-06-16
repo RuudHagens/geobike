@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 0f;
+    public float speedmult = 0.15f;
     public Collider2D collider;
     private bool up;
     public bool player1;
@@ -60,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    speed = speed + 0.15f;
+                    speed = speed + speedmult;
                     pressesp1++;               
                 }
             //}
@@ -119,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.W))
                 {
-                    speed = speed + 0.15f;
+                    speed = speed + speedmult;
                     pressesp2++;
                 }
             }
@@ -147,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.W))
                 {
-                    speed = speed - 0.15f;
+                    speed = speed - speedmult;
                     pressesp2++;
                 }
             }
