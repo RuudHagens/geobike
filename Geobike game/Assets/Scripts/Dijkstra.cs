@@ -152,27 +152,32 @@ public class Dijkstra {
     /// <returns>Returns a list of nodenames.</returns>
     public List<string> GetNodesAroundNode(string nodeName)
     {
+        GraphNode graphNode = null;
+
         // Get the index of the nodename in this.Graph
-        int indexOfNode = this.Graph.IndexOf(nodeName);
-        //int indexOfNode = this.Graph.IndexOf(this.Graph.Find(i => i.Name == nodeName));
-
-        // Check if the index >= 0 (which is true when the nodename has been found)
-        if (indexOfNode >= 0)
+        foreach (GraphNode node in Graph)
         {
-            // Create an empty list to contain the names of neighbour nodes
-            List<string> returnedList = new List<string>();
+            if (node.Name.Equals(nodeName))
+            {
+                graphNode = node;
+            }
+        }
 
-            // Loop through all vertices
-            //foreach (Vertex v in this.Graph[indexOfNode].Vertices)
-            foreach (Vertex v in (ArrayList)this.Graph[indexOfNode])
+        List<string> returnedList = new List<string>();
+
+        if (graphNode != null)
+        {
+            foreach (Vertex v in graphNode.Vertices)
             {
                 // Add the name of the vertex to returnedList
                 returnedList.Add(v.Name);
             }
-
-            // Return the list of neighbour nodes
-            return returnedList;
         }
+      
+
+        // Return the list of neighbour nodes
+        return returnedList;
+        
 
         // Return null when nothing has been found
         return null;

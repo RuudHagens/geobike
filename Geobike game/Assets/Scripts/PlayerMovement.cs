@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
@@ -13,6 +15,10 @@ public class PlayerMovement : MonoBehaviour
     public GameObject selectedNodePlayer1;
     public bool travel;
     private GameObject nodeSelector;
+    private GameObject player1Camera;
+    private bool nodeSelectionMoment;
+    private List<GameObject> player1nodes;
+    private int loopNodes;
 
     private float pressesp1;
     private float pressesp2;
@@ -29,9 +35,11 @@ public class PlayerMovement : MonoBehaviour
         selectedNodePlayer1 = GameObject.Find("Location-Almelo 1");
         transform.position = selectedNodePlayer1.transform.position;
         selectedNodePlayer1 = GameObject.Find("Location-Enschede 1");
-        travel = false;
+        travel = true;
         dijkstra = new Dijkstra();
         setUpDijkstra();
+        player1Camera = GameObject.Find("Player 1 Camera");
+        loopNodes = 1;
     }
 
     private void setUpDijkstra()
@@ -312,6 +320,33 @@ public class PlayerMovement : MonoBehaviour
     {
         if (player1)
         {
+            if (nodeSelectionMoment)
+            {
+                if (Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    if (loopNodes == player1nodes.Count)
+                    {
+                        loopNodes = 0;
+                    }
+
+                    nodeSelector.transform.position = player1nodes[loopNodes].transform.position;
+                    loopNodes++;
+                }
+
+                if (Input.GetKeyDown(KeyCode.KeypadEnter))
+                {
+                    foreach (GameObject node in player1nodes)
+                    {
+                        if (node.transform.position == nodeSelector.transform.position)
+                        {
+                            selectedNodePlayer1 = node;
+                            Destroy(nodeSelector);
+                            player1Camera.GetComponent<Camera>().orthographicSize = 1.65f;
+                            nodeSelectionMoment = false;
+                        }
+                    }
+                }
+            }
             //if (up)
             //{
                 if (speed > 0f)
@@ -453,7 +488,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (other.gameObject.CompareTag("Node")/* && transform.position == other.transform.position*/)
         {
-            travel = true;
+            travel = false;
             GameObject[] selectors = GameObject.FindGameObjectsWithTag("NodeSelector");
             foreach (GameObject selector in selectors)
             {
@@ -465,23 +500,23 @@ public class PlayerMovement : MonoBehaviour
 
     //private GameObject foundNode;
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Node")/* && transform.position == other.transform.position*/)
-        {
-            //foundNode = other.gameObject;
-            Debug.Log("yooo" + other.name);
-            travel = false;
-        }
-    }
+    //void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    if (other.gameObject.CompareTag("Node")/* && transform.position == other.transform.position*/)
+    //    {
+    //        //foundNode = other.gameObject;
+    //        Debug.Log("yooo" + other.name);
+    //        travel = false;
+    //    }
+    //}
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (travel)
+        if (!travel)
         {
             Vector3 otherArea = other.transform.position;
-            otherArea.x += 0.005f;
-            otherArea.y += 0.005f;
+            otherArea.x += 0.01f;
+            otherArea.y += 0.01f;
             if ((transform.position.x >= other.transform.position.x &&
                  transform.position.y >= other.transform.position.y) ||
                 (transform.position.x <= otherArea.x && transform.position.y <= otherArea.y))
@@ -493,11 +528,40 @@ public class PlayerMovement : MonoBehaviour
                     nodeSelector =
                         Instantiate(Resources.Load("NodeSelector"), new Vector3(0, 0, 0), Quaternion.identity) as
                             GameObject;
-                    //dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().fullName);
-                    foreach (string s in dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().fullName))
+                    List<string> neighbourNodes =
+                        dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().id);
+
+                    player1nodes = new List<GameObject>();
+                    foreach (GameObject node in GameObject.FindGameObjectsWithTag("Node"))
                     {
-                        Debug.Log(s);
+                        foreach (string name in neighbourNodes)
+                        {
+                            if (node.GetComponent<LocationInfo>().id == name)
+                            {
+                                if (node.name.Contains("1"))
+                                {
+                                    player1nodes.Add(node);
+                                }
+                            }
+                        }
+
+                        
+                        //if (node.GetComponent<LocationInfo>().id == selectedNodePlayer1.GetComponent<LocationInfo>().id)
+                        //{
+                            
+                        //}
                     }
+
+                    GameObject initialNode = player1nodes.First();
+                    nodeSelector.transform.position = initialNode.transform.position;
+                    player1Camera.GetComponent<Camera>().orthographicSize = 4.5f;
+                    nodeSelectionMoment = true;
+                    //dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().fullName);
+                    //foreach (string s in dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().fullName))
+                    //{
+                    //    Debug.Log(s);
+                    //}
+
                     if (nodeSelector != null) nodeSelector.name = "Node Selector";
                 }
 
