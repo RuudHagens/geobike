@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
@@ -35,8 +36,9 @@ public class PlayerMovement : MonoBehaviour
         InvokeRepeating("CalculateSpeed", 0, 2);
         selectedNodePlayer1 = GameObject.Find("Location-Almelo 1");
         transform.position = selectedNodePlayer1.transform.position;
-        selectedNodePlayer1 = GameObject.Find("Location-Enschede 1");
-        travel = true;
+        //selectedNodePlayer1 = GameObject.Find("Location-Enschede 1");
+        travel = false;
+        nodeSelectionMoment = true;
         dijkstra = new Dijkstra();
         setUpDijkstra();
         player1Camera = GameObject.Find("Player 1 Camera");
@@ -344,12 +346,15 @@ public class PlayerMovement : MonoBehaviour
                             Destroy(nodeSelector);
                             player1Camera.GetComponent<Camera>().orthographicSize = 1.65f;
                             nodeSelectionMoment = false;
+                            loopNodes = 0;
                         }
                     }
                 }
             }
-            //if (up)
-            //{
+            else
+            {
+                //if (up)
+                //{
                 if (speed > 0f)
                 {
                     speed = speed - 0.05f;
@@ -360,28 +365,30 @@ public class PlayerMovement : MonoBehaviour
                     speed = 0f;
                 }
 
-            //Quaternion rotation = Quaternion.LookRotation
-            //    (selectedNodePlayer1.transform.position - transform.position, transform.TransformDirection(Vector3.up));
-            //transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
-            //rotation = new Quaternion(0, 0, rotation.z, rotation.w);
-            //Debug.Log(selectedNodePlayer1.name);
+                //Quaternion rotation = Quaternion.LookRotation
+                //    (selectedNodePlayer1.transform.position - transform.position, transform.TransformDirection(Vector3.up));
+                //transform.rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+                //rotation = new Quaternion(0, 0, rotation.z, rotation.w);
+                //Debug.Log(selectedNodePlayer1.name);
 
-            transform.position += (selectedNodePlayer1.transform.position - transform.position).normalized*speed*Time.deltaTime*10;
-            //transform.LookAt(selectedNodePlayer1.transform);
+                transform.position += (selectedNodePlayer1.transform.position - transform.position).normalized*speed*
+                                      Time.deltaTime*10;
+                //transform.LookAt(selectedNodePlayer1.transform);
 
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
-                    transform.position += Vector3.left*speed*Time.deltaTime * 10;
+                    transform.position += Vector3.left*speed*Time.deltaTime*10;
                 }
                 if (Input.GetKeyDown(KeyCode.RightArrow))
                 {
-                    transform.position += Vector3.right*speed*Time.deltaTime * 10;
+                    transform.position += Vector3.right*speed*Time.deltaTime*10;
                 }
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     speed = speed + speedmult;
-                    pressesp1++;               
+                    pressesp1++;
                 }
+            }
             //}
             //else
             //{
@@ -501,15 +508,15 @@ public class PlayerMovement : MonoBehaviour
 
     //private GameObject foundNode;
 
-    //void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    if (other.gameObject.CompareTag("Node")/* && transform.position == other.transform.position*/)
-    //    {
-    //        //foundNode = other.gameObject;
-    //        Debug.Log("yooo" + other.name);
-    //        travel = false;
-    //    }
-    //}
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Node")/* && transform.position == other.transform.position*/)
+        {
+            //foundNode = other.gameObject;
+            Debug.Log("yooo" + other.name);
+            travel = false;
+        }
+    }
 
     void OnTriggerStay2D(Collider2D other)
     {
@@ -567,6 +574,7 @@ public class PlayerMovement : MonoBehaviour
                 }
 
                 travel = true;
+                selectedNodePlayer1 = null; //blablabla
             }
         }
     }
