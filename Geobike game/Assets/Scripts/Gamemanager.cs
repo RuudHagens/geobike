@@ -20,8 +20,6 @@ public class Gamemanager : MonoBehaviour
     public void StartTimer()
     {
         timer = 300.0f;
-        string minutes = Mathf.Floor(timer / 60).ToString("00");
-        string seconds = Mathf.Floor(timer % 60).ToString("00");
     }
 
     public void StopTimer()
@@ -48,8 +46,15 @@ public class Gamemanager : MonoBehaviour
         if (timer > 0)
         {
             timer -= Time.deltaTime;
+            minutes = Mathf.Floor(timer / 60).ToString("00");
+            seconds = Mathf.Floor(timer % 60).ToString("00");
             timep1.text = minutes + ":" + seconds;
             timep2.text = minutes + ":" + seconds;
+        }
+        else
+        {
+            timep1.text = "00:00";
+            timep2.text = "00:00";
         }
     }
 }
