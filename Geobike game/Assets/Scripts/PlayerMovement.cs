@@ -324,7 +324,15 @@ public class PlayerMovement : MonoBehaviour
         {
             if (nodeSelectionMoment)
             {
-                placesplayer1.SetActive(true);
+                Debug.Log(GameSettings.enableCityNames);
+                if (GameSettings.enableCityNames)
+                {                    
+                    placesplayer1.SetActive(true);
+                }
+                else
+                {
+                    placesplayer1.SetActive(false);
+                }
                 if (Input.GetKeyDown(KeyCode.UpArrow))
                 {
                     if (loopNodes == player1nodes.Count)
