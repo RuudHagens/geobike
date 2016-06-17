@@ -50,7 +50,6 @@ public class PlayerMovement : MonoBehaviour
         {
             if (nodeSelectionMoment)
             {
-                Debug.Log(GameSettings.enableCityNames);
                 if (GameSettings.enableCityNames)
                 {                    
                     placesplayer1.SetActive(true);
