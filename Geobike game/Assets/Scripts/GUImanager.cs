@@ -18,7 +18,7 @@ public class GUImanager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        GameSettings.enableCityNames = enableNames.isOn;
+        //GameSettings.enableCityNames = enableNames.isOn;
     }
 
     public void setAssignmentText(string firstLocation, string secondLocation)
