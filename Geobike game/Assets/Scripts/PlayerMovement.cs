@@ -30,6 +30,9 @@ public class PlayerMovement : MonoBehaviour
 
     private Dijkstra dijkstra;
 
+    public GameObject placesplayer1;
+    public GameObject placesplayer2;
+
     // Use this for initialization
     void Start () {
 	    up = true;
@@ -321,6 +324,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (nodeSelectionMoment)
             {
+                placesplayer1.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.UpArrow))
                 {
                     if (loopNodes == player1nodes.Count)
@@ -343,6 +347,7 @@ public class PlayerMovement : MonoBehaviour
                             player1Camera.GetComponent<Camera>().orthographicSize = 1.65f;
                             nodeSelectionMoment = false;
                             loopNodes = 0;
+                            placesplayer1.SetActive(false);
                         }
                     }
                 }
