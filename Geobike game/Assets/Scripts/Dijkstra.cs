@@ -4,7 +4,12 @@ using System.Collections.Generic;
 /// <summary>
 /// This class is used to calculate the shortest path between two nodes, given a graph map.
 /// </summary>
-public class Dijkstra {
+public class Dijkstra
+{
+    /// <summary>
+    /// Singleton object of this class
+    /// </summary>
+    public static Dijkstra Instance;
 
     /// <summary>
     /// A graph list, containing a list of Node objects.
@@ -38,6 +43,9 @@ public class Dijkstra {
     /// </summary>
     public Dijkstra()
     {
+        // Set the static object to the instance of this class.
+        Instance = this;
+
         // A list of graph nodes.
         this.Graph = new List<GraphNode>();
 
@@ -326,7 +334,7 @@ public class Dijkstra {
     /// <param name="source">The source node as a string.</param>
     /// <param name="target">The target node as a string.</param>
     /// <returns>Returns the shortest path between the two given nodes.</returns>
-    public ArrayList GetPath(string source, string target)
+    public List<string> GetPath(string source, string target)
     {
         // Throw an exception when the source is null or empty.
         if (string.IsNullOrEmpty(source))
@@ -343,7 +351,7 @@ public class Dijkstra {
         // Throw an exception when the source is the same as the target.
         if (string.Equals(source, target))
         {
-            return new ArrayList();
+            return new List<string>();
         }
 
         // Create a new MinHeap.
@@ -369,7 +377,7 @@ public class Dijkstra {
             if (string.Equals(u, target))
             {
                 // Create a new list of strings as a path.
-                ArrayList path = new ArrayList();
+                List<string> path = new List<string>();
 
                 // Loop while the key of u in this.Previous is not null.
                 while (this.Previous[u] != null)
@@ -392,7 +400,7 @@ public class Dijkstra {
             if (this.Queue.GetDistance(u) == float.PositiveInfinity)
             {
                 // Return an empty list when the remaining vertices are inaccessible from source.
-                return new ArrayList();
+                return new List<string>();
             }
 
             // Initialize a new float with the distance of u.
@@ -413,7 +421,7 @@ public class Dijkstra {
             }
 
             // Get a list of neighbours.
-            ArrayList neighbours = (ArrayList)this.Graph[indexFoundNode].Vertices;
+            ArrayList neighbours = this.Graph[indexFoundNode].Vertices;
             foreach (Vertex neighbour in neighbours)
             {
                 float nDistance = this.Queue.GetDistance(neighbour.Name);
@@ -427,9 +435,9 @@ public class Dijkstra {
                 }
             }
         }
-        while (u != null);
+        while (!string.IsNullOrEmpty(u));
 
-        return new ArrayList();
+        return new List<string>();
     }
 
     /// <summary>
@@ -437,7 +445,7 @@ public class Dijkstra {
     /// </summary>
     /// <param name="path">A list of strings.</param>
     /// <returns>Returns the length of the path as a float.</returns>
-    public float GetPathLength(ArrayList path)
+    public float GetPathLength(List<string> path)
     {
         // Throw an exception when there are less than 2 nodes in path.
         if (path.Count <= 1)
@@ -452,8 +460,8 @@ public class Dijkstra {
         for (int i = 0; i < path.Count-1; i++)
         {
             // Store the start and end node.
-            string start = (string)path[i];
-            string next = (string)path[i + 1];
+            string start = path[i];
+            string next = path[i + 1];
 
             // Increase the total length with the length between the two nodes.
             //totalLength += ((Vertex)((GraphNode)this.Graph[this.Graph.IndexOf(start)]).Vertices[((GraphNode)this.Graph[this.Graph.IndexOf(start)]).Vertices.IndexOf(next)]).Cost;

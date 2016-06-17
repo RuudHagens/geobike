@@ -43,8 +43,8 @@ public class PreSceneScript : MonoBehaviour
         lineRendererRight.SetColors(c1, c2);
         lineRendererRight.SetWidth(0.05f, 0.05f);
         lineRendererRight.sortingLayerName = "Player";
-
-        dijkstra = new Dijkstra();
+        
+        dijkstra = Dijkstra.Instance;
 
         int numberOfLocations = LocationsLeft.transform.childCount;
         List<LocationInfo> locationNames = new List<LocationInfo>();
@@ -55,7 +55,7 @@ public class PreSceneScript : MonoBehaviour
         firstLocation = locationNames[Random.Range(0, numberOfLocations)];
         secondLocation = null;
 
-        ArrayList path = null;
+        List<string> path = new List<string>();
 
         while (secondLocation == null)
         {
@@ -171,7 +171,7 @@ public class PreSceneScript : MonoBehaviour
     {
         string startNodeId = startNode.GetComponent<LocationInfo>().id;
         string endNodeId = endNode.GetComponent<LocationInfo>().id;
-        ArrayList fastestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
+        List<string> fastestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
 
         lineRenderer.SetVertexCount(fastestRoute.Count);
         int newNodeOnLine = 0;
@@ -180,7 +180,7 @@ public class PreSceneScript : MonoBehaviour
         {
             foreach (Transform location in locations.GetComponentInChildren<Transform>())
             {
-                if (location.gameObject.GetComponent<LocationInfo>().id == (string)fastestRoute[i])
+                if (location.gameObject.GetComponent<LocationInfo>().id == fastestRoute[i])
                 {
                     lineRenderer.SetPosition(i, location.position);
                     newNodeOnLine++;
