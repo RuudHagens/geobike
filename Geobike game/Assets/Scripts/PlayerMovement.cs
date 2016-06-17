@@ -320,12 +320,14 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        detectPressedKeyOrButton();
+
         if (player1)
         {
             if (nodeSelectionMoment)
             {
                 placesplayer1.SetActive(true);
-                if (Input.GetKeyDown(KeyCode.UpArrow))
+                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Joystick1Button0))
                 {
                     if (loopNodes == player1nodes.Count)
                     {
@@ -336,7 +338,7 @@ public class PlayerMovement : MonoBehaviour
                     loopNodes++;
                 }
 
-                if (Input.GetKeyDown(KeyCode.KeypadEnter))
+                if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Joystick1Button3))
                 {
                     foreach (GameObject node in player1nodes)
                     {
@@ -384,7 +386,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     transform.position += Vector3.right*speed*Time.deltaTime*10;
                 }
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button2))
                 {
                     speed = speed + speedmult;
                     pressesp1++;
@@ -478,6 +480,15 @@ public class PlayerMovement : MonoBehaviour
                     pressesp2++;
                 }
             }
+        }
+    }
+
+    public void detectPressedKeyOrButton()
+    {
+        foreach (KeyCode kcode in Enum.GetValues(typeof(KeyCode)))
+        {
+            if (Input.GetKeyDown(kcode))
+                Debug.Log("KeyCode down: " + kcode);
         }
     }
 
