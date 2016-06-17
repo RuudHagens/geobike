@@ -398,37 +398,36 @@ public class Dijkstra
             // Initialize a new float with the distance of u.
             float uDistance = this.Queue.GetDistance(u);
 
-            // Find the index of u in this.Graph.
-            int indexFoundNode = -1;
-            for (int i = 0; i < this.Graph.Count; i++)
-            {
-                if (string.Equals(this.Graph[i].Name, u))
-                {
-                    indexFoundNode = i;
-                }
-            }
-            if (indexFoundNode == -1)
-            {
-                break;
-            }
+            // Find the right graphNode.
+            GraphNode foundGraphNode = this.Graph.Find(n => n.Name == u);
 
-            // Get a list of neighbours.
-            List<Vertex> neighbours = this.Graph[indexFoundNode].Vertices;
-            foreach (Vertex neighbour in neighbours)
-            {
-                float nDistance = this.Queue.GetDistance(neighbour.Name);
-                float aDistance = uDistance + neighbour.Cost;
+            // Break if the graphNode has not been found.
+            if (foundGraphNode == null) break;
 
+            // Loop through the graphNode vertices.
+            foreach (Vertex vertex in foundGraphNode.Vertices)
+            {
+                // Save the distance to the vertex.
+                float nDistance = this.Queue.GetDistance(vertex.Name);
+
+                // Save the distance to the vertex + the vertex distance cost.
+                float aDistance = uDistance + vertex.Cost;
+
+                // Check if the distance of the vertex + the vertex distance cost is less
+                // and the distance of the vertex.
                 if(aDistance < nDistance)
                 {
-                    this.Queue.Update(neighbour.Name, aDistance);
+                    // Update the vertex.
+                    this.Queue.Update(vertex.Name, aDistance);
 
-                    this.Previous[neighbour.Name] = u;
+                    // Store u as the value of the vertex.
+                    this.Previous[vertex.Name] = u;
                 }
             }
         }
         while (!string.IsNullOrEmpty(u));
 
+        // Return an empty list when a path has not been found.
         return new List<string>();
     }
 
@@ -580,11 +579,10 @@ public class MinHeap
 
         // Get next min
         float lowestDistance = float.PositiveInfinity;
-        float length = this.Roots.Count;
 
-        for (int i = 0; i < length; i++)
+        // Loop through all node string in this.Roots to find the lowest distance
+        foreach (string node in this.Roots)
         {
-            string node = this.Roots[i];
             float distance = this.GetDistance(node);
 
             if (distance < lowestDistance)
@@ -612,9 +610,8 @@ public class MinHeap
         int maxDepth = depths.Count - 1;
 
         // Populate depths array
-        for (int i = 0; i < this.Roots.Count; i++)
+        foreach (string node in this.Roots)
         {
-            string node = this.Roots[i];
             int depth = this.Nodes.Find(n => n.NodeName == node).Depth;
 
             if (depth < maxDepth)
@@ -638,7 +635,6 @@ public class MinHeap
                 Node firstNode = this.Nodes.Find(n => n.NodeName == first);
                 Node secondNode = this.Nodes.Find(n => n.NodeName == second);
 
-                //if (((Node)this.Nodes[this.Nodes.IndexOf(first)]).Distance < ((Node)this.Nodes[this.Nodes.IndexOf(second)]).Distance)
                 if (firstNode.Distance < secondNode.Distance)
                 {
                     firstNode.Depth = newDepth;
@@ -682,25 +678,20 @@ public class MinHeap
     /// <param name="distance">The distance of the node.</param>
     public void Add(string node, float distance)
     {
+        // Create a new node with the given parameters.
         Node newNode = new Node(node, distance);
 
-        int indexFoundNode = -1;
-        for (int i = 0; i < this.Nodes.Count; i++)
-        {
-            if (string.Equals(this.Nodes[i].NodeName, node))
-            {
-                indexFoundNode = i;
-            }
-        }
+        // Find a node with the given nodename.
+        Node foundNode = this.Nodes.Find(n => n.NodeName == node);
 
-        // Add the node
-        if (indexFoundNode == -1)
+        // Add the node if the node with the given name does not exist, else replace this node.
+        if (foundNode == null)
         {
             this.Nodes.Add(newNode);
         }
         else
         {
-            this.Nodes[indexFoundNode] = newNode;
+            foundNode = newNode;
         }
 
         // Is it the minimum?
@@ -710,23 +701,16 @@ public class MinHeap
         }
         else
         {
-            indexFoundNode = -1;
-            for (int i = 0; i < this.Nodes.Count; i++)
-            {
-                if (string.Equals(this.Nodes[i].NodeName, node))
-                {
-                    indexFoundNode = i;
-                }
-            }
+            foundNode = this.Nodes.Find(n => n.NodeName == node);
 
             // Add the node
-            if (indexFoundNode != -1)
+            if (foundNode != null)
             {
-                if (distance < this.Nodes[indexFoundNode].Distance)
+                if (distance < foundNode.Distance)
                 {
-                    this.Min = node;
+                    this.Min = foundNode.NodeName;
                 }
-            }           
+            }       
         }
 
         // Other stuff
@@ -750,52 +734,28 @@ public class MinHeap
     /// <param name="node">The node to be removed from the heap.</param>
     private void Remove(string node)
     {
-        int indexFoundNode = -1;
-        for (int i = 0; i < this.Nodes.Count; i++)
-        {
-            if (string.Equals(this.Nodes[i].NodeName, node))
-            {
-                indexFoundNode = i;
-            }
-        }
+        Node foundNode = this.Nodes.Find(n => n.NodeName == node);
+
+        // Return when the node has not been found.
+        if (foundNode == null) return;
 
         // Move children to be children of the parent.
-        if (indexFoundNode == -1)
+        foreach (string child in foundNode.Children)
         {
-            return;
-        }
+            Node foundChildNode = this.Nodes.Find(n => n.NodeName == node);
 
-        int numChildren = this.Nodes[indexFoundNode].Children.Count;
-        if (numChildren > 0)
-        {
-            for (int i = 0; i < numChildren; i++)
+            if (foundChildNode.Parent != null)
             {
-                string child = this.Nodes[indexFoundNode].Children[i];
+                foundChildNode.Parent = foundNode.Parent;
+            }
 
-                int indexFoundChild = -1;
-                for (int j = 0; j < this.Nodes.Count; j++)
-                {
-                    if (string.Equals(this.Nodes[j].NodeName, node))
-                    {
-                        indexFoundChild = j;
-                    }
-                }
-                if (indexFoundChild == -1)
-                {
-                    break;
-                }
-
-                this.Nodes[indexFoundChild].Parent = this.Nodes[indexFoundNode].Parent;
-
-                // No parent, then add to Roots.
-                if (this.Nodes[indexFoundChild].Parent == null)
-                {
-                    this.Roots.Add(child);
-                }
+            if (foundChildNode.Parent == null)
+            {
+                this.Roots.Add(foundChildNode.NodeName);
             }
         }
 
-        string parent = this.Nodes[indexFoundNode].Parent;
+        string parent = foundNode.Parent;
 
         // Root, so remove from Roots.
         if (string.IsNullOrEmpty(parent))
@@ -810,21 +770,13 @@ public class MinHeap
             // Go up the parents and decrease their depth.
             while (parent != null)
             {
-                int indexFoundParent = -1;
-                for (int i = 0; i < this.Nodes.Count; i++)
-                {
-                    if (string.Equals(this.Nodes[i].NodeName, node))
-                    {
-                        indexFoundParent = i;
-                    }
-                }
-                if (indexFoundParent == -1)
-                {
-                    break;
-                }
+                Node foundNode2 = this.Nodes.Find(n => n.NodeName == node);
 
-                this.Nodes[indexFoundParent].Depth--;
-                parent = this.Nodes[indexFoundParent].Parent;
+                if (foundNode2 != null)
+                {
+                    foundNode2.Depth--;
+                    parent = foundNode2.Parent;
+                }
             }
         }
     }
@@ -836,22 +788,11 @@ public class MinHeap
     /// <returns>Returns the distance of the node.</returns>
     public float GetDistance(string node)
     {
-        // Set the default value of indexFoundNode to -1.
-        int indexFoundNode = -1;
-        for (int i = 0; i < this.Nodes.Count; i++)
-        {
-            if (this.Nodes[i].NodeName == node)
-            {
-                indexFoundNode = i;
-            }
-        }
+        Node foundNode = this.Nodes.Find(n => n.NodeName == node);
 
-        if (indexFoundNode != -1)
+        if (foundNode != null)
         {
-            if (this.Nodes[indexFoundNode] != null)
-            {
-                return this.Nodes[indexFoundNode].Distance;
-            }
+            return foundNode.Distance;
         }
 
         return float.PositiveInfinity;
