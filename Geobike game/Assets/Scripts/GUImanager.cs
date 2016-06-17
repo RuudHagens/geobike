@@ -8,8 +8,8 @@ public class GUImanager : MonoBehaviour
 
     public Text assignmentText;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
         instance = this;
         assignmentText.text = "";
@@ -18,8 +18,8 @@ public class GUImanager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-          
-	}
+        //GameSettings.enableCityNames = enableNames.isOn;
+    }
 
     public void setAssignmentText(string firstLocation, string secondLocation)
     {
