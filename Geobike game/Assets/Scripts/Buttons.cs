@@ -17,6 +17,16 @@ public class Buttons : MonoBehaviour {
         SceneManager.LoadScene("main scene");
     }
 
+    public void Settings()
+    {
+        SceneManager.LoadScene("settings scene");
+    }
+
+    public void BackToStart()
+    {
+        SceneManager.LoadScene("start scene");
+    }
+
     // Method to exit the game
     public void ExitGame()
     {
