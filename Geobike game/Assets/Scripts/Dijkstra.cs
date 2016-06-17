@@ -53,92 +53,90 @@ public class Dijkstra
     /// <summary>
     /// Method to set the graph of the class to the given graph.
     /// </summary>
-    /// <param name="graph">The graph to set.</param>
     public void SetGraph()
     {
         List<string> listOfNodes = new List<string>() {"alk", "haa", "ams", "lei", "dha", "del", "rot", "utr", "dor", "zie", "mid", "ter", "goe", "roo", "bre", "til",
          "ein", "ven", "roe", "maa", "hrl", "bos", "nij", "arn", "ame", "alm", "lel", "ens", "alo", "ape", "zwo", "hoo", "emm", "ass", "gro", "hee", "sne", "lee"};
 
         //DE lijst
-        List<GraphNode> graphAslist = new List<GraphNode>();
-        graphAslist = makeListOfGraphNodes(listOfNodes);
+        List<GraphNode> graphAslist = MakeListOfGraphNodes(listOfNodes);
 
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "alk", "haa", 35.7f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "alk", "ams", 42.5f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "alk", "sne", 95.6f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "haa", "ams", 19.5f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "haa", "lei", 35.7f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ams", "alm", 33.5f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ams", "utr", 43.5f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ams", "lei", 46.9f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "lei", "utr", 58.8f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "lei", "dha", 35.7f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "dha", "utr", 68.5f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "dha", "del", 11.6f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "del", "rot", 15.6f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "rot", "utr", 61.8f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "rot", "dor", 25.5f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "rot", "zie", 66.2f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "utr", "dor", 65.8f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "utr", "nij", 84.6f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "utr", "ame", 23.5f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "utr", "alm", 41.3f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "dor", "bos", 65.8f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "dor", "bre", 35.6f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "dor", "roo", 44.7f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "zie", "roo", 59.4f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "zie", "mid", 42.3f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "zie", "goe", 22.9f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "mid", "goe", 25.8f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "mid", "ter", 32.8f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ter", "goe", 35.4f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "roo", "bre", 24.6f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "bre", "til", 28.0f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "til", "bos", 24.1f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "til", "ein", 34.7f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ein", "bos", 32.8f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ein", "nij", 61.3f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ein", "ven", 58.6f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ein", "roe", 51.2f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ven", "nij", 62.4f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ven", "roe", 29.3f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "roe", "maa", 48.3f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "roe", "hrl", 40.9f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "maa", "hrl", 24.9f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "alk", "haa", 35.7f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "bos", "nij", 48.3f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "bos", "utr", 56.9f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "nij", "arn", 23.1f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "arn", "ame", 51.8f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "arn", "ens", 95.7f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "arn", "ape", 31.7f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ame", "alm", 41.5f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "alm", "lel", 30.5f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "alm", "ape", 35.7f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "lel", "zwo", 49.6f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ape", "zwo", 39.0f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ape", "alo", 60.3f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ens", "alo", 29.4f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ens", "hoo", 74.3f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "alo", "zwo", 52.3f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "alo", "hoo", 51.6f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "zwo", "hoo", 53.5f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "zwo", "hee", 62.9f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "hoo", "ass", 34.3f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "hoo", "emm", 33.0f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "hoo", "hee", 35.7f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "emm", "ass", 38.9f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "ass", "gro", 32.2f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "gro", "hee", 60.0f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "gro", "lee", 60.0f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "hee", "sne", 25.8f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "hee", "lee", 31.2f);
-        graphAslist = addConnectionsBetweenGraphNodes(graphAslist, "sne", "lee", 22.0f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "alk", "haa", 35.7f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "alk", "ams", 42.5f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "alk", "sne", 95.6f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "haa", "ams", 19.5f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "haa", "lei", 35.7f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ams", "alm", 33.5f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ams", "utr", 43.5f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ams", "lei", 46.9f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "lei", "utr", 58.8f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "lei", "dha", 35.7f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "dha", "utr", 68.5f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "dha", "del", 11.6f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "del", "rot", 15.6f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "rot", "utr", 61.8f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "rot", "dor", 25.5f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "rot", "zie", 66.2f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "utr", "dor", 65.8f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "utr", "nij", 84.6f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "utr", "ame", 23.5f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "utr", "alm", 41.3f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "dor", "bos", 65.8f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "dor", "bre", 35.6f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "dor", "roo", 44.7f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "zie", "roo", 59.4f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "zie", "mid", 42.3f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "zie", "goe", 22.9f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "mid", "goe", 25.8f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "mid", "ter", 32.8f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ter", "goe", 35.4f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "roo", "bre", 24.6f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "bre", "til", 28.0f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "til", "bos", 24.1f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "til", "ein", 34.7f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ein", "bos", 32.8f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ein", "nij", 61.3f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ein", "ven", 58.6f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ein", "roe", 51.2f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ven", "nij", 62.4f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ven", "roe", 29.3f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "roe", "maa", 48.3f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "roe", "hrl", 40.9f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "maa", "hrl", 24.9f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "alk", "haa", 35.7f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "bos", "nij", 48.3f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "bos", "utr", 56.9f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "nij", "arn", 23.1f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "arn", "ame", 51.8f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "arn", "ens", 95.7f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "arn", "ape", 31.7f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ame", "alm", 41.5f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "alm", "lel", 30.5f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "alm", "ape", 35.7f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "lel", "zwo", 49.6f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ape", "zwo", 39.0f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ape", "alo", 60.3f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ens", "alo", 29.4f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ens", "hoo", 74.3f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "alo", "zwo", 52.3f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "alo", "hoo", 51.6f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "zwo", "hoo", 53.5f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "zwo", "hee", 62.9f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "hoo", "ass", 34.3f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "hoo", "emm", 33.0f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "hoo", "hee", 35.7f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "emm", "ass", 38.9f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ass", "gro", 32.2f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "gro", "hee", 60.0f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "gro", "lee", 60.0f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "hee", "sne", 25.8f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "hee", "lee", 31.2f);
+        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "sne", "lee", 22.0f);
 
         Graph = graphAslist;
     }
 
-    private List<GraphNode> makeListOfGraphNodes(List<string> graphNodes)
+    private static List<GraphNode> MakeListOfGraphNodes(List<string> graphNodes)
     {
         if(graphNodes.Count > 0)
         {
@@ -154,15 +152,15 @@ public class Dijkstra
         return null;
     }
 
-    private List<GraphNode> addConnectionsBetweenGraphNodes(List<GraphNode> inputList, string firstLocation, string Secondlocation, float distance)
+    private static List<GraphNode> AddConnectionsBetweenGraphNodes(List<GraphNode> inputList, string firstLocation, string secondlocation, float distance)
     {
         foreach(GraphNode node in inputList)
         {
-            if(node.Name == firstLocation)
+            if(string.Equals(node.Name, firstLocation))
             {
-                node.Vertices.Add(new Vertex(Secondlocation, distance));
+                node.Vertices.Add(new Vertex(secondlocation, distance));
             }
-            if(node.Name == Secondlocation)
+            if(string.Equals(node.Name, secondlocation))
             {
                 node.Vertices.Add(new Vertex(firstLocation, distance));
             }
@@ -593,7 +591,7 @@ public class MinHeap
         // Move children to be children of the parent.
         foreach (string child in foundNode.Children)
         {
-            Node foundChildNode = this.Nodes.Find(n => n.NodeName == node);
+            Node foundChildNode = this.Nodes.Find(n => n.NodeName == child);
 
             if (foundChildNode.Parent != null)
             {

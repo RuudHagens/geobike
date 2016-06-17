@@ -3,10 +3,10 @@ using System.Collections;
 
 public static class StaticObjects
 {
-    public static Dijkstra dijkstraObject { get; set;}
-    public static GameObject beginpuntp1 { get; set; }
-    public static GameObject beginpuntp2 { get; set; }
-    public static GameObject eindpuntp1 { get; set; }
-    public static GameObject eindpuntp2 { get; set; }
+    public static Dijkstra dijkstraInstance { get; set;}
+    public static GameObject startPointp1 { get; set; }
+    public static GameObject startPointp2 { get; set; }
+    public static GameObject endPointp1 { get; set; }
+    public static GameObject endPointp2 { get; set; }
     public static bool enableCityNames { get; set; }
 }
