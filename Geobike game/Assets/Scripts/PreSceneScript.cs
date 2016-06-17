@@ -30,8 +30,12 @@ public class PreSceneScript : MonoBehaviour
     private LocationInfo firstLocation;
     private LocationInfo secondLocation;
 
+    private float time;
+
     private void Start()
     {
+
+
         onceLeft = false;
         onceRight = false;
 
@@ -88,8 +92,10 @@ public class PreSceneScript : MonoBehaviour
             onceRight = true;
             drawFastestRoute(startNodeRight, endNodeRight, lineRendererRight, LocationsRight);
         }
-        if (Input.GetKeyDown(KeyCode.Z))
+
+        if (startNodeLeft != null && endNodeLeft != null && !onceLeft && startNodeRight != null && endNodeRight != null && !onceRight)
         {
+            
             SceneManager.LoadScene("main scene");
         }
 
