@@ -259,7 +259,7 @@ public class PlayerMovement : MonoBehaviour
             float rpm1 = pressesp1 * 30;
             float ms1 = 0.45f * rpm1 * 0.10472f;
             float kmh1 = ms1 * 3.6f;
-            speedp1.text = Mathf.Round(kmh1 * 10) / 10 + "KM/h";
+            speedp1.text = Mathf.Round(kmh1 * 10 * 2) / 10 + "KM/h";
             Debug.Log("speed p1 spekkoen: " + kmh1);
             pressesp1 = 0;
         }
@@ -268,7 +268,7 @@ public class PlayerMovement : MonoBehaviour
             float rpm2 = pressesp2 * 30;
             float ms2 = 0.45f * rpm2 * 0.10472f;
             float kmh2 = ms2 * 3.6f;
-            speedp2.text = Mathf.Round(kmh2 * 10) / 10 + "KM/h";
+            speedp2.text = Mathf.Round(kmh2 * 10 * 2) / 10 + "KM/h";
             Debug.Log("speed p2 scharnier: " + kmh2);
             pressesp2 = 0;
         }
