@@ -326,8 +326,21 @@ public class PlayerMovement : MonoBehaviour
         {
             if (nodeSelectionMoment)
             {
+<<<<<<< HEAD
                 placesplayer1.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Joystick1Button0))
+=======
+                Debug.Log(GameSettings.enableCityNames);
+                if (GameSettings.enableCityNames)
+                {                    
+                    placesplayer1.SetActive(true);
+                }
+                else
+                {
+                    placesplayer1.SetActive(false);
+                }
+                if (Input.GetKeyDown(KeyCode.UpArrow))
+>>>>>>> parent of 079914f... AmersfOOrt
                 {
                     if (loopNodes == player1nodes.Count)
                     {
