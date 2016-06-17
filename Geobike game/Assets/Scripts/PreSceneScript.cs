@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class PreSceneScript : MonoBehaviour
 {
@@ -86,6 +87,10 @@ public class PreSceneScript : MonoBehaviour
         {
             onceRight = true;
             drawFastestRoute(startNodeRight, endNodeRight, lineRendererRight, LocationsRight);
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            SceneManager.LoadScene("main scene");
         }
 
     }
