@@ -172,7 +172,6 @@ public class PreSceneScript : MonoBehaviour
 
         vertexForList.Add(new Vertex("haa", 35.7f));
         vertexForList.Add(new Vertex("ams", 42.5f));
-        vertexForList.Add(new Vertex("lel", 74.6f));
         vertexForList.Add(new Vertex("sne", 95.6f));
         graphAslist.Add(new GraphNode("alk", new ArrayList(vertexForList)));
         vertexForList.Clear();
@@ -347,12 +346,7 @@ public class PreSceneScript : MonoBehaviour
         graphAslist.Add(new GraphNode("alm", new ArrayList(vertexForList)));
         vertexForList.Clear();
 
-
-
-
-
         vertexForList.Add(new Vertex("alm", 30.5f));
-        vertexForList.Add(new Vertex("alk", 74.6f));
         vertexForList.Add(new Vertex("zwo", 49.6f));
         graphAslist.Add(new GraphNode("lel", new ArrayList(vertexForList)));
         vertexForList.Clear();
