@@ -52,11 +52,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (nodeSelectionMoment)
             {
-<<<<<<< HEAD
                 if (StaticObjects.enableCityNames)
-=======
-                if (GameSettings.enableCityNames)
->>>>>>> origin/master
                 {
                     placesplayer1.SetActive(true);
                 }
