@@ -32,18 +32,34 @@ public class PlayerMovement : MonoBehaviour
     public GameObject placesplayer1;
     public GameObject placesplayer2;
 
+    public GameObject locations;
+
     // Use this for initialization
     void Start()
     {
-        InvokeRepeating("CalculateSpeed", 0, 2);
-        selectedNodePlayer1 = GameObject.Find("Location-Almelo 1");
-        transform.position = selectedNodePlayer1.transform.position;
+        //player 1
+        InvokeRepeating("CalculateSpeed", 0, 2);   
         inNode = false;
         nodeSelectionMoment = true;
-        dijkstra = new Dijkstra();
+        dijkstra = StaticObjects.dijkstraInstance;
         player1Camera = GameObject.Find("Player 1 Camera");
         loopNodes = 1;
         //neighbourNodes = new List<string>();
+
+        string player1LocationToStart = "Location-";
+        foreach(Transform location in locations.GetComponent<Transform>())
+        {
+            if(location.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.startPointp1)
+            {
+                player1LocationToStart += StaticObjects.startPointp1;
+                player1LocationToStart += " 1";
+            }
+        }
+
+        selectedNodePlayer1 = GameObject.Find(player1LocationToStart);
+        //selectedNodePlayer1 = GameObject.Find("Location-Almelo 1");
+
+        transform.position = selectedNodePlayer1.transform.position;
     }
 
     void Update()
@@ -206,11 +222,8 @@ public class PlayerMovement : MonoBehaviour
 
                 if (nodeSelector == null && !GameObject.FindWithTag("NodeSelector"))
                 {
-                    nodeSelector =
-                        Instantiate(Resources.Load("NodeSelector"), new Vector3(0, 0, 0), Quaternion.identity) as
-                            GameObject;
-                    List<string> neighbourNodes =
-                        dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().id);
+                    nodeSelector = Instantiate(Resources.Load("NodeSelector"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+                    List<string> neighbourNodes = dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().id);
 
                     player1nodes = new List<GameObject>();
                     foreach (GameObject node in GameObject.FindGameObjectsWithTag("Node"))

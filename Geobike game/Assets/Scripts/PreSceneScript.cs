@@ -9,6 +9,7 @@ public class PreSceneScript : MonoBehaviour
     public GameObject LocationsRight;
     public Material lineColor;
     public Dijkstra dijkstra;
+    public float maxTime;
 
     private GameObject selectorSprite;
 
@@ -30,11 +31,12 @@ public class PreSceneScript : MonoBehaviour
     private LocationInfo firstLocation;
     private LocationInfo secondLocation;
 
-    private float time;
+    private float elapsedTime;
 
     private void Start()
     {
 
+        elapsedTime = 0.0f;
 
         onceLeft = false;
         onceRight = false;
@@ -93,10 +95,20 @@ public class PreSceneScript : MonoBehaviour
             drawFastestRoute(startNodeRight, endNodeRight, lineRendererRight, LocationsRight);
         }
 
-        if (startNodeLeft != null && endNodeLeft != null && !onceLeft && startNodeRight != null && endNodeRight != null && !onceRight)
+        if (startNodeLeft != null && endNodeLeft != null && startNodeRight != null && endNodeRight != null)
         {
-            
-            SceneManager.LoadScene("main scene");
+            Debug.Log(elapsedTime);
+            elapsedTime += Time.deltaTime;
+
+            if(elapsedTime >= maxTime)
+            {
+                StaticObjects.startPointp1 = startNodeLeft.GetComponent<LocationInfo>().fullName;
+                StaticObjects.startPointp2 = startNodeRight.GetComponent<LocationInfo>().fullName;
+                StaticObjects.endPointp1 = endNodeLeft.GetComponent<LocationInfo>().fullName;
+                StaticObjects.endPointp2 = endNodeRight.GetComponent<LocationInfo>().fullName;
+                StaticObjects.dijkstraInstance = dijkstra;
+                SceneManager.LoadScene("main scene");
+            }
         }
 
     }
@@ -171,11 +183,6 @@ public class PreSceneScript : MonoBehaviour
             Debug.Log("Node gevonden! Hit " + hitCollider.transform.name + " x" + hitCollider.transform.position.x + " y " +
                   hitCollider.transform.position.y + " GameObject:" + hitCollider);
         }
-    }
-
-    private void setUpDijkstra()
-    {
-        
     }
 
     private void drawFastestRoute(GameObject startNode, GameObject endNode, LineRenderer lineRenderer, GameObject locations)
