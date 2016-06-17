@@ -43,8 +43,8 @@ public class PreSceneScript : MonoBehaviour
         lineRendererRight.SetColors(c1, c2);
         lineRendererRight.SetWidth(0.05f, 0.05f);
         lineRendererRight.sortingLayerName = "Player";
-        
-        dijkstra = Dijkstra.Instance;
+
+        dijkstra = new Dijkstra();
 
         int numberOfLocations = LocationsLeft.transform.childCount;
         List<LocationInfo> locationNames = new List<LocationInfo>();

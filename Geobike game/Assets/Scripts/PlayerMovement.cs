@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         //selectedNodePlayer1 = GameObject.Find("Location-Enschede 1");
         travel = false;
         nodeSelectionMoment = true;
-        dijkstra = Dijkstra.Instance;
+        dijkstra = new Dijkstra();
         //setUpDijkstra();
         player1Camera = GameObject.Find("Player 1 Camera");
         loopNodes = 1;
