@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     placesplayer1.SetActive(false);
                 }
-                if (Input.GetKeyDown(KeyCode.UpArrow))
+                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Joystick1Button0))
                 {
                     if (loopNodes == player1nodes.Count)
                     {
@@ -71,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
                     loopNodes++;
                 }
 
-                if (Input.GetKeyDown(KeyCode.KeypadEnter))
+                if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Joystick1Button3))
                 {
                     foreach (GameObject node in player1nodes)
                     {
@@ -104,15 +104,7 @@ public class PlayerMovement : MonoBehaviour
                 transform.position += (selectedNodePlayer1.transform.position - transform.position).normalized * speed *
                                       Time.deltaTime * 10;
 
-                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                {
-                    transform.position += Vector3.left * speed * Time.deltaTime * 10;
-                }
-                if (Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    transform.position += Vector3.right * speed * Time.deltaTime * 10;
-                }
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button2))
                 {
                     speed = speed + speedmult;
                     pressesp1++;
