@@ -9,8 +9,8 @@ public class Gamemanager : MonoBehaviour
     public Text timep1;
     public Text timep2;
 
-    string minutes;
-    string seconds;
+    string minutes = "";
+    string seconds = "";
 
     public Gamemanager()
     {
@@ -20,8 +20,6 @@ public class Gamemanager : MonoBehaviour
     public void StartTimer()
     {
         timer = 300.0f;
-        string minutes = Mathf.Floor(timer / 60).ToString("00");
-        string seconds = Mathf.Floor(timer % 60).ToString("00");
     }
 
     public void StopTimer()
@@ -40,16 +38,23 @@ public class Gamemanager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-	    
-	}
-
-    void FixedUpdate()
-    {
-        if (timer > 0)
+        if (timer > 0f)
         {
             timer -= Time.deltaTime;
+            minutes = Mathf.Floor(timer / 60).ToString("00");
+            seconds = Mathf.Floor(timer % 60).ToString("00");
             timep1.text = minutes + ":" + seconds;
             timep2.text = minutes + ":" + seconds;
         }
+        else
+        {
+            timep1.text = "00:00";
+            timep2.text = "00:00";
+        }
+    }
+
+    void FixedUpdate()
+    {
+        
     }
 }
