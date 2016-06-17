@@ -40,12 +40,12 @@ public class PlayerMovement : MonoBehaviour
         travel = false;
         nodeSelectionMoment = true;
         dijkstra = new Dijkstra();
-        setUpDijkstra();
+        //setUpDijkstra();
         player1Camera = GameObject.Find("Player 1 Camera");
         loopNodes = 1;
     }
 
-    private void setUpDijkstra()
+    /*private void setUpDijkstra()
     {
         //DE lijst
         List<GraphNode> graphAslist = new List<GraphNode>();
@@ -230,10 +230,6 @@ public class PlayerMovement : MonoBehaviour
         graphAslist.Add(new GraphNode("alm", new ArrayList(vertexForList)));
         vertexForList.Clear();
 
-
-
-
-
         vertexForList.Add(new Vertex("alm", 30.5f));
         vertexForList.Add(new Vertex("alk", 74.6f));
         vertexForList.Add(new Vertex("zwo", 49.6f));
@@ -317,7 +313,7 @@ public class PlayerMovement : MonoBehaviour
         dijkstra = new Dijkstra();
 
         dijkstra.SetGraph(graphAslist);
-    }
+    }*/
 
     void Update()
     {
