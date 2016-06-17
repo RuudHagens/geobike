@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Gamemanager : MonoBehaviour
 {
 
-    private float Timer = 0.0f;
+    private float timer = 0.0f;
+    public Text timep1;
+    public Text timep2;
+
+    string minutes;
+    string seconds;
 
     public Gamemanager()
     {
@@ -13,12 +19,14 @@ public class Gamemanager : MonoBehaviour
 
     public void StartTimer()
     {
-        Timer = 0.0f;
+        timer = 300.0f;
+        string minutes = Mathf.Floor(timer / 60).ToString("00");
+        string seconds = Mathf.Floor(timer % 60).ToString("00");
     }
 
     public void StopTimer()
     {
-        string finaltime = Timer.ToString();
+        string finaltime = timer.ToString();
 
         Debug.Log(finaltime);
     }
@@ -26,7 +34,7 @@ public class Gamemanager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-	    
+        StartTimer();
 	}
 	
 	// Update is called once per frame
@@ -37,8 +45,11 @@ public class Gamemanager : MonoBehaviour
 
     void FixedUpdate()
     {
-        StartTimer();
-
-        Timer += Time.deltaTime;
+        if (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            timep1.text = minutes + ":" + seconds;
+            timep2.text = minutes + ":" + seconds;
+        }
     }
 }
