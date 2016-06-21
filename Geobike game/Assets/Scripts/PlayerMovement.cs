@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float speedmult = 0.15f;
     public Collider2D collider;
     public bool player1;
-    public GameObject selectedNodePlayer1;
+    public GameObject selectedNodePlayer;
     public bool inNode;
     private GameObject nodeSelector;
     private GameObject player1Camera;
@@ -44,8 +44,20 @@ public class PlayerMovement : MonoBehaviour
         dijkstra = StaticObjects.dijkstraInstance;
         player1Camera = GameObject.Find("Player 1 Camera");
         loopNodes = 1;
+
+        selectedNodePlayer = null;
+
+        foreach (Transform location in locations.GetComponentInChildren<Transform>())
+        {
+            Debug.Log(location.gameObject.GetComponent<LocationInfo>().fullName);
+            if (location.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.startPointp1)
+            {
+                selectedNodePlayer = location.gameObject;
+            }
+        }
         //neighbourNodes = new List<string>();
 
+        /*
         string player1LocationToStart = "Location-";
         foreach(Transform location in locations.GetComponent<Transform>())
         {
@@ -56,10 +68,18 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        selectedNodePlayer1 = GameObject.Find(player1LocationToStart);
+        selectedNodePlayer = GameObject.Find(player1LocationToStart);*/
         //selectedNodePlayer1 = GameObject.Find("Location-Almelo 1");
 
-        transform.position = selectedNodePlayer1.transform.position;
+        if(selectedNodePlayer != null)
+        {
+            transform.position = selectedNodePlayer.transform.position;
+        }
+        else
+        {
+            Debug.Log("error");
+        }
+        
     }
 
     void Update()
@@ -93,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
                     {
                         if (nodeSelector != null && node.transform.position == nodeSelector.transform.position)
                         {
-                            selectedNodePlayer1 = node;
+                            selectedNodePlayer = node;
                             Destroy(nodeSelector);
                             nodeSelector = null;
                             player1Camera.GetComponent<Camera>().orthographicSize = 1.65f;
@@ -117,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
                     speed = 0f;
                 }
 
-                transform.position += (selectedNodePlayer1.transform.position - transform.position).normalized * speed *
+                transform.position += (selectedNodePlayer.transform.position - transform.position).normalized * speed *
                                       Time.deltaTime * 10;
 
                 if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button2))
@@ -223,7 +243,7 @@ public class PlayerMovement : MonoBehaviour
                 if (nodeSelector == null && !GameObject.FindWithTag("NodeSelector"))
                 {
                     nodeSelector = Instantiate(Resources.Load("NodeSelector"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
-                    List<string> neighbourNodes = dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().id);
+                    List<string> neighbourNodes = dijkstra.GetNodesAroundNode(selectedNodePlayer.GetComponent<LocationInfo>().id);
 
                     player1nodes = new List<GameObject>();
                     foreach (GameObject node in GameObject.FindGameObjectsWithTag("Node"))
@@ -244,7 +264,7 @@ public class PlayerMovement : MonoBehaviour
                     nodeSelector.transform.position = initialNode.transform.position;
                     player1Camera.GetComponent<Camera>().orthographicSize = 4.5f;
                     nodeSelectionMoment = true;
-                    selectedNodePlayer1 = null;
+                    selectedNodePlayer = null;
                     //player1nodes.Clear();
                     //dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().fullName);
                     //foreach (string s in dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().fullName))
