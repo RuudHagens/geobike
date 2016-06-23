@@ -9,9 +9,9 @@ public class GUImanager : MonoBehaviour
     public Text assignmentText;
 
     // Use this for initialization
-    void Start ()
+    void Awake ()
     {
-        DontDestroyOnLoad(transform.gameObject);
+        //DontDestroyOnLoad(transform.gameObject);
         instance = this;
         assignmentText.text = "";
     }

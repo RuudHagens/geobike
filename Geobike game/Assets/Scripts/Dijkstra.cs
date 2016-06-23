@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// This class is used to calculate the shortest path between two nodes, given a graph map.
@@ -9,29 +10,17 @@ public class Dijkstra
     /// <summary>
     /// A graph list, containing a list of Node objects.
     /// </summary>
-    private List<GraphNode> Graph
-    {
-        get;
-        set;
-    }
+    private List<GraphNode> Graph { get; set; }
 
     /// <summary>
     /// A queue as a minheap.
     /// </summary>
-    private MinHeap Queue
-    {
-        get;
-        set;
-    }
+    private MinHeap Queue { get; set; }
 
     /// <summary>
     /// A previous list, containing a list of strings.
     /// </summary>
-    private Dictionary<string, string> Previous
-    {
-        get;
-        set;
-    }
+    private Dictionary<string, string> Previous { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Dijkstra"/> class.
@@ -55,8 +44,47 @@ public class Dijkstra
     /// </summary>
     public void SetGraph()
     {
-        List<string> listOfNodes = new List<string>() {"alk", "haa", "ams", "lei", "dha", "del", "rot", "utr", "dor", "zie", "mid", "ter", "goe", "roo", "bre", "til",
-         "ein", "ven", "roe", "maa", "hrl", "bos", "nij", "arn", "ame", "alm", "lel", "ens", "alo", "ape", "zwo", "hoo", "emm", "ass", "gro", "hee", "sne", "lee"};
+        List<string> listOfNodes = new List<string>()
+        {
+            "alk",
+            "haa",
+            "ams",
+            "lei",
+            "dha",
+            "del",
+            "rot",
+            "utr",
+            "dor",
+            "zie",
+            "mid",
+            "ter",
+            "goe",
+            "roo",
+            "bre",
+            "til",
+            "ein",
+            "ven",
+            "roe",
+            "maa",
+            "hrl",
+            "bos",
+            "nij",
+            "arn",
+            "ame",
+            "alm",
+            "lel",
+            "ens",
+            "alo",
+            "ape",
+            "zwo",
+            "hoo",
+            "emm",
+            "ass",
+            "gro",
+            "hee",
+            "sne",
+            "lee"
+        };
 
         //DE lijst
         List<GraphNode> graphAslist = MakeListOfGraphNodes(listOfNodes);
@@ -136,37 +164,64 @@ public class Dijkstra
         Graph = graphAslist;
     }
 
+    /// <summary>
+    /// Method to make a list of graph nodes from a list of graph names.
+    /// </summary>
+    /// <param name="graphNodes">A list of graph node names.</param>
+    /// <returns>Returns a list of graph nodes.</returns>
     private static List<GraphNode> MakeListOfGraphNodes(List<string> graphNodes)
     {
-        if(graphNodes.Count > 0)
-        {
-            List<GraphNode> listOfEmptyGraphNodes = new List<GraphNode>();
-
-            foreach (string node in graphNodes)
-            {
-                listOfEmptyGraphNodes.Add(new GraphNode(node, new List<Vertex>()));
-            }
-
-            return listOfEmptyGraphNodes;
-        }
-        return null;
+        return graphNodes.Count > 0
+            ? graphNodes.Select(node => new GraphNode(node, new List<Vertex>())).ToList()
+            : null;
     }
 
-    private static List<GraphNode> AddConnectionsBetweenGraphNodes(List<GraphNode> inputList, string firstLocation, string secondlocation, float distance)
+    /// <summary>
+    /// Method to add a connection between two graphnodes when initializing the graph list.
+    /// </summary>
+    /// <param name="inputList">A list of graphnodes.</param>
+    /// <param name="firstLocation">The first node name.</param>
+    /// <param name="secondlocation">The seocnd node name.</param>
+    /// <param name="distance">The distance between the two given nodes.</param>
+    /// <returns>Returns the final list of graphnodes.</returns>
+    private static List<GraphNode> AddConnectionsBetweenGraphNodes(List<GraphNode> inputList, string firstLocation,
+        string secondlocation, float distance)
     {
-        foreach(GraphNode node in inputList)
+        foreach (GraphNode node in inputList)
         {
-            if(string.Equals(node.Name, firstLocation))
+            if (string.Equals(node.Name, firstLocation))
             {
                 node.Vertices.Add(new Vertex(secondlocation, distance));
             }
-            if(string.Equals(node.Name, secondlocation))
+            if (string.Equals(node.Name, secondlocation))
             {
                 node.Vertices.Add(new Vertex(firstLocation, distance));
             }
         }
 
         return inputList;
+    }
+
+    /// <summary>
+    /// Method to get the total distance cost of a given path.
+    /// </summary>
+    /// <param name="nodesList">A list of node names.</param>
+    /// <returns>Returns the total length of the given path as a float.</returns>
+    public float GetTotalCostOfNodes(List<string> nodesList)
+    {
+        // Temporarely store the total cost. Initialize to 0.
+        float totalCost = 0;
+
+        // Loop through the list of node names to find the cost.
+        for (int i = 0; i < nodesList.Count - 1; i++)
+        {
+            // Add the found cost to the total cost.
+            totalCost +=
+                this.Graph.Find(g => g.Name == nodesList[i]).Vertices.Find(g => g.Name == nodesList[i + 1]).Cost;
+        }
+
+        // Return the total cost.
+        return totalCost;
     }
 
     /// <summary>
@@ -264,7 +319,7 @@ public class Dijkstra
 
                 // Check if the distance of the vertex + the vertex distance cost is less
                 // and the distance of the vertex.
-                if(aDistance < nDistance)
+                if (aDistance < nDistance)
                 {
                     // Update the vertex.
                     this.Queue.Update(vertex.Name, aDistance);
@@ -273,8 +328,7 @@ public class Dijkstra
                     this.Previous[vertex.Name] = u;
                 }
             }
-        }
-        while (!string.IsNullOrEmpty(u));
+        } while (!string.IsNullOrEmpty(u));
 
         // Return an empty list when a path has not been found.
         return new List<string>();
@@ -297,7 +351,7 @@ public class Dijkstra
         float totalLength = 0;
 
         // Loop through all path nodes.
-        for (int i = 0; i < path.Count-1; i++)
+        for (int i = 0; i < path.Count - 1; i++)
         {
             // Store the start and end node.
             string start = path[i];
@@ -327,31 +381,17 @@ public class Dijkstra
         GraphNode foundNode = this.Graph.Find(n => n.Name == nodeName);
 
         // Get the index of the nodename in this.Graph
-        foreach (GraphNode node in this.Graph)
+        foreach (GraphNode node in this.Graph.Where(node => string.Equals(nodeName, node.Name)))
         {
-            if (string.Equals(nodeName, node.Name))
-            {
-                graphNode = node;
-            }
+            graphNode = node;
         }
 
         if (graphNode != null)
         {
-            // Create an empty list to contain the names of neighbour nodes.
-            returnedList = new List<string>();
-
-            // Loop through all vertices.
-            //foreach (Vertex v in (ArrayList)this.Graph[indexOfNode])
-            foreach (Vertex v in foundNode.Vertices)
-            {
-                // Add the name of the vertex to returnedList/
-                returnedList.Add(v.Name);
-            }
-
-            // Return the list of neighbour nodes.
-            return returnedList;
+            // Return a list of neighbour nodes.
+            return foundNode.Vertices.Select(v => v.Name).ToList();
         }
-      
+
 
         // Return the list of neighbour nodes
         return returnedList;
@@ -368,29 +408,17 @@ public class MinHeap
     /// <summary>
     /// The min node name.
     /// </summary>
-    private string Min
-    {
-        get;
-        set;
-    }
+    private string Min { get; set; }
 
     /// <summary>
     /// A list of roots, stored as strings.
     /// </summary>
-    private List<string> Roots
-    {
-        get;
-        set;
-    }
+    private List<string> Roots { get; set; }
 
     /// <summary>
     /// A list of nodes, stored as Node objects.
     /// </summary>
-    private List<Node> Nodes
-    {
-        get;
-        set;
-    }
+    private List<Node> Nodes { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MinHeap"/> class.
@@ -465,18 +493,18 @@ public class MinHeap
 
             if (depth < maxDepth)
             {
-                ((ArrayList)depths[depth]).Add(node);
+                ((ArrayList) depths[depth]).Add(node);
             }
         }
 
         // Consolidate
         for (int d = 0; d <= maxDepth; d++)
         {
-            while (((ArrayList)depths[d]).Count > 1)
+            while (((ArrayList) depths[d]).Count > 1)
             {
-                string first = (string)((ArrayList)depths[d])[0];
-                string second = (string)((ArrayList)depths[d])[1];
-                ((ArrayList)depths[d]).RemoveRange(0, 2);
+                string first = (string) ((ArrayList) depths[d])[0];
+                string second = (string) ((ArrayList) depths[d])[1];
+                ((ArrayList) depths[d]).RemoveRange(0, 2);
 
                 int newDepth = d + 1;
                 int pos;
@@ -492,19 +520,21 @@ public class MinHeap
 
                     if (newDepth <= maxDepth)
                     {
-                        ((ArrayList)depths[newDepth]).Add(first);
+                        ((ArrayList) depths[newDepth]).Add(first);
                     }
 
                     // Find position in roots where adopted node is.
                     pos = this.Roots.IndexOf(second);
-                } else {
+                }
+                else
+                {
                     secondNode.Depth = newDepth;
                     secondNode.Children.Add(firstNode.NodeName);
                     firstNode.Parent = secondNode.NodeName;
 
                     if (newDepth <= maxDepth)
                     {
-                        ((ArrayList)depths[newDepth]).Add(second);
+                        ((ArrayList) depths[newDepth]).Add(second);
                     }
 
                     // Find position in roots where adopted node is.
@@ -559,7 +589,7 @@ public class MinHeap
                 {
                     this.Min = foundNode.NodeName;
                 }
-            }       
+            }
         }
 
         // Other stuff
@@ -589,10 +619,8 @@ public class MinHeap
         if (foundNode == null) return;
 
         // Move children to be children of the parent.
-        foreach (string child in foundNode.Children)
+        foreach (Node foundChildNode in foundNode.Children.Select(child => this.Nodes.Find(n => n.NodeName == child)))
         {
-            Node foundChildNode = this.Nodes.Find(n => n.NodeName == child);
-
             if (foundChildNode.Parent != null)
             {
                 foundChildNode.Parent = foundNode.Parent;
@@ -610,22 +638,21 @@ public class MinHeap
         if (string.IsNullOrEmpty(parent))
         {
             int indexFoundRoot = this.Roots.IndexOf(node);
-            if(indexFoundRoot != -1)
+            if (indexFoundRoot != -1)
             {
                 this.Roots.RemoveAt(indexFoundRoot);
             }
         }
-        else {
+        else
+        {
             // Go up the parents and decrease their depth.
             while (parent != null)
             {
                 Node foundNode2 = this.Nodes.Find(n => n.NodeName == node);
 
-                if (foundNode2 != null)
-                {
-                    foundNode2.Depth--;
-                    parent = foundNode2.Parent;
-                }
+                if (foundNode2 == null) continue;
+                foundNode2.Depth--;
+                parent = foundNode2.Parent;
             }
         }
     }
@@ -639,12 +666,7 @@ public class MinHeap
     {
         Node foundNode = this.Nodes.Find(n => n.NodeName == node);
 
-        if (foundNode != null)
-        {
-            return foundNode.Distance;
-        }
-
-        return float.PositiveInfinity;
+        return foundNode != null ? foundNode.Distance : float.PositiveInfinity;
     }
 }
 
@@ -656,20 +678,12 @@ public class GraphNode
     /// <summary>
     /// Gets the name of the node.
     /// </summary>
-    public string Name
-    {
-        get;
-        private set;
-    }
+    public string Name { get; private set; }
 
     /// <summary>
     /// Gets the list of vertices of the node.
     /// </summary>
-    public List<Vertex> Vertices
-    {
-        get;
-        private set;
-    }
+    public List<Vertex> Vertices { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GraphNode"/> class.
@@ -691,20 +705,12 @@ public class Vertex
     /// <summary>
     /// Gets the name of the vertex.
     /// </summary>
-    public string Name
-    {
-        get;
-        private set;
-    }
+    public string Name { get; private set; }
 
     /// <summary>
     /// Gets the cost (length) of the vertex.
     /// </summary>
-    public float Cost
-    {
-        get;
-        private set;
-    }
+    public float Cost { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Vertex"/> class.
@@ -726,47 +732,27 @@ public class Node
     /// <summary>
     /// Gets or sets the depth as an int.
     /// </summary>
-    public int Depth
-    {
-        get;
-        set;
-    }
+    public int Depth { get; set; }
 
     /// <summary>
     /// Gets or sets the parent node name.
     /// </summary>
-    public string Parent
-    {
-        get;
-        set;
-    }
+    public string Parent { get; set; }
 
     /// <summary>
     /// Gets the node name.
     /// </summary>
-    public string NodeName
-    {
-        get;
-        private set;
-    }
+    public string NodeName { get; private set; }
 
     /// <summary>
     /// Gets the distance as a float.
     /// </summary>
-    public float Distance
-    {
-        get;
-        private set;
-    }
+    public float Distance { get; private set; }
 
     /// <summary>
     /// Gets the children node names.
     /// </summary>
-    public List<string> Children
-    {
-        get;
-        private set;
-    }
+    public List<string> Children { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Node"/> instance.

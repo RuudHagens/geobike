@@ -33,6 +33,8 @@ public class Gamemanager : MonoBehaviour
 	void Start ()
     {
         StartTimer();
+
+        GUImanager.instance.setTargetText();
 	}
 	
 	// Update is called once per frame
