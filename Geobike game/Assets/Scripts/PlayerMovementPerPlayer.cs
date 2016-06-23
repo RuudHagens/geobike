@@ -12,9 +12,13 @@ public class PlayerMovementPerPlayer : MonoBehaviour
     public GameObject playerCamera;  
     public GameObject locationLabels;
     public GameObject locations;
-    public KeyCode Cycling;
-    public KeyCode RightSteeringWheel;
-    public KeyCode LeftSteeringWheel;
+    public KeyCode cycling;
+    public KeyCode rightSteeringWheel;
+    public KeyCode leftSteeringWheel;
+
+    public KeyCode cyclingFromKeyBoard;
+    public KeyCode RightSteeringWheelFromKeyBoard;
+    public KeyCode LeftSteeringWheelFromKeyBoard;
 
     private int loopNodes;
     private float speed = 0f;
@@ -63,7 +67,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
         {
             locationLabels.SetActive(StaticObjects.enableCityNames);
 
-            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(RightSteeringWheel))
+            if (Input.GetKeyDown(RightSteeringWheelFromKeyBoard) || Input.GetKeyDown(rightSteeringWheel))
             {
                 if (loopNodes == playerNodes.Count)
                 {
@@ -74,7 +78,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
                 loopNodes++;
             }
 
-            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(LeftSteeringWheel))
+            if (Input.GetKeyDown(LeftSteeringWheelFromKeyBoard) || Input.GetKeyDown(leftSteeringWheel))
             {
                 foreach (GameObject node in playerNodes)
                 {
@@ -108,7 +112,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
             transform.position += (selectedNodePlayer.transform.position - transform.position).normalized * speed *
                                   Time.deltaTime * 10;
 
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(Cycling))
+            if (Input.GetKeyDown(cyclingFromKeyBoard) || Input.GetKeyDown(cycling))
             {
                 speed = speed + speedmult;
                 presses++;
