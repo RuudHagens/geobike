@@ -64,7 +64,8 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("error");
         }
-        
+
+        GUImanager.instance.setTargetText();
     }
 
     void Update()
