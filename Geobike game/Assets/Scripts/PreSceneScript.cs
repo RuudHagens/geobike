@@ -38,8 +38,11 @@ public class PreSceneScript : MonoBehaviour
 
     private void Update()
     {
-        MoveSelector();
-
+        if(!done)
+        {
+            MoveSelector();
+        }
+        
         if (startNode != null)
         {
             done = true;
