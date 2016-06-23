@@ -44,11 +44,11 @@ public class PreSceneScript : MonoBehaviour
 
         determineStartAndEnd();
 
-        GUImanager.instance.setAssignmentText(firstLocation.fullName, secondLocation.fullName);
-
         StaticObjects.startPoint = firstLocation.fullName;
         StaticObjects.endPoint = secondLocation.fullName;
         StaticObjects.dijkstraInstance = dijkstra;
+
+        GUImanager.instance.setAssignmentText();
     }
 
     private void Update()

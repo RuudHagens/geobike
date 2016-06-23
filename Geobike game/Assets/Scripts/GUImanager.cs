@@ -11,6 +11,7 @@ public class GUImanager : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        DontDestroyOnLoad(transform.gameObject);
         instance = this;
         assignmentText.text = "";
     }
@@ -21,8 +22,13 @@ public class GUImanager : MonoBehaviour
         //GameSettings.enableCityNames = enableNames.isOn;
     }
 
-    public void setAssignmentText(string firstLocation, string secondLocation)
+    public void setAssignmentText()
     {
-        assignmentText.text = "Ga van " + firstLocation + " naar " + secondLocation + ".\n" + "Selecteer " + firstLocation + " om te beginnen.";
+        assignmentText.text = "Ga van " + StaticObjects.startPoint + " naar " + StaticObjects.endPoint + ".\n" + "Selecteer " + StaticObjects.startPoint + " om te beginnen.";
+    }
+
+    public void setTargetText()
+    {
+        assignmentText.text = "Ga naar: " + StaticObjects.endPoint + ".";
     }
 }
