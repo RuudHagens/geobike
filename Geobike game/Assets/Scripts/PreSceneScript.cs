@@ -1,161 +1,84 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
+
 
 public class PreSceneScript : MonoBehaviour
 {
-    public GameObject LocationsLeft;
-    public GameObject LocationsRight;
-    public Material lineColor;
-    public Dijkstra dijkstra;
-    public float maxTime;
+    public GameObject locations;
+
+    public KeyCode RightSteeringWheel;
+    public KeyCode LeftSteeringWheel;
 
     private GameObject selectorSprite;
 
-    private GameObject startNodeLeft;
+    private GameObject startNode;
 
-    private GameObject startNodeRight;
+    private int loopNodes;
 
-    //public Color c1 = Color.black;
-    //public Color c2 = Color.black;
+    public bool done;
 
-    private bool onceLeft = false;
-    private bool onceRight = false;
-
-    private LocationInfo firstLocation;
-    private LocationInfo secondLocation;
-
-    private float elapsedTime;
+    private GameObject nodeSelector;
+    private List<GameObject> playerNodes;
 
     private void Start()
     {
-        elapsedTime = 0.0f;
+        done = false;
 
-        onceLeft = false;
-        onceRight = false;
+        playerNodes = new List<GameObject>();
 
-        //lineRendererLeft = LocationsLeft.GetComponent<LineRenderer>();
-        //lineRendererLeft.SetColors(c1, c2);
-        //lineRendererLeft.SetWidth(0.05f, 0.05f);
-        //lineRendererLeft.sortingLayerName = "Player";
+        foreach (Transform location in locations.GetComponentInChildren<Transform>())
+        {
+            playerNodes.Add(location.gameObject);
+        }
 
-        dijkstra = new Dijkstra();
-
-        DetermineStartAndEnd();
-
-        StaticObjects.startPoint = firstLocation.fullName;
-        StaticObjects.endPoint = secondLocation.fullName;
-        StaticObjects.dijkstraInstance = dijkstra;
-
-        GUImanager.instance.setAssignmentText();
+        nodeSelector = Instantiate(Resources.Load("NodeSelector"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        nodeSelector.transform.position = playerNodes[1].transform.position;
     }
 
     private void Update()
     {
-        SetupBegin();
+        MoveSelector();
 
-        if (startNodeLeft != null && !onceLeft)
+        if (startNode != null)
         {
-            onceLeft = true;
-            //drawFastestRoute(startNodeLeft, endNodeLeft, lineRendererLeft, LocationsLeft);
-        }
-
-        if (startNodeRight != null && !onceRight)
-        {
-            onceRight = true;
-            //drawFastestRoute(startNodeRight, endNodeRight, lineRendererRight, LocationsRight);
-        }
-
-        if (startNodeLeft != null && startNodeRight != null)
-        {
-            Debug.Log(elapsedTime);
-            elapsedTime += Time.deltaTime;
-
-            if(elapsedTime >= maxTime)
-            {
-                SceneManager.LoadScene("main scene");
-            }
-        }
-
-    }
-
-    private void DetermineStartAndEnd()
-    {
-        int numberOfLocations = LocationsLeft.transform.childCount;
-        List<LocationInfo> locationNames = new List<LocationInfo>();
-        foreach (Transform location in LocationsLeft.GetComponentInChildren<Transform>())
-        {
-            locationNames.Add(location.gameObject.GetComponent<LocationInfo>());
-        }
-        firstLocation = locationNames[Random.Range(0, numberOfLocations)];
-        secondLocation = null;
-
-        List<string> path = new List<string>();
-
-        while (secondLocation == null)
-        {
-            secondLocation = locationNames[Random.Range(0, numberOfLocations)];
-
-            path = dijkstra.GetPath(firstLocation.id, secondLocation.id);
-
-            if (path.Count < 4)
-            {
-                secondLocation = null;
-            }
+            done = true;
         }
     }
 
-    private void SetupBegin()
+    public void MoveSelector()
     {
-        if (Input.GetMouseButtonDown(0))
+        //locationLabels.SetActive(StaticObjects.enableCityNames);
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(RightSteeringWheel))
         {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D hitCollider = Physics2D.OverlapPoint(mousePosition);
-
-            Debug.Log("mouse pos " + mousePosition.x + " y " + mousePosition.y + " ");
-
-            if (hitCollider)
+            if (loopNodes == playerNodes.Count)
             {
-                if (hitCollider.CompareTag("Node"))
-                {
-                    Debug.Log("hit!");
+                loopNodes = 0;
+            }
 
-                    if (hitCollider.GetComponent<LocationInfo>().map == 1)
-                    {
-                        StoreNode(hitCollider, ref startNodeLeft);
-                    }
-                    else if (hitCollider.GetComponent<LocationInfo>().map == 2)
-                    {
-                        StoreNode(hitCollider, ref startNodeRight);
-                    }
-                }
-                else
+            nodeSelector.transform.position = playerNodes[loopNodes].transform.position;
+            loopNodes++;
+        }
+
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(LeftSteeringWheel))
+        {
+            foreach (GameObject node in playerNodes)
+            {
+                if (nodeSelector != null && node.transform.position == nodeSelector.transform.position)
                 {
-                    Debug.Log("Geen node gevonden. Hit " + hitCollider.transform.name + " x" + hitCollider.transform.position.x + " y " +
-                          hitCollider.transform.position.y);
+                    DrawSelection(nodeSelector);
+                    done = true;
+                    Destroy(nodeSelector);
+                    nodeSelector = null;
+                    loopNodes = 0;
                 }
             }
+            playerNodes.Clear();
         }
     }
 
-    private void StoreNode(Collider2D hit, ref GameObject startNode)
-    {
-        if (startNode == null)
-        {
-            if(hit.gameObject.GetComponent<LocationInfo>().fullName == firstLocation.fullName)
-            {
-                DrawSelection(hit);
-                startNode = hit.gameObject;
-            }
-        }
-        else
-        {
-            Debug.Log("Je hebt al een startpunt geselecteerd.");
-        }
-    }
-
-    private void DrawSelection(Collider2D hitCollider)
+    private void DrawSelection(GameObject hitCollider)
     {
         selectorSprite = Instantiate(Resources.Load("Selector"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
         if (selectorSprite != null)
@@ -164,31 +87,6 @@ public class PreSceneScript : MonoBehaviour
             position.x = hitCollider.transform.position.x;
             position.y = hitCollider.transform.position.y;
             selectorSprite.transform.position = position;
-
-            Debug.Log("Node gevonden! Hit " + hitCollider.transform.name + " x" + hitCollider.transform.position.x + " y " +
-                  hitCollider.transform.position.y + " GameObject:" + hitCollider);
         }
     }
-
-    /*private void drawFastestRoute(GameObject startNode, GameObject endNode, LineRenderer lineRenderer, GameObject locations)
-    {
-        string startNodeId = startNode.GetComponent<LocationInfo>().id;
-        string endNodeId = endNode.GetComponent<LocationInfo>().id;
-        List<string> fastestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
-
-        lineRenderer.SetVertexCount(fastestRoute.Count);
-        int newNodeOnLine = 0;
-
-        for (int i = 0; i < fastestRoute.Count; i++)
-        {
-            foreach (Transform location in locations.GetComponentInChildren<Transform>())
-            {
-                if (location.gameObject.GetComponent<LocationInfo>().id == fastestRoute[i])
-                {
-                    lineRenderer.SetPosition(i, location.position);
-                    newNodeOnLine++;
-                }
-            }
-        }
-    }*/
 }

@@ -18,7 +18,7 @@ public class Powerup : MonoBehaviour
 
     public void Pickup(Transform player)
     {
-        PlayerMovement scr = (PlayerMovement) player.GetComponent(typeof(PlayerMovement));
+        PlayerMovementPerPlayer scr = (PlayerMovementPerPlayer) player.GetComponent(typeof(PlayerMovementPerPlayer));
         scr.speedmult += speedMultiplier;
         StartCoroutine(Waiting());
         scr.speedmult -= speedMultiplier;
