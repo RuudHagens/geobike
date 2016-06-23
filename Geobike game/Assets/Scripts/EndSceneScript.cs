@@ -15,7 +15,7 @@ public class EndSceneScript : MonoBehaviour
 
     // Use this for initialization
     void Start () {
-	    dijkstra = new Dijkstra();
+        dijkstra = StaticObjects.dijkstraInstance; ;
 
         foreach (Transform location in locations.GetComponentInChildren<Transform>())
         {
