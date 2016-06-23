@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovementPerPlayer : MonoBehaviour
 {
@@ -133,6 +134,20 @@ public class PlayerMovementPerPlayer : MonoBehaviour
         if (other.gameObject.CompareTag("Node"))
         {
             inNode = true;
+
+            if(this.name == "Player 1")
+            {
+                StaticObjects.visitedLocationsPlayer1.Add(other.gameObject.GetComponent<LocationInfo>().id);
+            }
+            else if (this.name == "Player 2")
+            {
+                StaticObjects.visitedLocationsPlayer2.Add(other.gameObject.GetComponent<LocationInfo>().id);
+            }
+
+            if (other.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.endPoint)
+            {
+                SceneManager.LoadScene("end scene");
+            }
         }
     }
 
