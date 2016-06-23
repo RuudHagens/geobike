@@ -1,22 +1,75 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class EndSceneScript : MonoBehaviour
 {
+    public LineRenderer lineRenderer;
+    public LineRenderer lineRendererPlayer1;
+    public LineRenderer lineRendererPlayer2;
+    public GameObject locations;
+    public GameObject map;
 
     private Dijkstra dijkstra;
+    private GameObject startPoint;
+    private GameObject endPoint;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 	    dijkstra = new Dijkstra();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+        
+        // Testdata, dit later verwijderen
+	    StaticObjects.startPoint = "Emmen";
+        StaticObjects.endPoint = "Terneuzen";
 
-    /*private void drawFastestRoute(GameObject startNode, GameObject endNode, LineRenderer lineRenderer, GameObject locations)
+        foreach (Transform location in locations.GetComponentInChildren<Transform>())
+        {
+            // Testdata, dit later verwijderen
+            if (location.gameObject.GetComponent<LocationInfo>().fullName == "Maastricht")
+            {
+                StaticObjects.visitedLocationsPlayer1.Add(location.gameObject.GetComponent<LocationInfo>().id);
+            }
+
+            // Testdata, dit later verwijderen
+            if (location.gameObject.GetComponent<LocationInfo>().fullName == "Heerlen")
+            {
+                StaticObjects.visitedLocationsPlayer1.Add(location.gameObject.GetComponent<LocationInfo>().id);
+            }
+
+            // Testdata, dit later verwijderen
+            if (location.gameObject.GetComponent<LocationInfo>().fullName == "Roermond")
+            {
+                StaticObjects.visitedLocationsPlayer1.Add(location.gameObject.GetComponent<LocationInfo>().id);
+            }
+
+            // Testdata, dit later verwijderen
+            if (location.gameObject.GetComponent<LocationInfo>().fullName == "Haarlem")
+            {
+                StaticObjects.visitedLocationsPlayer2.Add(location.gameObject.GetComponent<LocationInfo>().id);
+            }
+
+            // Testdata, dit later verwijderen
+            if (location.gameObject.GetComponent<LocationInfo>().fullName == "Amsterdam")
+            {
+                StaticObjects.visitedLocationsPlayer2.Add(location.gameObject.GetComponent<LocationInfo>().id);
+            }
+
+            if (location.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.startPoint)
+            {
+                startPoint = location.gameObject;
+            }
+
+            if (location.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.endPoint)
+            {
+                endPoint = location.gameObject;
+            }
+        }
+
+        DrawFastestRoute(startPoint, endPoint, lineRenderer, locations);
+        DrawPlayerRoute(StaticObjects.visitedLocationsPlayer1, lineRendererPlayer1, locations);
+        DrawPlayerRoute(StaticObjects.visitedLocationsPlayer2, lineRendererPlayer2, locations);
+    }
+
+    private void DrawFastestRoute(GameObject startNode, GameObject endNode, LineRenderer lineRenderer, GameObject locations)
     {
         string startNodeId = startNode.GetComponent<LocationInfo>().id;
         string endNodeId = endNode.GetComponent<LocationInfo>().id;
@@ -36,5 +89,23 @@ public class EndSceneScript : MonoBehaviour
                 }
             }
         }
-    }*/
+    }
+
+    private void DrawPlayerRoute(List<string> visitedLocations, LineRenderer lineRenderer, GameObject locations)
+    {
+        lineRenderer.SetVertexCount(visitedLocations.Count);
+        int newNodeOnLine = 0;
+
+        for (int i = 0; i < visitedLocations.Count; i++)
+        {
+            foreach (Transform location in locations.GetComponentInChildren<Transform>())
+            {
+                if (location.gameObject.GetComponent<LocationInfo>().id == visitedLocations[i])
+                {
+                    lineRenderer.SetPosition(i, location.position);
+                    newNodeOnLine++;
+                }
+            }
+        }
+    }
 }

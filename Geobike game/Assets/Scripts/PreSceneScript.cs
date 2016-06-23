@@ -17,11 +17,8 @@ public class PreSceneScript : MonoBehaviour
 
     private GameObject startNodeRight;
 
-    //public Color c1 = Color.black;
-    //public Color c2 = Color.black;
-
-    private bool onceLeft = false;
-    private bool onceRight = false;
+    private bool onceLeft;
+    private bool onceRight;
 
     private LocationInfo firstLocation;
     private LocationInfo secondLocation;
@@ -34,11 +31,6 @@ public class PreSceneScript : MonoBehaviour
 
         onceLeft = false;
         onceRight = false;
-
-        //lineRendererLeft = LocationsLeft.GetComponent<LineRenderer>();
-        //lineRendererLeft.SetColors(c1, c2);
-        //lineRendererLeft.SetWidth(0.05f, 0.05f);
-        //lineRendererLeft.sortingLayerName = "Player";
 
         dijkstra = new Dijkstra();
 
@@ -169,26 +161,4 @@ public class PreSceneScript : MonoBehaviour
                   hitCollider.transform.position.y + " GameObject:" + hitCollider);
         }
     }
-
-    /*private void drawFastestRoute(GameObject startNode, GameObject endNode, LineRenderer lineRenderer, GameObject locations)
-    {
-        string startNodeId = startNode.GetComponent<LocationInfo>().id;
-        string endNodeId = endNode.GetComponent<LocationInfo>().id;
-        List<string> fastestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
-
-        lineRenderer.SetVertexCount(fastestRoute.Count);
-        int newNodeOnLine = 0;
-
-        for (int i = 0; i < fastestRoute.Count; i++)
-        {
-            foreach (Transform location in locations.GetComponentInChildren<Transform>())
-            {
-                if (location.gameObject.GetComponent<LocationInfo>().id == fastestRoute[i])
-                {
-                    lineRenderer.SetPosition(i, location.position);
-                    newNodeOnLine++;
-                }
-            }
-        }
-    }*/
 }

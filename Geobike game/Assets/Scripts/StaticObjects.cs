@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 
 public static class StaticObjects
 {
@@ -7,4 +9,6 @@ public static class StaticObjects
     public static string startPoint { get; set; }
     public static string endPoint { get; set; }
     public static bool enableCityNames { get; set; }
+    public static List<string> visitedLocationsPlayer1 = new List<string>();
+    public static List<string> visitedLocationsPlayer2 = new List<string>();
 }
