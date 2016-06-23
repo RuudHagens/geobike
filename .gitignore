@@ -23,3 +23,4 @@ sysinfo.txt
 # Exclude imported packages
 */Assets/Packages/*
 */Assets/Editor/Packages/*
+*.resS

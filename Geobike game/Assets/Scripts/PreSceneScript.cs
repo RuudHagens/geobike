@@ -7,8 +7,13 @@ public class PreSceneScript : MonoBehaviour
 {
     public GameObject locations;
 
-    public KeyCode RightSteeringWheel;
-    public KeyCode LeftSteeringWheel;
+    public KeyCode cycling;
+    public KeyCode rightSteeringWheel;
+    public KeyCode leftSteeringWheel;
+
+    public KeyCode cyclingFromKeyboard;
+    public KeyCode rightSteeringWheelFromKeyboard;
+    public KeyCode leftSteeringWheelFromKeyboard;
 
     private GameObject selectorSprite;
 
@@ -23,6 +28,8 @@ public class PreSceneScript : MonoBehaviour
 
     private void Start()
     {
+        loopNodes = 1;
+
         done = false;
 
         playerNodes = new List<GameObject>();
@@ -33,7 +40,7 @@ public class PreSceneScript : MonoBehaviour
         }
 
         nodeSelector = Instantiate(Resources.Load("NodeSelector"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
-        nodeSelector.transform.position = playerNodes[1].transform.position;
+        nodeSelector.transform.position = playerNodes[0].transform.position;
     }
 
     private void Update()
@@ -51,31 +58,43 @@ public class PreSceneScript : MonoBehaviour
 
     public void MoveSelector()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(RightSteeringWheel))
+        if (Input.GetKeyDown(rightSteeringWheelFromKeyboard) || Input.GetKeyDown(rightSteeringWheel))
         {
-            if (loopNodes == playerNodes.Count)
+            loopNodes++;
+            if (loopNodes >= playerNodes.Count)
             {
                 loopNodes = 0;
             }
 
             nodeSelector.transform.position = playerNodes[loopNodes].transform.position;
-            loopNodes++;
+        }
+        if (Input.GetKeyDown(leftSteeringWheelFromKeyboard) || Input.GetKeyDown(leftSteeringWheel))
+        {
+            loopNodes--;
+            if (loopNodes <  0)
+            {
+                loopNodes = playerNodes.Count - 1;
+            }
+
+            nodeSelector.transform.position = playerNodes[loopNodes].transform.position;
         }
 
-        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(LeftSteeringWheel))
+        if (Input.GetKeyDown(cyclingFromKeyboard) || Input.GetKeyDown(cycling))
         {
             foreach (GameObject node in playerNodes)
             {
                 if (nodeSelector != null && node.transform.position == nodeSelector.transform.position)
                 {
-                    DrawSelection(nodeSelector);
-                    done = true;
-                    Destroy(nodeSelector);
-                    nodeSelector = null;
-                    loopNodes = 0;
+                    if(node.GetComponent<LocationInfo>().fullName == StaticObjects.startPoint)
+                    {
+                        DrawSelection(nodeSelector);
+                        done = true;
+                        Destroy(nodeSelector);
+                        nodeSelector = null;
+                        loopNodes = 0;
+                    }
                 }
             }
-            playerNodes.Clear();
         }
     }
 

@@ -12,6 +12,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
     public GameObject playerCamera;  
     public GameObject locationLabels;
     public GameObject locations;
+
     public KeyCode cycling;
     public KeyCode rightSteeringWheel;
     public KeyCode leftSteeringWheel;
@@ -63,13 +64,13 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
     void Update()
     {
-        if (nodeSelectionMoment)
+        if (nodeSelectionMoment && nodeSelector != null)
         {
             locationLabels.SetActive(StaticObjects.enableCityNames);
 
             if (Input.GetKeyDown(RightSteeringWheelFromKeyBoard) || Input.GetKeyDown(rightSteeringWheel))
             {
-                if (loopNodes == playerNodes.Count)
+                if (loopNodes >= playerNodes.Count)
                 {
                     loopNodes = 0;
                 }
@@ -86,12 +87,13 @@ public class PlayerMovementPerPlayer : MonoBehaviour
                     {
                         selectedNodePlayer = node;
                         bike.GetComponent<BikeInput>().RotateBike(selectedNodePlayer);
-                        Destroy(nodeSelector);
-                        nodeSelector = null;
                         playerCamera.GetComponent<Camera>().orthographicSize = 1.65f;
                         nodeSelectionMoment = false;
                         loopNodes = 0;
                         locationLabels.SetActive(false);
+
+                        Destroy(nodeSelector);
+                        nodeSelector = null;
                     }
                 }
                 playerNodes.Clear();
@@ -125,11 +127,6 @@ public class PlayerMovementPerPlayer : MonoBehaviour
         if (other.gameObject.CompareTag("Node"))
         {
             inNode = false;
-            GameObject[] selectors = GameObject.FindGameObjectsWithTag("NodeSelector");
-            foreach (GameObject selector in selectors)
-            {
-                Destroy(selector);
-            }
         }
     }
 
@@ -198,7 +195,10 @@ public class PlayerMovementPerPlayer : MonoBehaviour
                     nodeSelectionMoment = true;
                     selectedNodePlayer = null;
 
-                    if (nodeSelector != null) nodeSelector.name = "Node Selector";
+                    if (nodeSelector != null)
+                    {
+                        nodeSelector.name = "Node Selector";
+                    }
                 }
 
                 inNode = false;
