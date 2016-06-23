@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 /// <summary>
 /// This class is used to calculate the shortest path between two nodes, given a graph map.
@@ -136,6 +137,11 @@ public class Dijkstra
         Graph = graphAslist;
     }
 
+    /// <summary>
+    /// Method to make a list of graph nodes from a list of graph names.
+    /// </summary>
+    /// <param name="graphNodes">A list of graph node names.</param>
+    /// <returns>Returns a list of graph nodes.</returns>
     private static List<GraphNode> MakeListOfGraphNodes(List<string> graphNodes)
     {
         if(graphNodes.Count > 0)
@@ -152,6 +158,14 @@ public class Dijkstra
         return null;
     }
 
+    /// <summary>
+    /// Method to add a connection between two graphnodes when initializing the graph list.
+    /// </summary>
+    /// <param name="inputList">A list of graphnodes.</param>
+    /// <param name="firstLocation">The first node name.</param>
+    /// <param name="secondlocation">The seocnd node name.</param>
+    /// <param name="distance">The distance between the two given nodes.</param>
+    /// <returns>Returns the final list of graphnodes.</returns>
     private static List<GraphNode> AddConnectionsBetweenGraphNodes(List<GraphNode> inputList, string firstLocation, string secondlocation, float distance)
     {
         foreach(GraphNode node in inputList)
@@ -167,6 +181,27 @@ public class Dijkstra
         }
 
         return inputList;
+    }
+
+    /// <summary>
+    /// Method to get the total distance cost of a given path.
+    /// </summary>
+    /// <param name="nodesList">A list of node names.</param>
+    /// <returns>Returns the total length of the given path as a float.</returns>
+    public float GetTotalCostOfNodes(List<string> nodesList)
+    {
+        // Temporarely store the total cost. Initialize to 0.
+        float totalCost = 0;
+
+        // Loop through the list of node names to find the cost.
+        for (int i = 0; i < nodesList.Count - 1; i++)
+        {
+            // Add the found cost to the total cost.
+            totalCost += this.Graph.Find(g => g.Name == nodesList[i]).Vertices.Find(g => g.Name == nodesList[i + 1]).Cost;
+        }
+
+        // Return the total cost.
+        return totalCost;
     }
 
     /// <summary>

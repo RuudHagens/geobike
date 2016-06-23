@@ -42,7 +42,7 @@ public class PreSceneScript : MonoBehaviour
 
         dijkstra = new Dijkstra();
 
-        determineStartAndEnd();
+        DetermineStartAndEnd();
 
         StaticObjects.startPoint = firstLocation.fullName;
         StaticObjects.endPoint = secondLocation.fullName;
@@ -53,7 +53,7 @@ public class PreSceneScript : MonoBehaviour
 
     private void Update()
     {
-        setupBegin();
+        SetupBegin();
 
         if (startNodeLeft != null && !onceLeft)
         {
@@ -80,7 +80,7 @@ public class PreSceneScript : MonoBehaviour
 
     }
 
-    private void determineStartAndEnd()
+    private void DetermineStartAndEnd()
     {
         int numberOfLocations = LocationsLeft.transform.childCount;
         List<LocationInfo> locationNames = new List<LocationInfo>();
@@ -106,7 +106,7 @@ public class PreSceneScript : MonoBehaviour
         }
     }
 
-    private void setupBegin()
+    private void SetupBegin()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -145,7 +145,7 @@ public class PreSceneScript : MonoBehaviour
         {
             if(hit.gameObject.GetComponent<LocationInfo>().fullName == firstLocation.fullName)
             {
-                drawSelection(hit);
+                DrawSelection(hit);
                 startNode = hit.gameObject;
             }
         }
@@ -155,7 +155,7 @@ public class PreSceneScript : MonoBehaviour
         }
     }
 
-    private void drawSelection(Collider2D hitCollider)
+    private void DrawSelection(Collider2D hitCollider)
     {
         selectorSprite = Instantiate(Resources.Load("Selector"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
         if (selectorSprite != null)
