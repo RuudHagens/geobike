@@ -42,7 +42,7 @@ public class Playermovement2 : MonoBehaviour
         foreach (Transform location in locations.GetComponentInChildren<Transform>())
         {
             Debug.Log(location.gameObject.GetComponent<LocationInfo>().fullName);
-            if (location.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.startPointp1)
+            if (location.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.startPoint)
             {
                 selectedNodePlayer = location.gameObject;
             }

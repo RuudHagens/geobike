@@ -117,7 +117,7 @@ public class Dijkstra
         graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ape", "zwo", 39.0f);
         graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ape", "alo", 60.3f);
         graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ens", "alo", 29.4f);
-        graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ens", "hoo", 74.3f);
+        //graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ens", "hoo", 74.3f);
         graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "alo", "zwo", 52.3f);
         graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "alo", "hoo", 51.6f);
         graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "zwo", "hoo", 53.5f);
