@@ -23,6 +23,6 @@ public class GUImanager : MonoBehaviour
 
     public void setAssignmentText(string firstLocation, string secondLocation)
     {
-        assignmentText.text = "Ga van " + firstLocation + " naar " + secondLocation + ".";
+        assignmentText.text = "Ga van " + firstLocation + " naar " + secondLocation + ".\n" + "Selecteer " + firstLocation + " om te beginnen.";
     }
 }

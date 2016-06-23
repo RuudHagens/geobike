@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
     {
         //player 1
         InvokeRepeating("CalculateSpeed", 0, 2);   
-        inNode = false;
+        inNode = true;
         nodeSelectionMoment = true;
         dijkstra = StaticObjects.dijkstraInstance;
         player1Camera = GameObject.Find("Player 1 Camera");
@@ -49,27 +49,12 @@ public class PlayerMovement : MonoBehaviour
 
         foreach (Transform location in locations.GetComponentInChildren<Transform>())
         {
-            Debug.Log(location.gameObject.GetComponent<LocationInfo>().fullName);
-            if (location.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.startPointp1)
+            //Debug.Log(location.gameObject.GetComponent<LocationInfo>().fullName);
+            if (location.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.startPoint)
             {
                 selectedNodePlayer = location.gameObject;
             }
         }
-        //neighbourNodes = new List<string>();
-
-        /*
-        string player1LocationToStart = "Location-";
-        foreach(Transform location in locations.GetComponent<Transform>())
-        {
-            if(location.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.startPointp1)
-            {
-                player1LocationToStart += StaticObjects.startPointp1;
-                player1LocationToStart += " 1";
-            }
-        }
-
-        selectedNodePlayer = GameObject.Find(player1LocationToStart);*/
-        //selectedNodePlayer1 = GameObject.Find("Location-Almelo 1");
 
         if(selectedNodePlayer != null)
         {
@@ -207,7 +192,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Node"))
+        if (inNode && other.gameObject.CompareTag("Node"))
         {
             inNode = false;
             GameObject[] selectors = GameObject.FindGameObjectsWithTag("NodeSelector");
@@ -223,39 +208,47 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Node"))
         {
-            inNode = false;
+            inNode = true;
         }
     }
 
-    void OnTriggerStay2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D otherNode)
     {
-        if (!inNode)
+        if (inNode && otherNode.gameObject.CompareTag("Node"))
         {
-            Vector3 otherArea = other.transform.position;
-            otherArea.x += 0.01f;
-            otherArea.y += 0.01f;
-            if ((transform.position.x >= other.transform.position.x &&
-                 transform.position.y >= other.transform.position.y) ||
-                (transform.position.x <= otherArea.x && transform.position.y <= otherArea.y))
-            {
-                transform.position = other.transform.position;
+            Vector3 otherPositionPlus = otherNode.transform.position;
+            otherPositionPlus.x += 0.01f;
+            otherPositionPlus.y += 0.01f;
 
-                if (nodeSelector == null && !GameObject.FindWithTag("NodeSelector"))
+            Vector3 otherPositionMin = otherNode.transform.position;
+            otherPositionMin.x -= 0.01f;
+            otherPositionMin.y -= 0.01f;
+
+            //if (transform.position.x >= otherPosition.x - 0.01f && transform.position.x <= otherPosition.x + 0.01f &&
+            //    transform.position.y >= otherPosition.y - 0.01f && transform.position.y <=  otherPosition.y + 0.01f)
+
+
+            if ((transform.position.x >= otherNode.transform.position.x &&
+                 transform.position.y >= otherNode.transform.position.y) ||
+                (transform.position.x <= otherPositionPlus.x && transform.position.y <= otherPositionPlus.y) ||
+                (transform.position.x >= otherPositionMin.x && transform.position.y >= otherPositionMin.y))
+            {
+                transform.position = otherNode.transform.position;
+
+                if (nodeSelector == null && !GameObject.FindWithTag("NodeSelector") && selectedNodePlayer != null)
                 {
                     nodeSelector = Instantiate(Resources.Load("NodeSelector"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
                     List<string> neighbourNodes = dijkstra.GetNodesAroundNode(selectedNodePlayer.GetComponent<LocationInfo>().id);
 
                     player1nodes = new List<GameObject>();
-                    foreach (GameObject node in GameObject.FindGameObjectsWithTag("Node"))
+
+                    foreach (Transform location in locations.GetComponentInChildren<Transform>())
                     {
                         foreach (string name in neighbourNodes)
                         {
-                            if (node.GetComponent<LocationInfo>().id == name)
+                            if (location.gameObject.GetComponent<LocationInfo>().id == name)
                             {
-                                if (node.name.Contains("1"))
-                                {
-                                    player1nodes.Add(node);
-                                }
+                                    player1nodes.Add(location.gameObject);
                             }
                         }
                     }
@@ -265,17 +258,11 @@ public class PlayerMovement : MonoBehaviour
                     player1Camera.GetComponent<Camera>().orthographicSize = 4.5f;
                     nodeSelectionMoment = true;
                     selectedNodePlayer = null;
-                    //player1nodes.Clear();
-                    //dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().fullName);
-                    //foreach (string s in dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().fullName))
-                    //{
-                    //    Debug.Log(s);
-                    //}
 
                     if (nodeSelector != null) nodeSelector.name = "Node Selector";
                 }
 
-                inNode = true;
+                inNode = false;
                 //selectedNodePlayer1 = null; //blablabla
             }
         }

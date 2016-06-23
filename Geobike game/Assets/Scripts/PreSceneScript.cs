@@ -14,16 +14,11 @@ public class PreSceneScript : MonoBehaviour
     private GameObject selectorSprite;
 
     private GameObject startNodeLeft;
-    private GameObject endNodeLeft;
 
     private GameObject startNodeRight;
-    private GameObject endNodeRight;
 
-    public Color c1 = Color.black;
-    public Color c2 = Color.black;
-
-    private LineRenderer lineRendererLeft;
-    private LineRenderer lineRendererRight;
+    //public Color c1 = Color.black;
+    //public Color c2 = Color.black;
 
     private bool onceLeft = false;
     private bool onceRight = false;
@@ -35,24 +30,58 @@ public class PreSceneScript : MonoBehaviour
 
     private void Start()
     {
-
         elapsedTime = 0.0f;
 
         onceLeft = false;
         onceRight = false;
 
-        lineRendererLeft = LocationsLeft.GetComponent<LineRenderer>();
-        lineRendererLeft.SetColors(c1, c2);
-        lineRendererLeft.SetWidth(0.05f, 0.05f);
-        lineRendererLeft.sortingLayerName = "Player";
-
-        lineRendererRight = LocationsRight.GetComponent<LineRenderer>();
-        lineRendererRight.SetColors(c1, c2);
-        lineRendererRight.SetWidth(0.05f, 0.05f);
-        lineRendererRight.sortingLayerName = "Player";
+        //lineRendererLeft = LocationsLeft.GetComponent<LineRenderer>();
+        //lineRendererLeft.SetColors(c1, c2);
+        //lineRendererLeft.SetWidth(0.05f, 0.05f);
+        //lineRendererLeft.sortingLayerName = "Player";
 
         dijkstra = new Dijkstra();
 
+        determineStartAndEnd();
+
+        GUImanager.instance.setAssignmentText(firstLocation.fullName, secondLocation.fullName);
+
+        StaticObjects.startPoint = firstLocation.fullName;
+        StaticObjects.endPoint = secondLocation.fullName;
+        StaticObjects.dijkstraInstance = dijkstra;
+    }
+
+    private void Update()
+    {
+        setupBegin();
+
+        if (startNodeLeft != null && !onceLeft)
+        {
+            onceLeft = true;
+            //drawFastestRoute(startNodeLeft, endNodeLeft, lineRendererLeft, LocationsLeft);
+        }
+
+        if (startNodeRight != null && !onceRight)
+        {
+            onceRight = true;
+            //drawFastestRoute(startNodeRight, endNodeRight, lineRendererRight, LocationsRight);
+        }
+
+        if (startNodeLeft != null && startNodeRight != null)
+        {
+            Debug.Log(elapsedTime);
+            elapsedTime += Time.deltaTime;
+
+            if(elapsedTime >= maxTime)
+            {
+                SceneManager.LoadScene("main scene");
+            }
+        }
+
+    }
+
+    private void determineStartAndEnd()
+    {
         int numberOfLocations = LocationsLeft.transform.childCount;
         List<LocationInfo> locationNames = new List<LocationInfo>();
         foreach (Transform location in LocationsLeft.GetComponentInChildren<Transform>())
@@ -75,45 +104,9 @@ public class PreSceneScript : MonoBehaviour
                 secondLocation = null;
             }
         }
-
-        GUImanager.instance.setAssignmentText(firstLocation.fullName, secondLocation.fullName);
     }
 
-    private void Update()
-    {
-        setupBeginAndEnd();
-
-        if (startNodeLeft != null && endNodeLeft != null && !onceLeft)
-        {
-            onceLeft = true;
-            drawFastestRoute(startNodeLeft, endNodeLeft, lineRendererLeft, LocationsLeft);
-        }
-
-        if (startNodeRight != null && endNodeRight != null && !onceRight)
-        {
-            onceRight = true;
-            drawFastestRoute(startNodeRight, endNodeRight, lineRendererRight, LocationsRight);
-        }
-
-        if (startNodeLeft != null && endNodeLeft != null && startNodeRight != null && endNodeRight != null)
-        {
-            Debug.Log(elapsedTime);
-            elapsedTime += Time.deltaTime;
-
-            if(elapsedTime >= maxTime)
-            {
-                StaticObjects.startPointp1 = startNodeLeft.GetComponent<LocationInfo>().fullName;
-                StaticObjects.startPointp2 = startNodeRight.GetComponent<LocationInfo>().fullName;
-                StaticObjects.endPointp1 = endNodeLeft.GetComponent<LocationInfo>().fullName;
-                StaticObjects.endPointp2 = endNodeRight.GetComponent<LocationInfo>().fullName;
-                StaticObjects.dijkstraInstance = dijkstra;
-                SceneManager.LoadScene("main scene");
-            }
-        }
-
-    }
-
-    private void setupBeginAndEnd()
+    private void setupBegin()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -130,11 +123,11 @@ public class PreSceneScript : MonoBehaviour
 
                     if (hitCollider.GetComponent<LocationInfo>().map == 1)
                     {
-                        StoreNode(hitCollider, ref startNodeLeft, ref endNodeLeft);
+                        StoreNode(hitCollider, ref startNodeLeft);
                     }
                     else if (hitCollider.GetComponent<LocationInfo>().map == 2)
                     {
-                        StoreNode(hitCollider, ref startNodeRight, ref endNodeRight);
+                        StoreNode(hitCollider, ref startNodeRight);
                     }
                 }
                 else
@@ -146,7 +139,7 @@ public class PreSceneScript : MonoBehaviour
         }
     }
 
-    private void StoreNode(Collider2D hit, ref GameObject startNode, ref GameObject endNode)
+    private void StoreNode(Collider2D hit, ref GameObject startNode)
     {
         if (startNode == null)
         {
@@ -156,17 +149,9 @@ public class PreSceneScript : MonoBehaviour
                 startNode = hit.gameObject;
             }
         }
-        else if (endNode == null)
-        {
-            if (hit.gameObject.GetComponent<LocationInfo>().fullName == secondLocation.fullName)
-            {
-                drawSelection(hit);
-                endNode = hit.gameObject;
-            }
-        }
         else
         {
-            Debug.Log("Je hebt al een start- en eindpunt geselecteerd.");
+            Debug.Log("Je hebt al een startpunt geselecteerd.");
         }
     }
 
@@ -185,7 +170,7 @@ public class PreSceneScript : MonoBehaviour
         }
     }
 
-    private void drawFastestRoute(GameObject startNode, GameObject endNode, LineRenderer lineRenderer, GameObject locations)
+    /*private void drawFastestRoute(GameObject startNode, GameObject endNode, LineRenderer lineRenderer, GameObject locations)
     {
         string startNodeId = startNode.GetComponent<LocationInfo>().id;
         string endNodeId = endNode.GetComponent<LocationInfo>().id;
@@ -205,5 +190,5 @@ public class PreSceneScript : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
 }
