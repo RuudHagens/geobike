@@ -4,35 +4,34 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Linq;
 
-public class Playermovement2 : MonoBehaviour
+public class PlayerMovementPerPlayer : MonoBehaviour
 {
-
-    public float speed = 0f;
     public float speedmult = 0.15f;
-    public GameObject selectedNodePlayer;
-    public bool inNode;
-    private GameObject nodeSelector;
-    public GameObject playerCamera;
-    public bool nodeSelectionMoment;
-    private List<GameObject> playernodes;
-    private int loopNodes;
-
-    private float presses;
-
     public Text lblspeed;
-
-    private Dijkstra dijkstra;
-
-    public GameObject places;
-
+    public GameObject playerCamera;  
+    public GameObject locationLabels;
     public GameObject locations;
+    public KeyCode Cycling;
+    public KeyCode RightSteeringWheel;
+    public KeyCode LeftSteeringWheel;
+
+    private int loopNodes;
+    private float speed = 0f;
+    private float presses;
+    private Dijkstra dijkstra;
+    private List<GameObject> playerNodes;
+    private bool inNode;
+    private bool nodeSelectionMoment;
+    private GameObject nodeSelector;
+    private GameObject selectedNodePlayer;
+    
 
     // Use this for initialization
     void Start()
     {
-        //player 1
+        //player setup
         InvokeRepeating("CalculateSpeed", 0, 2);
-        inNode = false;
+        inNode = true;
         nodeSelectionMoment = true;
         dijkstra = StaticObjects.dijkstraInstance;
         loopNodes = 1;
@@ -41,7 +40,6 @@ public class Playermovement2 : MonoBehaviour
 
         foreach (Transform location in locations.GetComponentInChildren<Transform>())
         {
-            Debug.Log(location.gameObject.GetComponent<LocationInfo>().fullName);
             if (location.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.startPoint)
             {
                 selectedNodePlayer = location.gameObject;
@@ -63,28 +61,22 @@ public class Playermovement2 : MonoBehaviour
     {
         if (nodeSelectionMoment)
         {
-            if (StaticObjects.enableCityNames)
+            locationLabels.SetActive(StaticObjects.enableCityNames);
+
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(RightSteeringWheel))
             {
-                places.SetActive(true);
-            }
-            else
-            {
-                places.SetActive(false);
-            }
-            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Joystick1Button0) || Input.GetKeyDown(KeyCode.Joystick2Button0))
-            {
-                if (loopNodes == playernodes.Count)
+                if (loopNodes == playerNodes.Count)
                 {
                     loopNodes = 0;
                 }
 
-                nodeSelector.transform.position = playernodes[loopNodes].transform.position;
+                nodeSelector.transform.position = playerNodes[loopNodes].transform.position;
                 loopNodes++;
             }
 
-            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Joystick1Button3) || Input.GetKeyDown(KeyCode.Joystick2Button3))
+            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(LeftSteeringWheel))
             {
-                foreach (GameObject node in playernodes)
+                foreach (GameObject node in playerNodes)
                 {
                     if (nodeSelector != null && node.transform.position == nodeSelector.transform.position)
                     {
@@ -94,10 +86,10 @@ public class Playermovement2 : MonoBehaviour
                         playerCamera.GetComponent<Camera>().orthographicSize = 1.65f;
                         nodeSelectionMoment = false;
                         loopNodes = 0;
-                        places.SetActive(false);
+                        locationLabels.SetActive(false);
                     }
                 }
-                playernodes.Clear();
+                playerNodes.Clear();
             }
         }
         else
@@ -115,7 +107,7 @@ public class Playermovement2 : MonoBehaviour
             transform.position += (selectedNodePlayer.transform.position - transform.position).normalized * speed *
                                   Time.deltaTime * 10;
 
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button2) || Input.GetKeyDown(KeyCode.Joystick2Button2))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(Cycling))
             {
                 speed = speed + speedmult;
                 presses++;
@@ -131,7 +123,6 @@ public class Playermovement2 : MonoBehaviour
             GameObject[] selectors = GameObject.FindGameObjectsWithTag("NodeSelector");
             foreach (GameObject selector in selectors)
             {
-                Debug.Log("Selector gaat dood");
                 Destroy(selector);
             }
         }
@@ -141,60 +132,57 @@ public class Playermovement2 : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Node"))
         {
-            inNode = false;
+            inNode = true;
         }
     }
 
-    void OnTriggerStay2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D otherNode)
     {
-        if (!inNode)
+        if (inNode && otherNode.gameObject.CompareTag("Node"))
         {
-            Vector3 otherArea = other.transform.position;
-            otherArea.x += 0.01f;
-            otherArea.y += 0.01f;
-            if ((transform.position.x >= other.transform.position.x &&
-                 transform.position.y >= other.transform.position.y) ||
-                (transform.position.x <= otherArea.x && transform.position.y <= otherArea.y))
-            {
-                transform.position = other.transform.position;
+            Vector3 otherPositionPlus = otherNode.transform.position;
+            otherPositionPlus.x += 0.01f;
+            otherPositionPlus.y += 0.01f;
 
-                if (nodeSelector == null && !GameObject.FindWithTag("NodeSelector"))
+            Vector3 otherPositionMin = otherNode.transform.position;
+            otherPositionMin.x -= 0.01f;
+            otherPositionMin.y -= 0.01f;
+
+            if ((transform.position.x >= otherNode.transform.position.x &&
+                 transform.position.y >= otherNode.transform.position.y) ||
+                (transform.position.x <= otherPositionPlus.x && transform.position.y <= otherPositionPlus.y) ||
+                (transform.position.x >= otherPositionMin.x && transform.position.y >= otherPositionMin.y))
+            {
+                transform.position = otherNode.transform.position;
+
+                if (nodeSelector == null && selectedNodePlayer != null)
                 {
                     nodeSelector = Instantiate(Resources.Load("NodeSelector"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
                     List<string> neighbourNodes = dijkstra.GetNodesAroundNode(selectedNodePlayer.GetComponent<LocationInfo>().id);
 
-                    playernodes = new List<GameObject>();
-                    foreach (GameObject node in GameObject.FindGameObjectsWithTag("Node"))
+                    playerNodes = new List<GameObject>();
+
+                    foreach (Transform location in locations.GetComponentInChildren<Transform>())
                     {
                         foreach (string name in neighbourNodes)
                         {
-                            if (node.GetComponent<LocationInfo>().id == name)
+                            if (location.gameObject.GetComponent<LocationInfo>().id == name)
                             {
-                                if (node.name.Contains("1"))
-                                {
-                                    playernodes.Add(node);
-                                }
+                                playerNodes.Add(location.gameObject);
                             }
                         }
                     }
 
-                    GameObject initialNode = playernodes.First();
+                    GameObject initialNode = playerNodes.First();
                     nodeSelector.transform.position = initialNode.transform.position;
                     playerCamera.GetComponent<Camera>().orthographicSize = 4.5f;
                     nodeSelectionMoment = true;
                     selectedNodePlayer = null;
-                    //player1nodes.Clear();
-                    //dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().fullName);
-                    //foreach (string s in dijkstra.GetNodesAroundNode(selectedNodePlayer1.GetComponent<LocationInfo>().fullName))
-                    //{
-                    //    Debug.Log(s);
-                    //}
 
                     if (nodeSelector != null) nodeSelector.name = "Node Selector";
                 }
 
-                inNode = true;
-                //selectedNodePlayer1 = null; //blablabla
+                inNode = false;
             }
         }
     }
