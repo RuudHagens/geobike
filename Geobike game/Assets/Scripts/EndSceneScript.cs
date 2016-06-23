@@ -16,43 +16,9 @@ public class EndSceneScript : MonoBehaviour
     // Use this for initialization
     void Start () {
 	    dijkstra = new Dijkstra();
-        
-        // Testdata, dit later verwijderen
-	    StaticObjects.startPoint = "Emmen";
-        StaticObjects.endPoint = "Terneuzen";
 
         foreach (Transform location in locations.GetComponentInChildren<Transform>())
         {
-            // Testdata, dit later verwijderen
-            if (location.gameObject.GetComponent<LocationInfo>().fullName == "Maastricht")
-            {
-                StaticObjects.visitedLocationsPlayer1.Add(location.gameObject.GetComponent<LocationInfo>().id);
-            }
-
-            // Testdata, dit later verwijderen
-            if (location.gameObject.GetComponent<LocationInfo>().fullName == "Heerlen")
-            {
-                StaticObjects.visitedLocationsPlayer1.Add(location.gameObject.GetComponent<LocationInfo>().id);
-            }
-
-            // Testdata, dit later verwijderen
-            if (location.gameObject.GetComponent<LocationInfo>().fullName == "Roermond")
-            {
-                StaticObjects.visitedLocationsPlayer1.Add(location.gameObject.GetComponent<LocationInfo>().id);
-            }
-
-            // Testdata, dit later verwijderen
-            if (location.gameObject.GetComponent<LocationInfo>().fullName == "Haarlem")
-            {
-                StaticObjects.visitedLocationsPlayer2.Add(location.gameObject.GetComponent<LocationInfo>().id);
-            }
-
-            // Testdata, dit later verwijderen
-            if (location.gameObject.GetComponent<LocationInfo>().fullName == "Amsterdam")
-            {
-                StaticObjects.visitedLocationsPlayer2.Add(location.gameObject.GetComponent<LocationInfo>().id);
-            }
-
             if (location.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.startPoint)
             {
                 startPoint = location.gameObject;
