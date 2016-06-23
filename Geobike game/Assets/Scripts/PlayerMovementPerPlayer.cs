@@ -5,6 +5,7 @@ using System.Linq;
 
 public class PlayerMovementPerPlayer : MonoBehaviour
 {
+    public GameObject bike;
     public float speedmult = 0.15f;
     public Text lblspeed;
     public GameObject playerCamera;  
@@ -79,6 +80,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
                     if (nodeSelector != null && node.transform.position == nodeSelector.transform.position)
                     {
                         selectedNodePlayer = node;
+                        bike.GetComponent<BikeInput>().RotateBike(selectedNodePlayer);
                         Destroy(nodeSelector);
                         nodeSelector = null;
                         playerCamera.GetComponent<Camera>().orthographicSize = 1.65f;
@@ -190,7 +192,9 @@ public class PlayerMovementPerPlayer : MonoBehaviour
         float rpm1 = presses * 30;
         float ms1 = 0.45f * rpm1 * 0.10472f;
         float kmh1 = ms1 * 3.6f;
-        lblspeed.text = Mathf.Round(kmh1 * 10 * 2) / 10 + "KM/h";
+        float totalKmh = Mathf.Round(kmh1 * 10 * 2) / 10;
+        lblspeed.text = totalKmh + "KM/h";
+        this.bike.GetComponent<BikeInput>().Swing(totalKmh);
         presses = 0;
     }
 }
