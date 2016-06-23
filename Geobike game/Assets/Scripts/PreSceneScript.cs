@@ -69,7 +69,6 @@ public class PreSceneScript : MonoBehaviour
 
         if (startNodeLeft != null && startNodeRight != null)
         {
-            Debug.Log(elapsedTime);
             elapsedTime += Time.deltaTime;
 
             if(elapsedTime >= maxTime)

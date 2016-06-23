@@ -11,7 +11,7 @@ public class GUImanager : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        DontDestroyOnLoad(transform.gameObject);
+        //DontDestroyOnLoad(transform.gameObject);
         instance = this;
         assignmentText.text = "";
     }

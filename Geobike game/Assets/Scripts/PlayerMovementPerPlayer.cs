@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Linq;
@@ -24,7 +23,6 @@ public class PlayerMovementPerPlayer : MonoBehaviour
     private bool nodeSelectionMoment;
     private GameObject nodeSelector;
     private GameObject selectedNodePlayer;
-    
 
     // Use this for initialization
     void Start()
