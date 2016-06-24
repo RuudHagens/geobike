@@ -9,7 +9,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
     public GameObject bike;
     public float speedmult = 0.15f;
     public Text lblspeed;
-    public GameObject playerCamera;  
+    public GameObject playerCamera;
     public GameObject locationLabels;
     public GameObject locations;
 
@@ -122,7 +122,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Node"))
         {

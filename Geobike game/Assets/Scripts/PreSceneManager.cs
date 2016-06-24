@@ -30,12 +30,15 @@ public class PreSceneManager : MonoBehaviour {
         StaticObjects.dijkstraInstance = dijkstra;
 
         GUImanager.instance.setAssignmentText();
+
+        player1.GetComponent<PreSceneScript>().done = false;
+        player2.GetComponent<PreSceneScript>().done = false;
     }
 	
 	// Update is called once per frame
 	void Update ()
     { 
-        if (player1.GetComponent<PreSceneScript>().done && player1.GetComponent<PreSceneScript>())
+        if (player1.GetComponent<PreSceneScript>().done && player2.GetComponent<PreSceneScript>().done)
         {
             elapsedTime += Time.deltaTime;
 

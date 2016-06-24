@@ -45,7 +45,9 @@ public class PreSceneScript : MonoBehaviour
 
     private void Update()
     {
-        if(!done)
+        detectPressedKeyOrButton();
+
+        if (!done)
         {
             MoveSelector();
         }
@@ -53,6 +55,18 @@ public class PreSceneScript : MonoBehaviour
         if (startNode != null)
         {
             done = true;
+        }
+    }
+
+    //debugging button presses
+    public void detectPressedKeyOrButton()
+    {
+        foreach (KeyCode kcode in System.Enum.GetValues(typeof(KeyCode)))
+        {
+            if (Input.GetKeyDown(kcode))
+            {
+                Debug.Log("KeyCode down: " + kcode);
+            }
         }
     }
 
