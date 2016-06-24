@@ -40,6 +40,11 @@ public class EndSceneScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.KeypadEnter))
         {
+            StaticObjects.visitedLocationsPlayer1.Clear();
+            StaticObjects.visitedLocationsPlayer2.Clear();
+            StaticObjects.startPoint = null;
+            StaticObjects.endPoint = null;
+            StaticObjects.dijkstraInstance = null;
             SceneManager.LoadScene("start scene");
         }
     }
