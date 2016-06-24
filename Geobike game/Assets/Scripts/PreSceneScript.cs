@@ -58,23 +58,8 @@ public class PreSceneScript : MonoBehaviour
                 loopNodes = 0;
             }
 
-                nodeSelector.transform.position = playerNodes[loopNodes].transform.position;
-                loopNodes++;
-
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))// || Input.GetKeyDown(RightSteeringWheel))
-        {
-            if (loopNodes == playerNodes.Count)
-            {
-                loopNodes = 0;
-            }
-
-            if (loopNodes != 0)
-            {
-                nodeSelector.transform.position = playerNodes[loopNodes].transform.position;
-                loopNodes--;
-            }
-
+            nodeSelector.transform.position = playerNodes[loopNodes].transform.position;
+            loopNodes++;
         }
 
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(LeftSteeringWheel))
