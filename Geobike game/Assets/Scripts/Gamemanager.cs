@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Gamemanager : MonoBehaviour
 {
@@ -57,6 +58,7 @@ public class Gamemanager : MonoBehaviour
         {
             timep1.text = "00:00";
             timep2.text = "00:00";
+            SceneManager.LoadScene("end scene");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class EndSceneScript : MonoBehaviour
 {
@@ -33,6 +34,14 @@ public class EndSceneScript : MonoBehaviour
         DrawFastestRoute(startPoint, endPoint, lineRenderer, locations);
         DrawPlayerRoute(StaticObjects.visitedLocationsPlayer1, lineRendererPlayer1, locations);
         DrawPlayerRoute(StaticObjects.visitedLocationsPlayer2, lineRendererPlayer2, locations);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            SceneManager.LoadScene("start scene");
+        }
     }
 
     private void DrawFastestRoute(GameObject startNode, GameObject endNode, LineRenderer lineRenderer, GameObject locations)
