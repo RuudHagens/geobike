@@ -6,29 +6,20 @@ public class GUImanager : MonoBehaviour
 {
     public static GUImanager instance;
 
-    public Text assignmentText;
+    public Text QuestText;
+
+    public Text AssignmenText;
 
     // Use this for initialization
     void Awake ()
     {
-        //DontDestroyOnLoad(transform.gameObject);
         instance = this;
-        assignmentText.text = "";
-    }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        //GameSettings.enableCityNames = enableNames.isOn;
+        this.QuestText.text = this.AssignmenText.text = string.Empty;
     }
 
     public void setAssignmentText()
     {
-        assignmentText.text = "Ga van " + StaticObjects.startPoint + " naar " + StaticObjects.endPoint + ".\n" + "Selecteer " + StaticObjects.startPoint + " om te beginnen.";
-    }
-
-    public void setTargetText()
-    {
-        assignmentText.text = "Ga naar: " + StaticObjects.endPoint + ".";
+        this.QuestText.text = "Ga van " + StaticObjects.startPoint + " naar " + StaticObjects.endPoint;
+        this.AssignmenText.text = "Selecteer <color=#00ff00>" + StaticObjects.startPoint + "</color> om te beginnen";
     }
 }

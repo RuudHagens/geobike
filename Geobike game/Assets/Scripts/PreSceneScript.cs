@@ -2,28 +2,76 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 public class PreSceneScript : MonoBehaviour
 {
+    /// <summary>
+    /// The locations game object, holding the various location objects.
+    /// </summary>
     public GameObject locations;
 
+    /// <summary>
+    /// The keycode used to cycle through the locations.
+    /// </summary>
     public KeyCode cycling;
+
+    /// <summary>
+    /// The keycode used to steer to the right.
+    /// </summary>
     public KeyCode rightSteeringWheel;
+
+    /// <summary>
+    /// The keycode used to steer to the left.
+    /// </summary>
     public KeyCode leftSteeringWheel;
 
+    /// <summary>
+    /// The keyboard keycode used to cycle through the locations.
+    /// </summary>
     public KeyCode cyclingFromKeyboard;
+
+    /// <summary>
+    /// The keyboard keycode used to steer to the right.
+    /// </summary>
     public KeyCode rightSteeringWheelFromKeyboard;
+
+    /// <summary>
+    /// The keyboard keycode used to steer to the left.
+    /// </summary>
     public KeyCode leftSteeringWheelFromKeyboard;
 
-    private GameObject selectorSprite;
-
-    private GameObject startNode;
-
-    private int loopNodes;
-
+    /// <summary>
+    /// A boolean indicating whether the right node has been pressed and the player is ready.
+    /// </summary>
     public bool done;
 
-    private GameObject nodeSelector;
+    /// <summary>
+    /// The startNode object.
+    /// </summary>
+    private GameObject startNode;
+
+    /// <summary>
+    /// Used to store the index of the selected node.
+    /// </summary>
+    private int loopNodes;
+
+    /// <summary>
+    /// The red nodeselector object.
+    /// </summary>
+    private GameObject nodeSelectorBlue;
+
+    /// <summary>
+    /// The green nodeselector object.
+    /// </summary>
+    private GameObject nodeSelectorGreen;
+
+    /// <summary>
+    /// The red nodeselector object.
+    /// </summary>
+    private GameObject nodeSelectorRed;
+
+    /// <summary>
+    /// A list of player node objects.
+    /// </summary>
     private List<GameObject> playerNodes;
 
     private void Start()
@@ -34,13 +82,13 @@ public class PreSceneScript : MonoBehaviour
 
         playerNodes = new List<GameObject>();
 
-        foreach (Transform location in locations.GetComponentInChildren<Transform>())
+        foreach(Transform location in locations.GetComponentInChildren<Transform>())
         {
             playerNodes.Add(location.gameObject);
         }
 
-        nodeSelector = Instantiate(Resources.Load("NodeSelector"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
-        nodeSelector.transform.position = playerNodes[0].transform.position;
+        nodeSelectorBlue = Instantiate(Resources.Load("NodeSelector"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        nodeSelectorBlue.transform.position = playerNodes[0].transform.position;
     }
 
     private void Update()
@@ -57,11 +105,13 @@ public class PreSceneScript : MonoBehaviour
             done = true;
         }
     }
-
-    //debugging button presses
+    
+    /// <summary>
+    /// Method used to print a pressed key (used for debugging).
+    /// </summary>
     public void detectPressedKeyOrButton()
     {
-        foreach (KeyCode kcode in System.Enum.GetValues(typeof(KeyCode)))
+        foreach(KeyCode kcode in System.Enum.GetValues(typeof(KeyCode)))
         {
             if (Input.GetKeyDown(kcode))
             {
@@ -70,6 +120,9 @@ public class PreSceneScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method to move the selector to the next or previous location node.
+    /// </summary>
     public void MoveSelector()
     {
         if (Input.GetKeyDown(rightSteeringWheelFromKeyboard) || Input.GetKeyDown(rightSteeringWheel))
@@ -80,7 +133,11 @@ public class PreSceneScript : MonoBehaviour
                 loopNodes = 0;
             }
 
-            nodeSelector.transform.position = playerNodes[loopNodes].transform.position;
+            nodeSelectorBlue.transform.position = playerNodes[loopNodes].transform.position;
+
+            Destroy(this.nodeSelectorRed);
+            this.nodeSelectorRed = null;
+
         }
         if (Input.GetKeyDown(leftSteeringWheelFromKeyboard) || Input.GetKeyDown(leftSteeringWheel))
         {
@@ -90,37 +147,68 @@ public class PreSceneScript : MonoBehaviour
                 loopNodes = playerNodes.Count - 1;
             }
 
-            nodeSelector.transform.position = playerNodes[loopNodes].transform.position;
+            nodeSelectorBlue.transform.position = playerNodes[loopNodes].transform.position;
+
+            Destroy(this.nodeSelectorRed);
+            this.nodeSelectorRed = null;
         }
 
         if (Input.GetKeyDown(cyclingFromKeyboard) || Input.GetKeyDown(cycling))
         {
+            Destroy(this.nodeSelectorRed);
+            this.nodeSelectorRed = null;
+
             foreach (GameObject node in playerNodes)
             {
-                if (nodeSelector != null && node.transform.position == nodeSelector.transform.position)
+                if (nodeSelectorBlue != null && node.transform.position == nodeSelectorBlue.transform.position)
                 {
-                    if(node.GetComponent<LocationInfo>().fullName == StaticObjects.startPoint)
+                    if (node.GetComponent<LocationInfo>().fullName == StaticObjects.startPoint)
                     {
-                        DrawSelection(nodeSelector);
+                        DrawSelection(nodeSelectorBlue, true);
                         done = true;
-                        Destroy(nodeSelector);
-                        nodeSelector = null;
+                        Destroy(nodeSelectorBlue);
+                        nodeSelectorBlue = null;
                         loopNodes = 0;
+                    }
+                    else
+                    {
+                        DrawSelection(nodeSelectorBlue, false);
                     }
                 }
             }
         }
     }
 
-    private void DrawSelection(GameObject hitCollider)
+    /// <summary>
+    /// Method used to draw a hitcollider.
+    /// </summary>
+    /// <param name="hitCollider"></param>
+    private void DrawSelection(GameObject hitCollider, bool rightLocation)
     {
-        selectorSprite = Instantiate(Resources.Load("Selector"), new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
-        if (selectorSprite != null)
+        if (rightLocation)
         {
-            Vector3 position = selectorSprite.transform.position;
-            position.x = hitCollider.transform.position.x;
-            position.y = hitCollider.transform.position.y;
-            selectorSprite.transform.position = position;
+            this.nodeSelectorGreen = Instantiate(Resources.Load("Selector_green"), Vector3.zero, Quaternion.identity) as GameObject;
+
+            if (nodeSelectorGreen != null)
+            {
+                Vector3 position = nodeSelectorGreen.transform.position;
+                position.x = hitCollider.transform.position.x;
+                position.y = hitCollider.transform.position.y;
+                nodeSelectorGreen.transform.position = position;
+            }
+        }
+        else
+        {
+            this.nodeSelectorRed = Instantiate(Resources.Load("Selector"), Vector3.zero, Quaternion.identity) as GameObject;
+
+            if (this.nodeSelectorRed != null)
+            {
+                Vector3 position = this.nodeSelectorRed.transform.position;
+                position.x = hitCollider.transform.position.x;
+                position.y = hitCollider.transform.position.y;
+                position.z = -0.01f;
+                this.nodeSelectorRed.transform.position = position;
+            }
         }
     }
 }
