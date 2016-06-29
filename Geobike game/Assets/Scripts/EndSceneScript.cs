@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class EndSceneScript : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class EndSceneScript : MonoBehaviour
     public LineRenderer lineRendererPlayer2;
     public GameObject locations;
     public GameObject map;
+    public Text winningPlayer;
 
     private Dijkstra dijkstra;
     private GameObject startPoint;
@@ -34,6 +36,8 @@ public class EndSceneScript : MonoBehaviour
         DrawFastestRoute(startPoint, endPoint, lineRenderer, locations);
         DrawPlayerRoute(StaticObjects.visitedLocationsPlayer1, lineRendererPlayer1, locations);
         DrawPlayerRoute(StaticObjects.visitedLocationsPlayer2, lineRendererPlayer2, locations);
+
+        winningPlayer.text = "Speler " + StaticObjects.winningPlayer + " heeft gewonnen!";
     }
 
     void Update()

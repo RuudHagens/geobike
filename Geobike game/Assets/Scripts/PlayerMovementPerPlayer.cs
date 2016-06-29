@@ -147,6 +147,16 @@ void OnTriggerExit2D(Collider2D other)
 
             if (other.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.endPoint)
             {
+                switch (this.name)
+                {
+                    case "Player 1":
+                        StaticObjects.winningPlayer = 1;
+                        break;
+                    case "Player 2":
+                        StaticObjects.winningPlayer = 2;
+                        break;
+                }
+
                 SceneManager.LoadScene("end scene");
             }
         }
