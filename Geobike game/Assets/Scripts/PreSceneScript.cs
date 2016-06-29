@@ -61,6 +61,10 @@ public class PreSceneScript : MonoBehaviour
     [HideInInspector]
     public bool HasSelectedLocation;
 
+    public AudioClip select;
+    public AudioClip error;
+    public AudioClip success;
+
     /// <summary>
     /// The startNode object.
     /// </summary>
@@ -209,6 +213,8 @@ public class PreSceneScript : MonoBehaviour
         // Check for right steering wheel input.
         if (Input.GetKeyDown(this.RightSteeringWheelFromKeyboard) || Input.GetKeyDown(this.RightSteeringWheel))
         {
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 0.7f);
+
             // Check if the player has selected a province.
             if (this.HasSelectedProvince)
             {
@@ -248,6 +254,8 @@ public class PreSceneScript : MonoBehaviour
         // Check for left steering wheel input.
         if (Input.GetKeyDown(this.LeftSteeringWheelFromKeyboard) || Input.GetKeyDown(this.LeftSteeringWheel))
         {
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 0.7f);
+
             // Check if the player has selected a province
             if (this.HasSelectedProvince)
             {
@@ -305,11 +313,13 @@ public class PreSceneScript : MonoBehaviour
                     this.HasSelectedLocation = true;
                     Destroy(this._nodeSelectorBlue);
                     this._nodeSelectorBlue = null;
+                    Camera.main.GetComponent<AudioSource>().PlayOneShot(success, 0.7f);
                 }
                 else
                 {
                     // Highlight location red, display location name
                     this.DrawSelection(this._nodeSelectorBlue, false);
+                    Camera.main.GetComponent<AudioSource>().PlayOneShot(error, 0.7f);
                 }
             }
             else
@@ -317,7 +327,7 @@ public class PreSceneScript : MonoBehaviour
                 // Check if the province is the right province
                 if (this._selectedProvince.GetComponent<ProvinceInfo>().fullName == StaticObjects.startProvince)
                 {
-                    // Zoom towards province (not necessary, would be nice though)
+                    Camera.main.GetComponent<AudioSource>().PlayOneShot(success, 0.7f);
 
                     // Set HasSelectedProvince to true as the right province has been selected.
                     this.HasSelectedProvince = true;
@@ -376,6 +386,8 @@ public class PreSceneScript : MonoBehaviour
                 }
                 else
                 {
+                    Camera.main.GetComponent<AudioSource>().PlayOneShot(error, 0.7f);
+
                     // Reset all province colors
                     foreach (GameObject province in this._provinces)
                     {
