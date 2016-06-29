@@ -149,10 +149,16 @@ public class PreSceneScript : MonoBehaviour
         {
             // Set the position of the blue selector to the first location.
             this._nodeSelectorBlue.transform.position = this._playerNodes[0].transform.position;
+
+            // Disable the blue selector game object as the locations shouldn't yet be selected.
+            this._nodeSelectorBlue.SetActive(false);
         }
 
         // Highlight the selected province.
         this._selectedProvince.GetComponent<SpriteRenderer>().material.color = Color.blue;
+
+        // Disable the locations gameobject (holding all location game objects).
+        this.Locations.SetActive(false);
     }
 
     /// <summary>
@@ -316,12 +322,16 @@ public class PreSceneScript : MonoBehaviour
                     // Set HasSelectedProvince to true as the right province has been selected.
                     this.HasSelectedProvince = true;
 
-                    // Disable all province gameobjects
-                    foreach (GameObject province in this._provinces)
-                    {
-                        province.SetActive(false);
-                    }
+                    // Disable the provinces game object (holding all province game objects).
+                    this.Provinces.SetActive(false);
+                    
+                    // Enable the locations game object (holding all location game objects).
+                    this.Locations.SetActive(true);
 
+                    // Enable the blue selector game object.
+                    this._nodeSelectorBlue.SetActive(true);
+
+                    // Create a new list of allowed locations.
                     List<GameObject> allowedLocations = new List<GameObject>();
 
                     // Temporarely save the provinceInfo object of the selected province to prevent unnecessary lookup.

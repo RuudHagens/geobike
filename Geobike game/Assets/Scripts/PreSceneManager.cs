@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class PreSceneManager : MonoBehaviour
 {
@@ -82,6 +85,9 @@ public class PreSceneManager : MonoBehaviour
         // Reset the HasSelectedLocation boolean.
         Player1.GetComponent<PreSceneScript>().HasSelectedLocation = false;
         Player2.GetComponent<PreSceneScript>().HasSelectedLocation = false;
+
+        // Remove the text of the countdown text object.
+        GUImanager.instance.CountdownText.text = string.Empty;
     }
 	
     /// <summary>
@@ -92,6 +98,9 @@ public class PreSceneManager : MonoBehaviour
         // Check if both players have selected a location.
         if (this.Player1.GetComponent<PreSceneScript>().HasSelectedLocation && this.Player2.GetComponent<PreSceneScript>().HasSelectedLocation)
         {
+            // Set the text to the ceiled elapsed time.
+            GUImanager.instance.CountdownText.text = Convert.ToString(Mathf.Ceil(this._elapsedTime), CultureInfo.CurrentCulture);
+
             // Decrease the elapsed time.
             this._elapsedTime -= Time.deltaTime;
 

@@ -30,6 +30,11 @@ public class GUImanager : MonoBehaviour
     public Text HintTextP2;
 
     /// <summary>
+    /// The countdown text.
+    /// </summary>
+    public Text CountdownText;
+
+    /// <summary>
     /// Method is being called when this class is instantiated.
     /// </summary>
     void Awake ()
