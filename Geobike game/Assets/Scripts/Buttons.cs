@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class Buttons : MonoBehaviour {
 
+    public GameObject canvashelp;
+    public GameObject canvas;
+
     // Method to load the pre scene
     public void LoadPreScene()
     {
@@ -31,5 +34,19 @@ public class Buttons : MonoBehaviour {
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    // method to show the help screen
+    public void ShowHelp()
+    {
+        canvashelp.SetActive(true);
+        canvas.SetActive(false);
+    }
+    
+    // method to hide the help screen
+    public void HideHelp()
+    {
+        canvas.SetActive(true);
+        canvashelp.SetActive(false);
     }
 }
