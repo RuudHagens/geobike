@@ -83,6 +83,21 @@ public class PlayerMovementPerPlayer : MonoBehaviour
             {
                 foreach (GameObject node in playerNodes)
                 {
+                    if (this.name == "Player 1")
+                    {
+                        if (GameObject.Find("CircleBikePlayer1") != null)
+                        {
+                            Destroy(GameObject.Find("CircleBikePlayer1"));
+                        }
+                    }
+                    else if (this.name == "Player 2")
+                    {
+                        if (GameObject.Find("CircleBikePlayer2") != null)
+                        {
+                            Destroy(GameObject.Find("CircleBikePlayer2"));
+                        }
+                    }
+
                     if (nodeSelector != null && node.transform.position == nodeSelector.transform.position)
                     {
                         selectedNodePlayer = node;
