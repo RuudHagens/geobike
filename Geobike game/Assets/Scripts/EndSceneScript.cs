@@ -13,6 +13,7 @@ public class EndSceneScript : MonoBehaviour
     public Text winningPlayer;
     public GameObject pnStats1;
     public GameObject pnStats2;
+    public AudioClip victory;
 
     private Dijkstra dijkstra;
     private StatisticsEnd statisticsEnd1;
@@ -22,6 +23,7 @@ public class EndSceneScript : MonoBehaviour
 
     // Use this for initialization
     void Start () {
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(victory, 0.7f);
         dijkstra = StaticObjects.dijkstraInstance;
         statisticsEnd1 = pnStats1.GetComponent<StatisticsEnd>();
         statisticsEnd2 = pnStats2.GetComponent<StatisticsEnd>();
