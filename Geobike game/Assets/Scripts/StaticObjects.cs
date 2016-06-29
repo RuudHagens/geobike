@@ -13,4 +13,7 @@ public static class StaticObjects
     public static int winningPlayer { get; set; }
     public static List<string> visitedLocationsPlayer1 = new List<string>();
     public static List<string> visitedLocationsPlayer2 = new List<string>();
+
+    public static float secondsleft { get; set; }
+    public static float minutesleft { get; set; }
 }

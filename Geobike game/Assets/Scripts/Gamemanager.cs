@@ -9,9 +9,10 @@ public class Gamemanager : MonoBehaviour
     private float timer = 0.0f;
     public Text timep1;
     public Text timep2;
+    private bool timeron = false;
 
-    string minutes;
-    string seconds;
+    public float minutes { get; set; }
+    public float seconds { get; set; }
 
     public Gamemanager()
     {
@@ -21,12 +22,13 @@ public class Gamemanager : MonoBehaviour
     public void StartTimer()
     {
         timer = 300.0f;
+        timeron = true;
     }
 
     public void StopTimer()
     {
         string finaltime = timer.ToString();
-
+        timeron = false;
         Debug.Log(finaltime);
     }
 
@@ -46,13 +48,13 @@ public class Gamemanager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (timer > 0)
+        if (timer > 0 && timeron)
         {
             timer -= Time.deltaTime;
-            minutes = Mathf.Floor(timer / 60).ToString("00");
-            seconds = Mathf.Floor(timer % 60).ToString("00");
-            timep1.text = minutes + ":" + seconds;
-            timep2.text = minutes + ":" + seconds;
+            minutes = Mathf.Floor(timer / 60);
+            seconds = Mathf.Floor(timer % 60);
+            timep1.text = minutes.ToString("00") + ":" + seconds.ToString("00");
+            timep2.text = minutes.ToString("00") + ":" + seconds.ToString("00");
         }
         else
         {

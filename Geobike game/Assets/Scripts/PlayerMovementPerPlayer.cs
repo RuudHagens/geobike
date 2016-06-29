@@ -12,6 +12,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
     public GameObject playerCamera;
     public GameObject locationLabels;
     public GameObject locations;
+    public GameObject gamemngr;
 
     public KeyCode cycling;
     public KeyCode rightSteeringWheel;
@@ -30,6 +31,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
     private bool nodeSelectionMoment;
     private GameObject nodeSelector;
     private GameObject selectedNodePlayer;
+    private Gamemanager gamemanager;
 
     // Use this for initialization
     void Start()
@@ -39,6 +41,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
         inNode = true;
         nodeSelectionMoment = true;
         dijkstra = StaticObjects.dijkstraInstance;
+        gamemanager = gamemngr.GetComponent<Gamemanager>();
         loopNodes = 1;
 
         selectedNodePlayer = null;
@@ -147,6 +150,9 @@ void OnTriggerExit2D(Collider2D other)
 
             if (other.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.endPoint)
             {
+                gamemanager.StopTimer();
+                StaticObjects.minutesleft = gamemanager.minutes;
+                StaticObjects.secondsleft = gamemanager.seconds;
                 switch (this.name)
                 {
                     case "Player 1":
