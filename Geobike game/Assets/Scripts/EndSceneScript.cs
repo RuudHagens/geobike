@@ -39,7 +39,7 @@ public class EndSceneScript : MonoBehaviour
             }
         }
 
-        DrawFastestRoute(startPoint, endPoint, lineRenderer, locations);
+        DrawShortestRoute(startPoint, endPoint, lineRenderer, locations);
         DrawPlayerRoute(StaticObjects.visitedLocationsPlayer1, lineRendererPlayer1, locations);
         DrawPlayerRoute(StaticObjects.visitedLocationsPlayer2, lineRendererPlayer2, locations);
 
@@ -64,20 +64,20 @@ public class EndSceneScript : MonoBehaviour
         }
     }
 
-    private void DrawFastestRoute(GameObject startNode, GameObject endNode, LineRenderer lineRenderer, GameObject locations)
+    private void DrawShortestRoute(GameObject startNode, GameObject endNode, LineRenderer lineRenderer, GameObject locations)
     {
         string startNodeId = startNode.GetComponent<LocationInfo>().id;
         string endNodeId = endNode.GetComponent<LocationInfo>().id;
-        List<string> fastestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
+        List<string> shortestRoute = dijkstra.GetPath(startNodeId, endNodeId); //call algorithm for startNodeId and endNodeId
 
-        lineRenderer.SetVertexCount(fastestRoute.Count);
+        lineRenderer.SetVertexCount(shortestRoute.Count);
         int newNodeOnLine = 0;
 
-        for (int i = 0; i < fastestRoute.Count; i++)
+        for (int i = 0; i < shortestRoute.Count; i++)
         {
             foreach (Transform location in locations.GetComponentInChildren<Transform>())
             {
-                if (location.gameObject.GetComponent<LocationInfo>().id == fastestRoute[i])
+                if (location.gameObject.GetComponent<LocationInfo>().id == shortestRoute[i])
                 {
                     lineRenderer.SetPosition(i, location.position);
                     newNodeOnLine++;
