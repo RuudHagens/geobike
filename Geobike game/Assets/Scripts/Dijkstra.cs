@@ -44,47 +44,46 @@ public class Dijkstra
     /// </summary>
     public void SetGraph()
     {
-        List<string> listOfNodes = new List<string>()
-        {
-            "alk",
-            "haa",
-            "ams",
-            "lei",
-            "dha",
-            "del",
-            "rot",
-            "utr",
-            "dor",
-            "zie",
-            "mid",
-            "ter",
-            "goe",
-            "roo",
-            "bre",
-            "til",
-            "ein",
-            "ven",
-            "roe",
-            "maa",
-            "hrl",
-            "bos",
-            "nij",
-            "arn",
-            "ame",
-            "alm",
-            "lel",
-            "ens",
-            "alo",
-            "ape",
-            "zwo",
-            "hoo",
-            "emm",
-            "ass",
-            "gro",
-            "hee",
-            "sne",
-            "lee"
-        };
+        // REPLACE WITH LIST OF STRINGS
+        Dictionary<string, string> listOfNodes = new Dictionary<string, string>();
+        listOfNodes.Add("alk", "noh");
+        listOfNodes.Add("haa", "noh");
+        listOfNodes.Add("ams", "noh");
+        listOfNodes.Add("lei", "zuh");
+        listOfNodes.Add("dha", "zuh");
+        listOfNodes.Add("del", "zuh");
+        listOfNodes.Add("rot", "zuh");
+        listOfNodes.Add("utr", "utr");
+        listOfNodes.Add("dor", "zuh");
+        listOfNodes.Add("zie", "zee");
+        listOfNodes.Add("mid", "zee");
+        listOfNodes.Add("ter", "zee");
+        listOfNodes.Add("goe", "zee");
+        listOfNodes.Add("roo", "nob");
+        listOfNodes.Add("bre", "nob");
+        listOfNodes.Add("til", "nob");
+        listOfNodes.Add("ein", "nob");
+        listOfNodes.Add("ven", "lim");
+        listOfNodes.Add("roe", "lim");
+        listOfNodes.Add("maa", "lim");
+        listOfNodes.Add("hrl", "lim");
+        listOfNodes.Add("bos", "nob");
+        listOfNodes.Add("nij", "gel");
+        listOfNodes.Add("arn", "gel");
+        listOfNodes.Add("ame", "utr");
+        listOfNodes.Add("alm", "fle");
+        listOfNodes.Add("lel", "fle");
+        listOfNodes.Add("ens", "ove");
+        listOfNodes.Add("alo", "ove");
+        listOfNodes.Add("ape", "gel");
+        listOfNodes.Add("zwo", "ove");
+        listOfNodes.Add("hoo", "dre");
+        listOfNodes.Add("emm", "dre");
+        listOfNodes.Add("ass", "dre");
+        listOfNodes.Add("gro", "gro");
+        listOfNodes.Add("hee", "fri");
+        listOfNodes.Add("sne", "fri");
+        listOfNodes.Add("lee", "fri");
 
         //DE lijst
         List<GraphNode> graphAslist = MakeListOfGraphNodes(listOfNodes);
@@ -145,7 +144,6 @@ public class Dijkstra
         graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ape", "zwo", 39.0f);
         graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ape", "alo", 60.3f);
         graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ens", "alo", 29.4f);
-        //graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "ens", "hoo", 74.3f);
         graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "alo", "zwo", 52.3f);
         graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "alo", "hoo", 51.6f);
         graphAslist = AddConnectionsBetweenGraphNodes(graphAslist, "zwo", "hoo", 53.5f);
@@ -169,10 +167,10 @@ public class Dijkstra
     /// </summary>
     /// <param name="graphNodes">A list of graph node names.</param>
     /// <returns>Returns a list of graph nodes.</returns>
-    private static List<GraphNode> MakeListOfGraphNodes(List<string> graphNodes)
+    private static List<GraphNode> MakeListOfGraphNodes(Dictionary<string, string> graphNodes)
     {
         return graphNodes.Count > 0
-            ? graphNodes.Select(node => new GraphNode(node, new List<Vertex>())).ToList()
+            ? graphNodes.Select(node => new GraphNode(node.Key, new List<Vertex>())).ToList()
             : null;
     }
 
@@ -689,6 +687,7 @@ public class GraphNode
     /// Initializes a new instance of the <see cref="GraphNode"/> class.
     /// </summary>
     /// <param name="name">The name of the graph node.</param>
+    /// <param name="provinceName">The name of the province.</param>
     /// <param name="vertices">The list of vertices of the graph node.</param>
     public GraphNode(string name, List<Vertex> vertices)
     {

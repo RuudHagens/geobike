@@ -35,7 +35,7 @@ public class Gamemanager : MonoBehaviour
     {
         StartTimer();
         
-        GUImanager.instance.setAssignmentText();
+        GUImanager.instance.SetAssignmentText();
 	}
 	
 	// Update is called once per frame

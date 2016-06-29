@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LocationInfo : MonoBehaviour {
 
     public string fullName;
     public string id;
     public int map;
+    public string provinceId;
     
 	// Use this for initialization
 	void Start () {
