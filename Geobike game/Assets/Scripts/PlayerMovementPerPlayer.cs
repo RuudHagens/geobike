@@ -22,6 +22,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
     public KeyCode RightSteeringWheelFromKeyBoard;
     public KeyCode LeftSteeringWheelFromKeyBoard;
 
+    public AudioClip browse;
     public AudioClip select;
 
     private int loopNodes;
@@ -75,7 +76,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
             if (Input.GetKeyDown(RightSteeringWheelFromKeyBoard) || Input.GetKeyDown(rightSteeringWheel))
             {
-                Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 0.7f);
+                Camera.main.GetComponent<AudioSource>().PlayOneShot(browse, 0.7f);
 
                 if (loopNodes >= playerNodes.Count)
                 {
@@ -88,8 +89,6 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
             if (Input.GetKeyDown(LeftSteeringWheelFromKeyBoard) || Input.GetKeyDown(leftSteeringWheel))
             {
-                Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 0.7f);
-
                 foreach (GameObject node in playerNodes)
                 {
                     if (this.name == "Player 1")
@@ -109,6 +108,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
                     if (nodeSelector != null && node.transform.position == nodeSelector.transform.position)
                     {
+                        Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 0.7f);
                         selectedNodePlayer = node;
                         bike.GetComponent<BikeInput>().RotateBike(selectedNodePlayer);
                         playerCamera.GetComponent<Camera>().orthographicSize = 1.65f;
@@ -146,7 +146,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
         }
     }
 
-void OnTriggerExit2D(Collider2D other)
+    void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Node"))
         {

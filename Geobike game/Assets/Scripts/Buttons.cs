@@ -15,7 +15,6 @@ public class Buttons : MonoBehaviour {
         {
             Camera.main.GetComponent<AudioSource>().PlayOneShot(click, 0.7f);
             StaticObjects.clickSound = false;
-        
         }
     }
 
