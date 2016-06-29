@@ -22,6 +22,8 @@ public class PlayerMovementPerPlayer : MonoBehaviour
     public KeyCode RightSteeringWheelFromKeyBoard;
     public KeyCode LeftSteeringWheelFromKeyBoard;
 
+    public AudioClip select;
+
     private int loopNodes;
     private float speed = 0f;
     private float presses;
@@ -73,6 +75,8 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
             if (Input.GetKeyDown(RightSteeringWheelFromKeyBoard) || Input.GetKeyDown(rightSteeringWheel))
             {
+                Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 0.7f);
+
                 if (loopNodes >= playerNodes.Count)
                 {
                     loopNodes = 0;
@@ -84,6 +88,8 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
             if (Input.GetKeyDown(LeftSteeringWheelFromKeyBoard) || Input.GetKeyDown(leftSteeringWheel))
             {
+                Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 0.7f);
+
                 foreach (GameObject node in playerNodes)
                 {
                     if (this.name == "Player 1")
