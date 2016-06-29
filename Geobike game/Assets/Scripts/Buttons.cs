@@ -7,6 +7,16 @@ public class Buttons : MonoBehaviour {
 
     public GameObject canvashelp;
     public GameObject canvas;
+    public AudioClip click;
+
+    public void Start()
+    {
+        if (StaticObjects.clickSound)
+        {
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(click, 0.7f);
+            StaticObjects.clickSound = false;
+        }
+    }
 
     // Method to load the pre scene
     public void LoadPreScene()
@@ -27,6 +37,7 @@ public class Buttons : MonoBehaviour {
 
     public void BackToStart()
     {
+        StaticObjects.clickSound = true;
         SceneManager.LoadScene("start scene");
     }
 
@@ -48,5 +59,11 @@ public class Buttons : MonoBehaviour {
     {
         canvas.SetActive(true);
         canvashelp.SetActive(false);
+    }
+
+    // Method to play clicking sound when clicking on a button
+    public void PlayClickSound()
+    {
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(click, 0.7f);
     }
 }

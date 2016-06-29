@@ -16,4 +16,5 @@ public static class StaticObjects
 
     public static float secondsleft { get; set; }
     public static float minutesleft { get; set; }
+    public static bool clickSound { get; set; }
 }

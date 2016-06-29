@@ -5,10 +5,11 @@ using UnityEngine.UI;
 public class GameSettings : MonoBehaviour {
 
     public Toggle enableNames;
+    public AudioClip click;
 
 	// Use this for initialization
 	void Start () {
-	    
+	    Camera.main.GetComponent<AudioSource>().PlayOneShot(click, 0.7f);
 	}
 	
 	// Update is called once per frame
