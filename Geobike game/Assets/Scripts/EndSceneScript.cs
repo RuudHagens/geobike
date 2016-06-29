@@ -92,4 +92,14 @@ public class EndSceneScript : MonoBehaviour
             }
         }
     }
+
+    public void NewGame()
+    {
+        StaticObjects.visitedLocationsPlayer1.Clear();
+        StaticObjects.visitedLocationsPlayer2.Clear();
+        StaticObjects.startPoint = null;
+        StaticObjects.endPoint = null;
+        StaticObjects.dijkstraInstance = null;
+        SceneManager.LoadScene("start scene");
+    }
 }
