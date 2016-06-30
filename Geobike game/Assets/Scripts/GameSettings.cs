@@ -9,6 +9,15 @@ public class GameSettings : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+	    if (StaticObjects.enableCityNames)
+	    {
+	        enableNames.isOn = true;
+	    }
+	    else
+	    {
+            enableNames.isOn = false;
+        }
+
 	    Camera.main.GetComponent<AudioSource>().PlayOneShot(click, 1.0f);
 	}
 	
