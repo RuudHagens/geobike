@@ -74,7 +74,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
     void Update()
     {
-        if (nodeSelectionMoment && nodeSelector != null)
+        if (nodeSelectionMoment && nodeSelector != null && !done)
         {
             locationLabels.SetActive(StaticObjects.enableCityNames);
 
@@ -152,8 +152,11 @@ public class PlayerMovementPerPlayer : MonoBehaviour
                 speed = 0f;
             }
 
-            transform.position += (selectedNodePlayer.transform.position - transform.position).normalized * speed *
+            if(selectedNodePlayer != null)
+            {
+                transform.position += (selectedNodePlayer.transform.position - transform.position).normalized * speed *
                                   Time.deltaTime * 10;
+            }
 
             if (Input.GetKeyDown(cyclingFromKeyBoard) || Input.GetKeyDown(cycling))
             {

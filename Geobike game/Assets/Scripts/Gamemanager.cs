@@ -24,19 +24,17 @@ public class Gamemanager : MonoBehaviour
         timeron = true;
     }
 
-    public void StopTimer()
-    {
-        string finaltime = timer.ToString();
-        timeron = false;
-        Debug.Log(finaltime);
-    }
+    //public void StopTimer()
+    //{
+    //    string finaltime = timer.ToString();
+    //    timeron = false;
+    //    Debug.Log(finaltime);
+    //}
 
 	// Use this for initialization
 	void Start ()
     {
         StartTimer();
-        
-        GUImanager.instance.SetAssignmentText();
 
         Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 1.0f);
     }
@@ -44,9 +42,21 @@ public class Gamemanager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        if (StaticObjects.winningPlayer == 0)
+        {
+            if (player1.GetComponent<PlayerMovementPerPlayer>().done && !player2.GetComponent<PlayerMovementPerPlayer>().done)
+            {
+                StaticObjects.winningPlayer = 1;
+            }
+            else if(!player1.GetComponent<PlayerMovementPerPlayer>().done && player2.GetComponent<PlayerMovementPerPlayer>().done)
+            {
+                StaticObjects.winningPlayer = 2;
+            }
+        }
+
 	    if(player1.GetComponent<PlayerMovementPerPlayer>().done && player2.GetComponent<PlayerMovementPerPlayer>().done)
         {
-            StopTimer();
+            //StopTimer();
             SceneManager.LoadScene("end scene");
         }
 	}
@@ -58,8 +68,17 @@ public class Gamemanager : MonoBehaviour
             timer -= Time.deltaTime;
             minutes = Mathf.Floor(timer / 60);
             seconds = Mathf.Floor(timer % 60);
-            timep1.text = minutes.ToString("00") + ":" + seconds.ToString("00");
-            timep2.text = minutes.ToString("00") + ":" + seconds.ToString("00");
+
+
+            if(!player1.GetComponent<PlayerMovementPerPlayer>().done)
+            {
+                timep1.text = minutes.ToString("00") + ":" + seconds.ToString("00");
+            }
+
+            if (!player2.GetComponent<PlayerMovementPerPlayer>().done)
+            {
+                timep2.text = minutes.ToString("00") + ":" + seconds.ToString("00");
+            }    
         }
         else
         {
