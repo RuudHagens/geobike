@@ -114,5 +114,6 @@ public class EndSceneScript : MonoBehaviour
         StaticObjects.endPoint = null;
         StaticObjects.dijkstraInstance = null;
         SceneManager.LoadScene("start scene");
+        StaticObjects.clickSound = true;
     }
 }
