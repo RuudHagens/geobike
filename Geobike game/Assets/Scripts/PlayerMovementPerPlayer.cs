@@ -202,8 +202,6 @@ public class PlayerMovementPerPlayer : MonoBehaviour
                     StaticObjects.secondsleftPlayer2 = gamemanager.seconds;
                 }
 
-
-                
                 done = true;
             }
         }
@@ -211,7 +209,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D otherNode)
     {
-        if (inNode && otherNode.gameObject.CompareTag("Node"))
+        if (inNode && otherNode.gameObject.CompareTag("Node") && !done)
         {
             Vector3 otherPositionPlus = otherNode.transform.position;
             otherPositionPlus.x += 0.01f;
