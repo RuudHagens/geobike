@@ -1,0 +1,35 @@
+Titel spel: GeoBike
+
+Opdrachtgever: 
+Onze opdrachtgever is Carla Scholten van het bedrijf embedded fitness.
+Zij wilde een spel hebben dat gespeeld kan worden in een gymzaal door kinderen. Het doel van het spel
+moest zijn dat kinderen bewegend konden leren.
+
+Omschrijving: 
+In Geobike is het de bedoeling om door middel van een fittnes fiets van de ene plaat naar de andere plaats te reizen.
+Het spel wordt gespeeld door twee spelers die tegen elkaar racen om zo snel mogelijk bij de aangeven stad te komen. Het doel dat we 
+willen berijken is dat kinderen meer leren van topografie en meer besef krijgen over afstand en tijd.
+
+Team: 
+twee spelers racen tegen elkaar om zo snel mogelijk bij het doel te komen.
+
+Features: 
+-Een volledige kaart van nederland met alle grote steden
+-Mogelijkheid om de namen van steden te zien.
+-Input mogelijk doormiddel van fietsen van embedded fitness.
+-Spelers kunnen hun snelheid zien.
+-Spelers kunnen hun tijd zien.
+-Spelers kunnen vooraf de start plaats selecteren.
+-Achteraf kunnen spelers de route zien die ze gefietst hebben
+-Achteraf krijgen spelers informatie over hun speelwijze.
+-Achteraf kunnen spelers zien wat de meest efficiente route was.
+-Op de kaart staan bekende gebouwen als referentie aan de stad.
+
+Platform: pc
+
+HowToPlay:
+-StartLocatie selecteren: Om de startlocatie te selecteren maak je gebruik van de linker- en rechterknop op de fiets. 
+Om een keuze te bevestigen trap je even vooruit en als de ander ook klaar is met selecteren begint het spel.
+-In game: Tijdens het spel maak je gebruik van de linkerknop om door verschillende bestemmingen heen te lopen als je op een knooppunt staat. 
+Als je een keuze hebt gemaakt  druk je op de rechterknop om deze keuze te bevestigen. 
+Nadat je een keuze hebt gemaakt fiets je naar het volgende knooppunt of de eindbestemming.
