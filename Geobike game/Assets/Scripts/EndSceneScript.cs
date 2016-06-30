@@ -53,19 +53,6 @@ public class EndSceneScript : MonoBehaviour
         winningPlayer.text = "Speler " + StaticObjects.winningPlayer + " heeft gewonnen!";
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
-        {
-            StaticObjects.visitedLocationsPlayer1.Clear();
-            StaticObjects.visitedLocationsPlayer2.Clear();
-            StaticObjects.startPoint = null;
-            StaticObjects.endPoint = null;
-            StaticObjects.dijkstraInstance = null;
-            SceneManager.LoadScene("start scene");
-        }
-    }
-
     private void DrawShortestRoute(GameObject startNode, GameObject endNode, LineRenderer lineRenderer, GameObject locations)
     {
         string startNodeId = startNode.GetComponent<LocationInfo>().id;
