@@ -67,7 +67,6 @@ public class PlayerMovementPerPlayer : MonoBehaviour
         {
             Debug.Log("error");
         }
-
     }
 
     void Update()
@@ -78,7 +77,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
             if (Input.GetKeyDown(RightSteeringWheelFromKeyBoard) || Input.GetKeyDown(rightSteeringWheel))
             {
-                Camera.main.GetComponent<AudioSource>().PlayOneShot(browse, 0.7f);
+                Camera.main.GetComponent<AudioSource>().PlayOneShot(browse, 1.0f);
 
                 loopNodes++;
                 if (loopNodes >= playerNodes.Count)

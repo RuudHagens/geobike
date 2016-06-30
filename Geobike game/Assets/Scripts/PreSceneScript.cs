@@ -223,7 +223,7 @@ public class PreSceneScript : MonoBehaviour
         // Check for right steering wheel input.
         if (Input.GetKeyDown(this.RightSteeringWheelFromKeyboard) || Input.GetKeyDown(this.RightSteeringWheel))
         {
-            Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 0.7f);
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 1.0f);
 
             // Check if the player has selected a province.
             if (this.HasSelectedProvince)
@@ -264,7 +264,7 @@ public class PreSceneScript : MonoBehaviour
         // Check for left steering wheel input.
         if (Input.GetKeyDown(this.LeftSteeringWheelFromKeyboard) || Input.GetKeyDown(this.LeftSteeringWheel))
         {
-            Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 0.7f);
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 1.0f);
 
             // Check if the player has selected a province
             if (this.HasSelectedProvince)

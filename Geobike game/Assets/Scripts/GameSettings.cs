@@ -9,7 +9,7 @@ public class GameSettings : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	    Camera.main.GetComponent<AudioSource>().PlayOneShot(click, 0.7f);
+	    Camera.main.GetComponent<AudioSource>().PlayOneShot(click, 1.0f);
 	}
 	
 	// Update is called once per frame

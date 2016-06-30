@@ -11,13 +11,9 @@ public class Gamemanager : MonoBehaviour
     public Text timep2;
     private bool timeron = false;
 
+    public AudioClip select;
     public float minutes { get; set; }
     public float seconds { get; set; }
-
-    public Gamemanager()
-    {
-
-    }
 
     public void StartTimer()
     {
@@ -38,7 +34,9 @@ public class Gamemanager : MonoBehaviour
         StartTimer();
         
         GUImanager.instance.SetAssignmentText();
-	}
+
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 1.0f);
+    }
 	
 	// Update is called once per frame
 	void Update ()
