@@ -62,6 +62,9 @@ public class PreSceneManager : MonoBehaviour
     /// </summary>
 	void Start ()
     {
+        // Prepare for a new round.
+        StaticObjects.ClearForNewRound();
+
         // Assign the elapsed time to maxTime.
         this._elapsedTime = this.MaxTime;
 
