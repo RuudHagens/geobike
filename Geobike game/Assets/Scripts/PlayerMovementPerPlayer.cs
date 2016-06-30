@@ -161,7 +161,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
                                   Time.deltaTime * 10;
             }
 
-            if (Input.GetKeyDown(cyclingFromKeyBoard) || Input.GetKeyDown(cycling) && !done)
+            if (Input.GetKeyDown(cyclingFromKeyBoard) || Input.GetKeyDown(cycling))
             {
                 speed = speed + speedmult;
                 presses++;
