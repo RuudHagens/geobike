@@ -15,10 +15,12 @@ public class PlayerMovementPerPlayer : MonoBehaviour
     public GameObject gamemngr;
 
     public KeyCode cycling;
+    public KeyCode ConfirmButton;
     public KeyCode rightSteeringWheel;
     public KeyCode leftSteeringWheel;
 
     public KeyCode cyclingFromKeyBoard;
+    public KeyCode ConfirmButtonFromKeyBoard;
     public KeyCode RightSteeringWheelFromKeyBoard;
     public KeyCode LeftSteeringWheelFromKeyBoard;
 
@@ -78,16 +80,29 @@ public class PlayerMovementPerPlayer : MonoBehaviour
             {
                 Camera.main.GetComponent<AudioSource>().PlayOneShot(browse, 0.7f);
 
+                loopNodes++;
                 if (loopNodes >= playerNodes.Count)
                 {
                     loopNodes = 0;
                 }
 
                 nodeSelector.transform.position = playerNodes[loopNodes].transform.position;
-                loopNodes++;
             }
 
             if (Input.GetKeyDown(LeftSteeringWheelFromKeyBoard) || Input.GetKeyDown(leftSteeringWheel))
+            {
+                Camera.main.GetComponent<AudioSource>().PlayOneShot(browse, 0.7f);
+
+                loopNodes--;
+                if (loopNodes < 0)
+                {
+                    loopNodes = playerNodes.Count - 1;
+                }
+
+                nodeSelector.transform.position = playerNodes[loopNodes].transform.position;               
+            }
+
+            if (Input.GetKeyDown(ConfirmButtonFromKeyBoard) || Input.GetKeyDown(ConfirmButton))
             {
                 foreach (GameObject node in playerNodes)
                 {

@@ -20,17 +20,22 @@ public class PreSceneScript : MonoBehaviour
     public GameObject Provinces;
 
     /// <summary>
-    /// The keycode used to cycle through the locations.
+    /// The keycode used to cycle.
     /// </summary>
     public KeyCode Cycling;
 
     /// <summary>
-    /// The keycode used to steer to the right.
+    /// The keycode for the button on the back left side of the steeringwheel.
+    /// </summary>
+    public KeyCode ConfirmButton;
+
+    /// <summary>
+    /// The keycode for the button on the front right side of the steeringwheel.
     /// </summary>
     public KeyCode RightSteeringWheel;
 
     /// <summary>
-    /// The keycode used to steer to the left.
+    /// The keycode for the button on the front left side of the steeringwheel.
     /// </summary>
     public KeyCode LeftSteeringWheel;
 
@@ -40,12 +45,17 @@ public class PreSceneScript : MonoBehaviour
     public KeyCode CyclingFromKeyboard;
 
     /// <summary>
-    /// The keyboard keycode used to steer to the right.
+    /// The keycode for the button on the back left side of the steeringwheel.
+    /// </summary>
+    public KeyCode ConfirmButtonKeyboard;
+
+    /// <summary>
+    /// The keycode for the button on the front right side of the steeringwheel simulated from the keyboard.
     /// </summary>
     public KeyCode RightSteeringWheelFromKeyboard;
 
     /// <summary>
-    /// The keyboard keycode used to steer to the left.
+    /// The keycode for the button on the front left side of the steeringwheel simulated from the keyboard.
     /// </summary>
     public KeyCode LeftSteeringWheelFromKeyboard;
 
@@ -296,8 +306,8 @@ public class PreSceneScript : MonoBehaviour
             }
         }
 
-        // Check for cycling input.
-        if (Input.GetKeyDown(this.CyclingFromKeyboard) || Input.GetKeyDown(this.Cycling))
+        // Check for confirm input.
+        if (Input.GetKeyDown(this.ConfirmButtonKeyboard) || Input.GetKeyDown(this.ConfirmButton))
         {
             Destroy(this._nodeSelectorRed);
             this._nodeSelectorRed = null;
