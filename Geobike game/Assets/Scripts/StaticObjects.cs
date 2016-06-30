@@ -14,7 +14,9 @@ public static class StaticObjects
     public static List<string> visitedLocationsPlayer1 = new List<string>();
     public static List<string> visitedLocationsPlayer2 = new List<string>();
 
-    public static float secondsleft { get; set; }
-    public static float minutesleft { get; set; }
+    public static float secondsleftPlayer1 { get; set; }
+    public static float minutesleftPlayer1 { get; set; }
+    public static float secondsleftPlayer2 { get; set; }
+    public static float minutesleftPlayer2 { get; set; }
     public static bool clickSound { get; set; }
 }

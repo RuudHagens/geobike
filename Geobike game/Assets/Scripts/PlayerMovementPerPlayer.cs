@@ -27,6 +27,8 @@ public class PlayerMovementPerPlayer : MonoBehaviour
     public AudioClip browse;
     public AudioClip select;
 
+    public bool done;
+
     private int loopNodes;
     private float speed = 0f;
     private float presses;
@@ -48,6 +50,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
         dijkstra = StaticObjects.dijkstraInstance;
         gamemanager = gamemngr.GetComponent<Gamemanager>();
         loopNodes = 1;
+        done = false;
 
         selectedNodePlayer = null;
 
@@ -185,20 +188,20 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
             if (other.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.endPoint)
             {
-                gamemanager.StopTimer();
-                StaticObjects.minutesleft = gamemanager.minutes;
-                StaticObjects.secondsleft = gamemanager.seconds;
-                switch (this.name)
+                if (this.name == "Player 1")
                 {
-                    case "Player 1":
-                        StaticObjects.winningPlayer = 1;
-                        break;
-                    case "Player 2":
-                        StaticObjects.winningPlayer = 2;
-                        break;
+                    StaticObjects.minutesleftPlayer1 = gamemanager.minutes;
+                    StaticObjects.secondsleftPlayer1 = gamemanager.seconds;
+                }
+                else if (this.name == "Player 2")
+                {
+                    StaticObjects.minutesleftPlayer2 = gamemanager.minutes;
+                    StaticObjects.secondsleftPlayer2 = gamemanager.seconds;
                 }
 
-                SceneManager.LoadScene("end scene");
+
+                
+                done = true;
             }
         }
     }

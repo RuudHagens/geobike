@@ -45,8 +45,20 @@ public class StatisticsEnd : MonoBehaviour {
 
     public void totalTime()
     {
-        float minutestaken = 4f - StaticObjects.minutesleft;
-        float secondtaken = 60f - StaticObjects.secondsleft;
+        float minutestaken = 0;
+        float secondtaken = 0;
+
+        if(this.name.Contains("1"))
+        {
+            minutestaken = 4f - StaticObjects.minutesleftPlayer1;
+            secondtaken = 60f - StaticObjects.secondsleftPlayer1;
+        }
+        else if (this.name.Contains("2"))
+        {
+            minutestaken = 4f - StaticObjects.minutesleftPlayer2;
+            secondtaken = 60f - StaticObjects.secondsleftPlayer2;
+        }
+
         lblTijd.text = "Tijd to doel: " + minutestaken.ToString("00") + ":" + secondtaken.ToString("00"); 
     }
 }

@@ -11,6 +11,9 @@ public class Gamemanager : MonoBehaviour
     public Text timep2;
     private bool timeron = false;
 
+    public GameObject player1;
+    public GameObject player2;
+
     public AudioClip select;
     public float minutes { get; set; }
     public float seconds { get; set; }
@@ -41,7 +44,11 @@ public class Gamemanager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-	    
+	    if(player1.GetComponent<PlayerMovementPerPlayer>().done && player2.GetComponent<PlayerMovementPerPlayer>().done)
+        {
+            StopTimer();
+            SceneManager.LoadScene("end scene");
+        }
 	}
 
     void FixedUpdate()
