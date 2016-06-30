@@ -173,6 +173,8 @@ public class PreSceneScript : MonoBehaviour
 
         // Disable the locations gameobject (holding all location game objects).
         this.Locations.SetActive(false);
+
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 1.0f);
     }
 
     /// <summary>
