@@ -15,12 +15,12 @@ public class StatisticsEnd : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         listOfFacts = new Dictionary<string, float>();
-        listOfFacts.Add("Voetbalvelden", 120f);
-        listOfFacts.Add("Domtorens", 112f);
-        listOfFacts.Add("Euromasten", 185f);
-        listOfFacts.Add("Bananen", 0.20f);
-        listOfFacts.Add("AfsluitDijken", 32500f);
-        listOfFacts.Add("Spaghettislierten", 0.26f);
+        listOfFacts.Add("voetbalvelden", 120f);
+        listOfFacts.Add("domtorens", 112f);
+        listOfFacts.Add("euromasten", 185f);
+        listOfFacts.Add("bananen", 0.20f);
+        listOfFacts.Add("Afsluitdijken", 32500f);
+        listOfFacts.Add("spaghettislierten", 0.26f);
     }
 	
 	// Update is called once per frame
@@ -39,7 +39,7 @@ public class StatisticsEnd : MonoBehaviour {
     public void totalDistance(List<string> visitedLocations)
     {
         float distance = StaticObjects.dijkstraInstance.GetPathLength(visitedLocations);
-        lblDistance.text = "Afstand: " + distance + " KM";
+        lblDistance.text = "Afstand: " + distance + " km";
         calculateFact(distance);
     }
 
@@ -59,6 +59,27 @@ public class StatisticsEnd : MonoBehaviour {
             secondtaken = 60f - StaticObjects.secondsleftPlayer2;
         }
 
-        lblTijd.text = "Tijd to doel: " + minutestaken.ToString("00") + ":" + secondtaken.ToString("00"); 
+        if (name == "pnStats1")
+        {
+            if (StaticObjects.winningPlayer == 1)
+            {
+                lblTijd.text = "Tijd tot doel: " + minutestaken.ToString("00") + ":" + secondtaken.ToString("00");
+            }
+            else
+            {
+                lblTijd.text = "Tijd tot doel: -";
+            }
+        }
+        else
+        {
+            if (StaticObjects.winningPlayer == 2)
+            {
+                lblTijd.text = "Tijd tot doel: " + minutestaken.ToString("00") + ":" + secondtaken.ToString("00");
+            }
+            else
+            {
+                lblTijd.text = "Tijd tot doel: -";
+            }
+        }
     }
 }
