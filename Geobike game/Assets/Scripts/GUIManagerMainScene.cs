@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 public class GUIManagerMainScene : MonoBehaviour {
@@ -12,6 +11,6 @@ public class GUIManagerMainScene : MonoBehaviour {
     void Awake()
     {
         instance = this;
-        assignmentText.text = "Ga naar " + StaticObjects.endPoint;
+        assignmentText.text = "Ga naar <color=#00ff00>" + StaticObjects.endPoint + "</color>";
     }
 }

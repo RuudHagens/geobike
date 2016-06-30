@@ -24,13 +24,6 @@ public class Gamemanager : MonoBehaviour
         timeron = true;
     }
 
-    //public void StopTimer()
-    //{
-    //    string finaltime = timer.ToString();
-    //    timeron = false;
-    //    Debug.Log(finaltime);
-    //}
-
 	// Use this for initialization
 	void Start ()
     {
@@ -56,7 +49,6 @@ public class Gamemanager : MonoBehaviour
 
 	    if(player1.GetComponent<PlayerMovementPerPlayer>().done && player2.GetComponent<PlayerMovementPerPlayer>().done)
         {
-            //StopTimer();
             SceneManager.LoadScene("end scene");
         }
 	}
