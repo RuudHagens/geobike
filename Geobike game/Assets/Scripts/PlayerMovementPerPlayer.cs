@@ -26,8 +26,10 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
     public AudioClip browse;
     public AudioClip select;
-
+    
     public bool done;
+
+    public Image finishFlagImage;
 
     private int loopNodes;
     private float speed = 0f;
@@ -51,6 +53,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
         gamemanager = gamemngr.GetComponent<Gamemanager>();
         loopNodes = 1;
         done = false;
+        finishFlagImage.gameObject.SetActive(false);
 
         selectedNodePlayer = null;
 
@@ -202,8 +205,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
                     StaticObjects.secondsleftPlayer2 = gamemanager.seconds;
                 }
 
-
-                
+                finishFlagImage.gameObject.SetActive(true);
                 done = true;
             }
         }
