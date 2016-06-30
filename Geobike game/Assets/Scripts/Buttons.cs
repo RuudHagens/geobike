@@ -30,6 +30,18 @@ public class Buttons : MonoBehaviour {
         SceneManager.LoadScene("main scene");
     }
 
+    // Method to load the map scene
+    public void LoadMapScene()
+    {
+        SceneManager.LoadScene("map scene");
+    }
+
+    // Method to start the map scene
+    public void LoadStartScene()
+    {
+        SceneManager.LoadScene("start scene");
+    }
+
     public void Settings()
     {
         SceneManager.LoadScene("settings scene");
