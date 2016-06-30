@@ -173,6 +173,8 @@ public class PreSceneScript : MonoBehaviour
 
         // Disable the locations gameobject (holding all location game objects).
         this.Locations.SetActive(false);
+
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(select, 1.0f);
     }
 
     /// <summary>
@@ -341,6 +343,9 @@ public class PreSceneScript : MonoBehaviour
 
                     // Set HasSelectedProvince to true as the right province has been selected.
                     this.HasSelectedProvince = true;
+
+                    // Give the GUImanager notice about this player having selected the right province.
+                    GUImanager.instance.PlayerHasSelectedProvince(this.PlayerNumber);
 
                     // Disable the provinces game object (holding all province game objects).
                     this.Provinces.SetActive(false);
