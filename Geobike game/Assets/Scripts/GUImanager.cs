@@ -35,12 +35,24 @@ public class GUImanager : MonoBehaviour
     public Text CountdownText;
 
     /// <summary>
+    /// A boolean indicating whether player 1 has selected the right province.
+    /// </summary>
+    private bool P1SelectedProvince;
+
+    /// <summary>
+    /// A boolean indicating whether player 2 has selected the right province.
+    /// </summary>
+    private bool P2SelectedProvince;
+
+    /// <summary>
     /// Method is being called when this class is instantiated.
     /// </summary>
     void Awake ()
     {
         instance = this;
         this.QuestText.text = this.AssignmenText.text = string.Empty;
+        this.P1SelectedProvince = false;
+        this.P2SelectedProvince = false;
     }
 
     /// <summary>
@@ -49,7 +61,7 @@ public class GUImanager : MonoBehaviour
     public void SetAssignmentText()
     {
         this.QuestText.text = "Ga van " + StaticObjects.startPoint + " naar " + StaticObjects.endPoint;
-        this.AssignmenText.text = "Selecteer <color=#00ff00>" + StaticObjects.startPoint + "</color> om te beginnen";
+        this.AssignmenText.text = "Selecteer eerst de province waar <color=#00ff00>" + StaticObjects.startPoint + "</color> ligt om verder te gaan";
     }
 
     /// <summary>
@@ -67,6 +79,30 @@ public class GUImanager : MonoBehaviour
             case 2:
                 this.HintTextP2.text = text;
                 break;
+        }
+    }
+
+    /// <summary>
+    /// Method to set a boolean for selected province per player.
+    /// </summary>
+    /// <param name="playerNr"></param>
+    public void PlayerHasSelectedProvince(int playerNr)
+    {
+        // Set the boolean corresponding to the given player nr to true.
+        switch (playerNr)
+        {
+            case 1:
+                this.P1SelectedProvince = true;
+                break;
+            case 2:
+                this.P2SelectedProvince = true;
+                break;
+        }
+
+        // Change the assignment text when both players have selected the right province.
+        if (this.P1SelectedProvince && this.P2SelectedProvince)
+        {
+            this.AssignmenText.text = "Selecteer <color=#00ff00>" + StaticObjects.startPoint + "</color> om te beginnen";
         }
     }
 }
