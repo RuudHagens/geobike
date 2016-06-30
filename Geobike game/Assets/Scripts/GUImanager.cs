@@ -61,7 +61,7 @@ public class GUImanager : MonoBehaviour
     public void SetAssignmentText()
     {
         this.QuestText.text = "Ga van " + StaticObjects.startPoint + " naar " + StaticObjects.endPoint;
-        this.AssignmenText.text = "Selecteer eerst de province waar <color=#00ff00>" + StaticObjects.startPoint + "</color> ligt om verder te gaan";
+        this.AssignmenText.text = "Ga naar <color=#00ff00>" + StaticObjects.startPoint + "</color>. Selecteer eerst de provincie";
     }
 
     /// <summary>
