@@ -13,7 +13,7 @@ public class Buttons : MonoBehaviour {
     {
         if (StaticObjects.clickSound)
         {
-            Camera.main.GetComponent<AudioSource>().PlayOneShot(click, 0.7f);
+            Camera.main.GetComponent<AudioSource>().PlayOneShot(click, 1.0f);
             StaticObjects.clickSound = false;
         }
     }
@@ -34,12 +34,6 @@ public class Buttons : MonoBehaviour {
     public void LoadMapScene()
     {
         SceneManager.LoadScene("map scene");
-    }
-
-    // Method to start the map scene
-    public void LoadStartScene()
-    {
-        SceneManager.LoadScene("start scene");
     }
 
     public void Settings()
@@ -76,6 +70,6 @@ public class Buttons : MonoBehaviour {
     // Method to play clicking sound when clicking on a button
     public void PlayClickSound()
     {
-        Camera.main.GetComponent<AudioSource>().PlayOneShot(click, 0.7f);
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(click, 1.0f);
     }
 }
