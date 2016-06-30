@@ -16,8 +16,8 @@ public class StatisticsEnd : MonoBehaviour {
     void Awake () {
         listOfFacts = new Dictionary<string, float>();
         listOfFacts.Add("voetbalvelden", 120f);
-        listOfFacts.Add("domtorens", 112f);
-        listOfFacts.Add("euromasten", 185f);
+        listOfFacts.Add("Domtorens", 112f);
+        listOfFacts.Add("Euromasten", 185f);
         listOfFacts.Add("bananen", 0.20f);
         listOfFacts.Add("Afsluitdijken", 32500f);
         listOfFacts.Add("spaghettislierten", 0.26f);
@@ -59,27 +59,6 @@ public class StatisticsEnd : MonoBehaviour {
             secondtaken = 60f - StaticObjects.secondsleftPlayer2;
         }
 
-        if (name == "pnStats1")
-        {
-            if (StaticObjects.winningPlayer == 1)
-            {
-                lblTijd.text = "Tijd tot doel: " + minutestaken.ToString("00") + ":" + secondtaken.ToString("00");
-            }
-            else
-            {
-                lblTijd.text = "Tijd tot doel: -";
-            }
-        }
-        else
-        {
-            if (StaticObjects.winningPlayer == 2)
-            {
-                lblTijd.text = "Tijd tot doel: " + minutestaken.ToString("00") + ":" + secondtaken.ToString("00");
-            }
-            else
-            {
-                lblTijd.text = "Tijd tot doel: -";
-            }
-        }
+        lblTijd.text = "Tijd tot doel: " + minutestaken.ToString("00") + ":" + secondtaken.ToString("00");
     }
 }
