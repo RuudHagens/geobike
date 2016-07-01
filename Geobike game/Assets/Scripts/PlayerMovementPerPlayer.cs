@@ -26,8 +26,6 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
     public AudioClip browse;
     public AudioClip select;
-
-    public float rotationMulti;
     
     public bool done;
 
@@ -165,7 +163,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
             if ((Input.GetKeyDown(cyclingFromKeyBoard) || Input.GetKeyDown(cycling)) && !done)
             {
-                speed = speed + speedmult;
+                speed = (speed) + speedmult;
                 presses++;
             }
         }
@@ -269,7 +267,7 @@ public class PlayerMovementPerPlayer : MonoBehaviour
 
     public void CalculateSpeed()
     {
-        float rpm1 = presses * rotationMulti * 30;
+        float rpm1 = presses * 30;
         float ms1 = 0.45f * rpm1 * 0.10472f;
         float kmh1 = ms1 * 3.6f;
         float totalKmh = Mathf.Round(kmh1 * 10 * 2) / 10;
