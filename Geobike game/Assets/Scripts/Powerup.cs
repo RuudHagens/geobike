@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//CURRENTLY NOT IMPLEMENTED
 public class Powerup : MonoBehaviour
 {
     private float speedMultiplier;

@@ -45,6 +45,11 @@ public class BikeInput : MonoBehaviour
         this.targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
+    /// <summary>
+    /// Method to make the bike swing from left to right.
+    /// CURRENTLY NOT WORKING!
+    /// </summary>
+    /// <param name="bikeSpeed">the speed that the bike is going at</param>
     public void Swing(float bikeSpeed)
     {
         if (bikeSpeed < 10) {

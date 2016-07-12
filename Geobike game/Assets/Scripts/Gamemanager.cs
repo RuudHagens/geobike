@@ -53,6 +53,7 @@ public class Gamemanager : MonoBehaviour
         }
 	}
 
+    //calculates the time that is left for each player
     void FixedUpdate()
     {
         if (timer > 0 && timeron)

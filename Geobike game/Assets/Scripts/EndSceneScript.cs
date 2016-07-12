@@ -28,6 +28,7 @@ public class EndSceneScript : MonoBehaviour
         statisticsEnd1 = pnStats1.GetComponent<StatisticsEnd>();
         statisticsEnd2 = pnStats2.GetComponent<StatisticsEnd>();
 
+        //get the start and endpoint of the game
         foreach (Transform location in locations.GetComponentInChildren<Transform>())
         {
             if (location.gameObject.GetComponent<LocationInfo>().fullName == StaticObjects.startPoint)
@@ -65,7 +66,13 @@ public class EndSceneScript : MonoBehaviour
             SceneManager.LoadScene("start scene");
         }
     }
-
+    /// <summary>
+    /// Draws the shortest route that the players could have taken.
+    /// </summary>
+    /// <param name="startNode">the start position of the players</param>
+    /// <param name="endNode">the end position of the players</param>
+    /// <param name="lineRenderer">the render that draws the line</param>
+    /// <param name="locations">the locations inbetween the route</param>
     private void DrawShortestRoute(GameObject startNode, GameObject endNode, LineRenderer lineRenderer, GameObject locations)
     {
         string startNodeId = startNode.GetComponent<LocationInfo>().id;
@@ -88,6 +95,12 @@ public class EndSceneScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Draws the line of the route the player has cycled
+    /// </summary>
+    /// <param name="visitedLocations"></param>
+    /// <param name="lineRenderer"></param>
+    /// <param name="locations"></param>
     private void DrawPlayerRoute(List<string> visitedLocations, LineRenderer lineRenderer, GameObject locations)
     {
         lineRenderer.SetVertexCount(visitedLocations.Count);
@@ -106,6 +119,9 @@ public class EndSceneScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method to reset everything and start a new game
+    /// </summary>
     public void NewGame()
     {
         StaticObjects.visitedLocationsPlayer1.Clear();

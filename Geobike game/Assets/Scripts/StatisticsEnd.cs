@@ -28,14 +28,22 @@ public class StatisticsEnd : MonoBehaviour {
 	    
 	}
 
+    /// <summary>
+    /// Method to calculate a random fact for the distance that is cycled
+    /// </summary>
+    /// <param name="distance">the distance the player has cycled</param>
     public void calculateFact(float distance)
     {
-        string randomFactName = listOfFacts.Keys.ToArray()[(int)Random.Range(0, listOfFacts.Keys.Count - 1)];
+        string randomFactName = listOfFacts.Keys.ToArray()[(int)Random.Range(0, listOfFacts.Keys.Count)];
         float randomFactDistance = listOfFacts[randomFactName];
         float amount = Mathf.Round(distance * 1000 / randomFactDistance);
         lblFeit.text = "Je hebt " + amount + " " + randomFactName + " gefietst!";
     }
 
+    /// <summary>
+    /// Method to calculate the distance the player has cycled
+    /// </summary>
+    /// <param name="visitedLocations"></param>
     public void totalDistance(List<string> visitedLocations)
     {
         float distance = StaticObjects.dijkstraInstance.GetPathLength(visitedLocations);
@@ -43,6 +51,9 @@ public class StatisticsEnd : MonoBehaviour {
         calculateFact(distance);
     }
 
+    /// <summary>
+    /// Method to show how long the game took
+    /// </summary>
     public void totalTime()
     {
         float minutestaken = 0;

@@ -7,6 +7,7 @@ public class HoverLine : MonoBehaviour {
     public GameObject player1LineRenderer;
     public GameObject player2LineRenderer;
 
+    //only shows the shortest route
     public void EnableFastest()
     {
         fastestLineRenderer.GetComponent<LineRenderer>().enabled = true;
@@ -14,6 +15,7 @@ public class HoverLine : MonoBehaviour {
         player2LineRenderer.GetComponent<LineRenderer>().enabled = false;
     }
 
+    //only shows the route of player1
     public void EnablePlayer1()
     {
         fastestLineRenderer.GetComponent<LineRenderer>().enabled = false;
@@ -21,6 +23,7 @@ public class HoverLine : MonoBehaviour {
         player2LineRenderer.GetComponent<LineRenderer>().enabled = false;
     }
 
+    //only shows the route of player2
     public void EnablePlayer2()
     {
         fastestLineRenderer.GetComponent<LineRenderer>().enabled = false;
@@ -28,6 +31,7 @@ public class HoverLine : MonoBehaviour {
         player2LineRenderer.GetComponent<LineRenderer>().enabled = true;
     }
 
+    //shows all the routes
     public void ShowAll()
     {
         fastestLineRenderer.GetComponent<LineRenderer>().enabled = true;
